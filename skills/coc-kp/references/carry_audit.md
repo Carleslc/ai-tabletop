@@ -38,14 +38,14 @@ acquired in play."
 
 ## At character-card creation (static audit)
 
-When filling `随身物品`, run each entry through the four tests. Silently fix or flag
+When filling the card's Possessions, run each entry through the four tests. Silently fix or flag
 failures rather than refusing the whole card:
 
 - Plausible everyday/occupational gear: keep it.
 - Borderline (a non-soldier wanting a handgun): keep only if CR, era, and locale allow
   legal purchase; otherwise note how it was obtained or cut it.
 - Implausible/anachronistic/unaffordable: replace with a fitting alternative, or mark
-  it `需在剧情中获取` so it becomes a play goal rather than a freebie.
+  it `must be acquired in play` so it becomes a play goal rather than a freebie.
 
 Record audited big-ticket / weapon / restricted possessions in the session log so
 later scenes stay consistent.
@@ -60,7 +60,7 @@ respond **in fiction**, never with a meta refusal:
   optionally with a quick Luck or relevant check ("did you happen to bring it?"). For
   trivial items, just allow.
 - **Audited category and not established** → do not silently grant it. Resolve through
-  fiction: they don't have it on them ("你翻遍口袋,并没有带那把枪"), or it must be
+  fiction: they don't have it on them ("you go through your pockets, but the gun isn't there"), or it must be
   fetched/bought first, or it requires a Luck/acquisition scene.
 
 Do not let "I always carry a gun" retroactively arm a PC who was never armed. If a PC

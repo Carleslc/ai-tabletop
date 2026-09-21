@@ -2,6 +2,8 @@
 
 Use these notes when a CoC session has a provided scenario file, a continuing campaign, multiple NPC teammates, strict character-card requirements, or the user asks to store prep outside chat memory.
 
+Folder and file names below are in English. Write file *contents* (cards, logs, briefings) in the table's language.
+
 ## Create a campaign prep folder
 
 When a writable workspace is available, create a durable project folder before or during prep. Prefer the workspace root unless the user specifies another location.
@@ -9,87 +11,89 @@ When a writable workspace is available, create a durable project folder before o
 Recommended structure:
 
 ```text
-KP_host/<scenario-name>/
+campaigns/<scenario-name>/
 ├── README.md
-├── 00_守秘人资料/
-│   └── 备团索引.md
-│   └── 模组框架.md
-├── 01_模组原文/
+├── 00_keeper/
+│   ├── prep_index.md
+│   └── scenario_frame.md
+├── 01_source/
 │   ├── <scenario>.docx|pdf|txt
 │   └── <scenario>.txt
-├── 02_玩家资料/
+├── 02_player_materials/
 │   └── handouts/
-├── 03_角色卡/
-│   ├── 调查员_<name>.md
-│   └── NPC队友_<name>.md
-├── 04_跑团记录/
+├── 03_character_cards/
+│   ├── investigator_<name>.md
+│   └── npc_teammate_<name>.md
+├── 04_session_logs/
 │   └── session_log.md
-└── 05_规则与流程/
-    └── 车卡与跑团格式.md
-    └── 文风参考.md
+└── 05_rules_and_conventions/
+    ├── card_and_play_format.md
+    └── style_reference.md
 ```
 
-Keep player-facing and Keeper-only materials separate. Never expose `00_守秘人资料/` or full `01_模组原文/` content to the player unless that content is explicitly player-facing.
+Keep player-facing and Keeper-only materials separate. Never expose `00_keeper/` or full `01_source/` content to the player unless that content is explicitly player-facing.
+
+For a solo gamebook, the same layout works: the book goes in `01_source/`, and `04_session_logs/session_log.md` also records the current entry number, visited entries, and flags/codewords.
 
 ## Populate the folder
 
-- Copy the original scenario file into `01_模组原文/`.
-- Extract text to `01_模组原文/<scenario>.txt` when possible for fast search.
-- Extract player-facing images/maps/handouts into `02_玩家资料/handouts/`; create an index in `00_守秘人资料/备团索引.md`.
-- Create `00_守秘人资料/模组框架.md` with a spoiler-safe-for-KP framework: major locations, NPCs, timeline/day events, clue gates, handouts, night/dream triggers, hazards, and likely endings. This is a private guardrail, not a player summary.
-- Create `05_规则与流程/文风参考.md` when scenario text is available. Record compact, spoiler-safe player-facing style samples or paraphrases for opening tone, location texture, document/object framing, and NPC dialogue cadence.
-- Write strict character cards into `03_角色卡/` instead of leaving them only in chat.
-- Write current state and stop point into `04_跑团记录/session_log.md` after each meaningful scene.
-- Write local card requirements and running conventions into `05_规则与流程/车卡与跑团格式.md`.
+- Copy the original scenario file into `01_source/`.
+- Extract text to `01_source/<scenario>.txt` when possible for fast search (e.g. `pdftotext -layout <scenario>.pdf <scenario>.txt`).
+- Extract player-facing images/maps/handouts into `02_player_materials/handouts/`; create an index in `00_keeper/prep_index.md`.
+- Create `00_keeper/scenario_frame.md` with a spoiler-safe-for-KP framework: major locations, NPCs, timeline/day events, clue gates, handouts, night/dream triggers, hazards, and likely endings. This is a private guardrail, not a player summary.
+- Create `05_rules_and_conventions/style_reference.md` when scenario text is available. Record compact, spoiler-safe player-facing style samples or paraphrases for opening tone, location texture, document/object framing, and NPC dialogue cadence.
+- Write strict character cards into `03_character_cards/` instead of leaving them only in chat.
+- Write current state and stop point into `04_session_logs/session_log.md` after each meaningful scene.
+- Write local card requirements and running conventions into `05_rules_and_conventions/card_and_play_format.md`.
 
 If the workspace is a Git repository, check `git status` and recent history before creating files. Do not stage or commit unless the user asks or the workspace instructions require it.
 
 ## Build a Keeper scenario frame
 
-Before play, skim the extracted scenario text and create `00_守秘人资料/模组框架.md`. Keep it concise and indexed for fast return-to-canon during play:
+Before play, skim the extracted scenario text and create `00_keeper/scenario_frame.md`. Keep it concise and indexed for fast return-to-canon during play:
 
 ```markdown
-# 模组框架
+# Scenario frame
 
-## 核心结构
-- 前日谈/开场：
-- 白天现实探索：
-- 夜晚/梦境/异世界触发：
-- 结局或大分支：
+## Core structure
+- Prologue / opening:
+- Daytime real-world investigation:
+- Night / dream / otherworld triggers:
+- Endings or major branches:
 
-## 地点索引
-- <地点名>：原文关键词；可见信息；隐藏信息；相关 NPC；危险；可获得线索。
+## Location index
+- <Location>: source keywords; visible information; hidden information; related NPCs; hazards; obtainable clues.
 
-## NPC 索引
-- <NPC>：公开身份；出现位置/时间；立即目标；压力/恐惧；对调查员态度；说话风格；知道什么；不会说什么；相关支线；示例台词。
+## NPC index
+- <NPC>: public identity; where/when they appear; immediate goal; pressure/fear; attitude to investigators; speech style; what they know; what they won't say; related side threads; sample lines.
 
-## 时间线/事件
-- Day 1：
-- Day 2：
-- Day 3：
-- 其他触发：
+## Timeline / events
+- Day 1:
+- Day 2:
+- Day 3:
+- Other triggers:
 
-## 玩家可见资料/图片
-- <内部编号或名称>：玩家何时可见；场内呈现方式；文件路径。
+## Player-facing materials / images
+- <internal id or name>: when the players can see it; how it's presented in the fiction; file path.
 
-## 文风参考
-- 开场语气：
-- 地点描写：
-- 资料/实物呈现：
-- NPC 对话：
-- 玩家情绪体验：
+## Style reference
+- Opening tone:
+- Location description:
+- Document / object presentation:
+- NPC dialogue:
+- Intended player emotions:
 
-## 回原文检索关键词
-- <地点/NPC/事件>：关键词 A / 关键词 B / 旧称 / 错别字或近义词。
+## Source search keywords
+- <location/NPC/event>: keyword A / keyword B / old name / typos or synonyms.
 ```
 
 Do not expose this file to the player. Use it to keep pacing and canon aligned.
 
-Keep Keeper-facing labels in private notes. In visible play, never call a clue "文字材料 1", "Handout 2", "玩家材料", or "boxed text". Present it as an in-world object: a folded note, clipping, ledger page, police abstract, diary entry, symbol sketch, photograph, map, or testimony.
+Keep Keeper-facing labels in private notes. In visible play, never call a clue "Handout 2", "Player Material", or "boxed text". Present it as an in-world object: a folded note, clipping, ledger page, police abstract, diary entry, symbol sketch, photograph, map, or testimony.
 
 ## Build module style references
 
-When scenario text is available, skim for player-facing prose before play and record compact style references in `05_规则与流程/文风参考.md`. Prefer passages that are safe to imitate without revealing secrets:
+When scenario text is available, skim for player-facing prose before play and record compact style references in `05_rules_and_conventions/style_reference.md`. Prefer passages that are safe to imitate without revealing secrets:
 
 - Opening read-aloud or premise wording.
 - Location sensory details such as smell, light, noise, paper texture, architecture, crowd, weather, and silence.
@@ -121,7 +125,7 @@ Use these cards to make NPC dialogue distinct and emotionally useful. A nervous 
 
 ## Create a spoiler-free player briefing
 
-Before character creation, create or present a spoiler-free briefing. It may live in `05_规则与流程/开团导入.md` or the visible setup response.
+Before character creation, create or present a spoiler-free briefing. It may live in `05_rules_and_conventions/briefing.md` or the visible setup response.
 
 Include:
 
@@ -142,16 +146,19 @@ When the player chooses a location, NPC, clue, or keyword from a provided scenar
 Use fuzzy local search, not memory:
 
 ```bash
-rg -n "关键词1|关键词2|旧称|近义词" "01_模组原文/<scenario>.txt"
-sed -n '<start>,<end>p' "01_模组原文/<scenario>.txt"
+rg -n -i "keyword1|keyword2|old name|synonym" "01_source/<scenario>.txt"
+sed -n '<start>,<end>p' "01_source/<scenario>.txt"
 ```
+
+Search in the scenario's own language (a Spanish PDF needs Spanish keywords, even if the table plays in English).
 
 Examples:
 
 - Player goes to a location: search the location name, alternate names, nearby landmarks, and scene title.
 - Player asks about an NPC: search the NPC name, family names, job titles, and fixed refresh/location notes.
-- Player enters night/dream/rest: search dream, night,异世界, event/day triggers, and current hotel/location.
+- Player enters night/dream/rest: search dream, night, otherworld, event/day triggers, and current hotel/location.
 - Player inspects a document/image/object: search internal handout title, caption, media index, visible text, and the in-world object name.
+- Solo gamebook: search the entry number as it's formatted in the book (e.g. `^\s*123\b`).
 
 After reading the passage, adapt it to the current table state:
 
@@ -187,25 +194,25 @@ Do not force a single solution, teleport the PC without cause, or negate reasona
 
 ## Strict investigator-card template
 
-Use this shape for player investigators:
+Use this shape for player investigators (translate the field labels into the table's language):
 
 ```markdown
-# 调查员：<name>
+# Investigator: <name>
 
-性别：
-年龄：
-职业：
-教育水平：
-住地：
-故乡：
-当前时间：
-信用评级：<number>，<lifestyle description>
+Sex/gender:
+Age:
+Occupation:
+Education:
+Residence:
+Birthplace:
+Current date/time:
+Credit Rating: <number>, <lifestyle description>
 
-## 简短背景故事
+## Short background story
 
 <coherent growth history and reason to enter the case>
 
-## 属性
+## Characteristics
 
 STR
 CON
@@ -215,34 +222,34 @@ APP
 INT
 POW
 EDU
-合计：
+Total:
 
 HP
 MP
 SAN
 Luck
 MOV
-伤害加值，体格
+Damage bonus, Build
 
-## 技能
+## Skills
 
-<10-14 skills with percentages, including native language when appropriate>
+<10-14 skills with percentages, including Language (Own) when appropriate>
 
-## 随身物品
+## Possessions
 
 <scenario-relevant carried items>
 
-## 背景条目
+## Backstory
 
-个人描述/角色外貌：
-思想与信念：
-重要之人：
-意义非凡之地：
-宝贵之物：
-特质：
-难言之隐：
+Personal description / appearance:
+Ideology / beliefs:
+Significant people:
+Meaningful locations:
+Treasured possessions:
+Traits:
+Injuries & scars / phobias & manias / secrets:
 
-关键背景连接 ★：<在上述条目中选一项标注，失去时 1/1D6 SAN，守秘人不得在未给玩家骰骰机会的情况下摧毁>
+Key Connection ★: <mark one of the entries above; losing it costs 1/1D6 SAN, and the Keeper may not destroy it without giving the player a roll to save it>
 ```
 
 Omit optional background entries only when they truly do not fit, not for brevity.
@@ -252,29 +259,29 @@ Omit optional background entries only when they truly do not fit, not for brevit
 Use this shape for recurring NPC teammates:
 
 ```markdown
-# NPC 队友：<name>
+# NPC teammate: <name>
 
-性别：
-年龄：
-职业/当前状态：
-教育水平：
-住地：
-故乡：
-信用评级：<number>，<lifestyle description>
+Sex/gender:
+Age:
+Occupation / current status:
+Education:
+Residence:
+Birthplace:
+Credit Rating: <number>, <lifestyle description>
 
-## 进入案件方式与关系
+## How they enter the case & relationships
 
 <how they enter the case; relationship to PC and other teammates>
 
-## 外貌
+## Appearance
 
 <player-facing first impression>
 
-## 简短背景故事
+## Short background story
 
 <coherent growth history, skills, beliefs, and reason to join>
 
-## 属性
+## Characteristics
 
 STR
 CON
@@ -284,60 +291,60 @@ APP
 INT
 POW
 EDU
-合计：
+Total:
 
 HP
 MP
 SAN
 Luck
 MOV
-伤害加值，体格
+Damage bonus, Build
 
-## 技能
+## Skills
 
-<8-12 relevant skills, including native language and Credit Rating>
+<8-12 relevant skills, including Language (Own) and Credit Rating>
 
-## 随身物品
+## Possessions
 
 <items likely to matter in scenes or checks>
 
-## 背景条目
+## Backstory
 
-思想与信念：
-重要之人/重要之地：
-宝贵之物：
-特质：
-弱点：
-关键背景连接 ★：<选一项标注>
+Ideology / beliefs:
+Significant person / meaningful location:
+Treasured possession:
+Trait:
+Weakness:
+Key Connection ★: <mark one>
 ```
 
 NPC teammates may exceed or fall short of PC point-buy totals, but their values should stay ordinary unless the scenario justifies otherwise.
 
 ## Session log template
 
-Update `04_跑团记录/session_log.md` after each scene, before long pauses, and whenever HP/SAN/Luck/resources or clue state changes:
+Update `04_session_logs/session_log.md` after each scene, before long pauses, and whenever HP/SAN/Luck/resources or clue state changes:
 
 ```markdown
-## 当前停点
+## Current stop point
 
-<where play should resume; include the exact last prompt or scene beat>
+<where play should resume; include the exact last prompt or scene beat (solo gamebook: current entry number)>
 
-## 已获得线索
+## Clues found
 
 <player-facing clues only>
 
-## 开放方向
+## Open leads
 
 <known leads the investigators can pursue>
 
-## 状态记录
+## Status
 
 - PC: HP / SAN / Luck / notable resources
 - NPC: HP / SAN / Luck / notable resources
 
-## NPC 态度
+## NPC attitudes
 
 <brief relationship and attitude notes>
 ```
 
-Keep the log spoiler-safe from the player's perspective unless it is stored under `00_守秘人资料/`.
+Keep the log spoiler-safe from the player's perspective unless it is stored under `00_keeper/`.

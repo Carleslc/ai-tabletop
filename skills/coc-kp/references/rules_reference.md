@@ -3,7 +3,7 @@
 Read this the moment play enters a rules-dense situation: **combat starts**, a
 **sanity loss / madness** triggers, an **opposed contest** is needed, or a player
 **pushes a roll**. Do not load it for ordinary investigation — the always-on micro-rules
-in `SKILL.md` (掷骰 section) cover routine single checks. Resolve fast and in fiction;
+in `SKILL.md` (Dice and checks section) cover routine single checks. Resolve fast and in fiction;
 report results compactly with `scripts/roll.py`.
 
 All values below are CoC 7e (this rulebook). For weapon damage and monster specials,
@@ -11,7 +11,7 @@ use the weapon table / module stat block, not memory.
 
 ---
 
-## Opposed checks (对抗检定)
+## Opposed checks
 
 Use for PC-vs-PC, PC-vs-NPC active resistance, and as the standard for melee. Outside
 combat, prefer a plain difficulty level; only use opposed rolls when both sides actively
@@ -21,20 +21,20 @@ strive and the drama warrants it.
   (need not match; Keeper approves).
 - Both roll d100, get a success level. **Higher success level wins.** Tie → higher
   skill/characteristic value wins; still tied → stalemate or both reroll.
-- Success-level order: 大成功 > 极难 > 困难 > 常规 > 失败/大失败.
+- Success-level order: Critical > Extreme > Hard > Regular > Failure/Fumble.
 - **Opposed checks cannot be pushed.**
 
-## Difficulty levels (难度等级)
+## Difficulty levels
 
 Keeper sets difficulty by how hard the task is, against the roller's own value:
-- 常规: roll ≤ value. 困难: roll ≤ ½ value. 极难: roll ≤ ⅕ value.
+- Regular: roll ≤ value. Hard: roll ≤ ½ value. Extreme: roll ≤ ⅕ value.
 - Set difficulty from the situation *before* rolling; do not also stack bonus/penalty
   dice on top except as a rare special case.
 
 **Against a living opponent**: derive difficulty from their relevant skill/attribute —
 < 50 → Regular; ≥ 50 → Hard; ≥ 90 → Extreme. (Also in SKILL.md always-on layer.)
 
-## Combined skill checks (组合技能检定)
+## Combined skill checks
 
 When a task simultaneously requires two skills (e.g. a device that is both mechanical
 and electrical), roll **once** and compare the single result to each skill separately.
@@ -44,23 +44,23 @@ Do not ask for two separate rolls — a single roll maintains the correct probab
 Example: Mechanical 10% and Electrical 10% → a single roll gives 10% chance of passing
 both, instead of 1% if rolled separately.
 
-## Skill level benchmarks (技能等级参考)
+## Skill level benchmarks
 
 Use to judge whether a skill value makes sense for a character concept, and for quick
 NPC stat creation:
 
-| 技能值 | 水平 | 含义 |
+| Skill value | Level | Meaning |
 |---|---|---|
-| 01-05% | 新手 | 完全外行 |
-| 06-19% | 初学者 | 少量知识 |
-| 20-49% | 业余 | 兴趣爱好水平 |
-| 50-74% | 职业 | 可凭此谋生，相当于学士 |
-| 75-89% | 专家 | 硕士/博士水平 |
-| 90%+ | 大师 | 该领域世界顶尖 |
+| 01-05% | Novice | Complete layperson |
+| 06-19% | Neophyte | Rudimentary knowledge |
+| 20-49% | Amateur | Hobbyist level |
+| 50-74% | Professional | Can make a living from it; bachelor's-degree level |
+| 75-89% | Expert | Master's/doctorate level |
+| 90%+ | Master | Among the world's best in the field |
 
 A 50% skill is the professional threshold — enough to make a living from it.
 
-## Bonus / penalty dice (奖励骰 / 惩罚骰)
+## Bonus / penalty dice
 
 Only for a **significant** advantage or disadvantage — if a factor is worth just a few
 percent, ignore it (light rain = nothing; blinding downpour = penalty die). Mechanics:
@@ -69,7 +69,7 @@ percent, ignore it (light rain = nothing; blinding downpour = penalty die). Mech
 - **One bonus and one penalty cancel.** Normally at most one; in extreme cases two.
 - Prefer bonus/penalty dice over ad-hoc % modifiers.
 
-## Pushing a roll (孤注一掷)
+## Pushing a roll
 
 When a normal check fails, the player may push by **committing harder / a new in-fiction
 approach** ("I tear the whole drawer out", "I stake my reputation on it"). Reroll once.
@@ -84,12 +84,12 @@ approach** ("I tear the whole drawer out", "I stake my reputation on it"). Rerol
 - **Never gate a critical/plot-advancing clue behind a roll.** Hand core (overt) clues
   to anyone who looks; reserve rolls for *extra* detail or hidden bonuses. Describe the
   evidence and let players infer — don't explain the conclusion.
-- **Idea roll (灵感检定)** to unstick a stalled table: success → the lead resurfaces
+- **Idea roll** to unstick a stalled table: success → the lead resurfaces
   cleanly; failure → it surfaces but at a cost (lost time, a worse position).
 
 ---
 
-## Combat (战斗)
+## Combat
 
 Only enter the combat round once blows are committed. Surprise first if applicable.
 
@@ -112,7 +112,7 @@ their turn (attack, maneuver, flee, take cover, etc.).
 **Outnumbered:** once a character has dodged or fought back once in a round, every
 further melee attack against them that round gets a **bonus die.**
 
-**Maneuvers (战技 — disarm, grapple, shove, knock down):** compare **Build/体格**. Per
+**Maneuvers (disarm, grapple, shove, knock down):** compare **Build**. Per
 size step the target is larger, the user takes a penalty die (max 2); 3+ steps larger →
 impossible. Resolve like an attack (opposed dodge/fight-back); success applies the
 effect instead of (or with) damage. A maneuver needs a concrete stated objective, not
@@ -121,19 +121,19 @@ just an action.
 **Damage:** roll the weapon's damage; add **damage bonus (DB)** for relevant melee/
 unarmed. A successful fight-back means the winner deals their damage.
 
-**Major wound (重伤):** a single hit dealing **≥ half the target's max HP** is a major
+**Major wound:** a single hit dealing **≥ half the target's max HP** is a major
 wound → target makes a **CON check**; fail → knocked prone/unconscious. At **0 HP** the
 character is dying — First Aid stabilizes; otherwise track the dying rules.
 
 ---
 
-## Sanity & madness (理智与疯狂)
+## Sanity & madness
 
 **Sanity check:** loss is written **X/Y** (e.g. 0/1D6). Roll 1D100 vs **current** SAN;
 success → lose X, failure → lose Y. A fumbled SAN check loses the max possible. One SAN
 check per *encounter*, not per monster.
 
-**Max SAN = 99 − 克苏鲁神话技能.** When Mythos rises, drop max SAN by the same amount.
+**Max SAN = 99 − Cthulhu Mythos skill.** When Mythos rises, drop max SAN by the same amount.
 
 **Triggers into madness:**
 - **Lose 5+ SAN in one go** → the player makes an **INT check**. *Pass* = they grasp the
@@ -151,24 +151,29 @@ with a **bout of madness (phase 1)**, then an underlying-insanity period (phase 
 Run the bout **per the rulebook**: during it the PC is **under Keeper control** — narrate
 their mad actions (or hand the player a madness prompt to play out). Two forms:
 
-- **即时症状 (real-time):** use when other investigators are present (or Keeper wants it
+- **Real-time:** use when other investigators are present (or Keeper wants it
   beat-by-beat even if alone). **The bout lasts 1D10 combat rounds.** Roll **1D10 on
-  Table Ⅶ** (or pick a fitting result). Most entries themselves last 1D10 rounds. This
+  Table VII** (or pick a fitting result). Most entries themselves last 1D10 rounds. This
   is the answer to "how many rounds": **1D10 rounds.**
-- **总结症状 (summary):** use when the PC is alone, or everyone present goes mad at once.
+- **Summary:** use when the PC is alone, or everyone present goes mad at once.
   Fast-forward and narrate the aftermath; the PC is lost to madness for **1D10 hours**
-  (or Keeper's call). Roll **1D10 on Table Ⅷ.** If another PC encounters them before it
+  (or Keeper's call). Roll **1D10 on Table VIII.** If another PC encounters them before it
   ends, hand control back and play it out.
 
-**Table Ⅶ (即时症状, 1D10, each ~1D10 rounds):** 1 失忆 / 2 假性残疾(失明·失聪·肢体缺失感) /
-3 暴力倾向(无差别攻击) / 4 偏执 / 5 人际依赖(误认重要之人) / 6 昏厥 / 7 逃避行为 /
-8 竭斯底里 / 9 恐惧(roll Table Ⅸ phobia) / 10 躁狂(roll Table Ⅹ mania).
+**Table VII (Bouts of Madness — Real Time, 1D10, each ~1D10 rounds):** 1 Amnesia /
+2 Psychosomatic disability (blindness, deafness, loss of use of limbs) / 3 Violence
+(lashes out indiscriminately) / 4 Paranoia / 5 Significant person (mistakes someone for
+their significant person) / 6 Faint / 7 Flee in panic / 8 Physical hysterics or
+emotional outburst / 9 Phobia (roll Table IX) / 10 Mania (roll Table X).
 
-**Table Ⅷ (总结症状, 1D10, ~1D10 hours):** 1 失忆 / 2 被窃(贵重物过幸运, 其余自动失) /
-3 遍体鳞伤(HP 减半, 非重伤) / 4 暴力倾向 / 5 极端信念 / 6 奔向重要之人 / 7 被收容(疯人院/牢房) /
-8 逃避行为(醒来在远方) / 9 恐惧(新恐惧症, Table Ⅸ) / 10 躁狂(新躁狂症, Table Ⅹ).
+**Table VIII (Bouts of Madness — Summary, 1D10, ~1D10 hours):** 1 Amnesia / 2 Robbed
+(Luck roll per valuable item, everything else is lost) / 3 Battered (HP halved, not a
+major wound) / 4 Violence / 5 Ideology/beliefs (acts on them in an extreme way) /
+6 Significant people (rushes to them) / 7 Institutionalized (asylum or jail cell) /
+8 Flee in panic (wakes up far away) / 9 Phobia (new phobia, Table IX) / 10 Mania (new
+mania, Table X).
 
-A "恐惧/躁狂" result installs a new **phobia/mania** (Table Ⅸ/Ⅹ — roll d100 or Keeper
+A "Phobia/Mania" result installs a new **phobia/mania** (Table IX/X — roll d100 or Keeper
 picks). After the bout, the PC enters phase-2 underlying insanity and is prone to further
 bouts under stress until recovered.
 

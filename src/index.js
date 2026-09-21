@@ -1,20 +1,22 @@
 /**
  * coc-tabletop MCP server (Cloudflare Worker, zero-dep)
  *
- * 把 GitHub Issues 变成跑团牌桌的远程 MCP 桥。
- * KP 和玩家 AI 各接各的客户端，通过这个 worker 共用同一个 GitHub 仓库当桌子。
+ * Remote MCP bridge that turns GitHub Issues into a tabletop RPG table.
+ * The Keeper and the player AIs each connect from their own client and share
+ * the same GitHub repo as the table through this worker.
  *
- * 如果你已经有群聊（DC / TG / 微信），不需要这个 worker，直接把 skills/ 里的
- * SKILL.md 塞给你的 AI 就行。Worker 是给没有群聊、或者想要 GitHub 留痕的人用的。
+ * If you already have a group chat (Discord / Telegram...), you don't need this
+ * worker: just give the SKILL.md files in skills/ to your AI. The worker is for
+ * people without a group chat, or who want sessions recorded on GitHub.
  *
- * 传输: Streamable HTTP, 单端点 /mcp (POST 处理 JSON-RPC, GET/DELETE 兼容)
- * 认证: query param ?token=<AUTH_TOKEN>
+ * Transport: Streamable HTTP, single endpoint /mcp (POST handles JSON-RPC, GET/DELETE for compatibility)
+ * Auth: query param ?token=<AUTH_TOKEN>
  *
- * CF 环境变量 (在 CF 网页填, 不过任何人上下文):
- *   AUTH_TOKEN    连接口令
- *   GITHUB_TOKEN  GitHub fine-grained PAT
- *   GITHUB_REPO   目标仓库, 如 yourname/coc-tabletop
- *   DEFAULT_BRANCH 默认分支, 默认 main
+ * CF environment variables (set in the CF dashboard, never exposed to any AI context):
+ *   AUTH_TOKEN     connection password
+ *   GITHUB_TOKEN   GitHub fine-grained PAT
+ *   GITHUB_REPO    target repo, e.g. yourname/coc-tabletop
+ *   DEFAULT_BRANCH default branch, defaults to main
  */
 
 const PROTOCOL_VERSION = "2024-11-05";
@@ -66,7 +68,7 @@ function decodeBase64Utf8(b64) {
   return new TextDecoder("utf-8").decode(bytes);
 }
 
-// ---------- 书架工具（仓库文件：模组、角色卡、战报、规则）----------
+// ---------- Bookshelf tools (repo files: scenarios, character sheets, logs, rules) ----------
 
 async function bookSearch(env, { query, limit }) {
   const g = gh(env);
@@ -118,7 +120,7 @@ async function bookWrite(env, { path, content, message }) {
       `/repos/${g.repo}/contents/${encodeURIComponent(p).replace(/%2F/g, "/")}?ref=${g.branch}`
     );
     if (!Array.isArray(existing)) sha = existing.sha;
-  } catch { /* 文件不存在, 新建 */ }
+  } catch { /* file doesn't exist yet, create it */ }
   const body = {
     message: message || `table: update ${p}`,
     content: encodeBase64Utf8(content),
@@ -133,7 +135,7 @@ async function bookWrite(env, { path, content, message }) {
   return `Wrote ${p} (commit ${data.commit && data.commit.sha ? data.commit.sha.slice(0, 7) : "?"})`;
 }
 
-// ---------- 牌桌工具（GitHub Issues：开团帖、角色帖、战报帖、OOC）----------
+// ---------- Table tools (GitHub Issues: session topics, character topics, logs, OOC) ----------
 
 async function tableList(env, { state, labels, limit }) {
   const g = gh(env);
@@ -259,7 +261,7 @@ async function tableClose(env, { number, action }) {
   return `Table topic #${num} ${state === "open" ? "reopened" : "closed"}\n${data.html_url}`;
 }
 
-// ---------- 工具注册 ----------
+// ---------- Tool registry ----------
 
 const TOOLS = [
   {
@@ -469,7 +471,7 @@ async function handleRpc(msg, env) {
   return { jsonrpc: "2.0", id, error: { code: -32601, message: `Method not found: ${method}` } };
 }
 
-// ---------- HTTP 入口 ----------
+// ---------- HTTP entry point ----------
 
 async function handleRequest(request, env) {
   const url = new URL(request.url);

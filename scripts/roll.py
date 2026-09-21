@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple dice roller for COC/KP sessions.
+"""Simple dice roller for Call of Cthulhu (7e) sessions.
 
 Usage:
   python scripts/roll.py d100
@@ -42,16 +42,16 @@ def roll_expr(expr: str) -> tuple[str, int]:
 
 def success_level(roll: int, value: int) -> str:
     if roll == 1:
-        return "大成功"
+        return "Critical success"
     if roll > value:
         if roll >= 96 and value < 50 or roll == 100:
-            return "大失败"
-        return "失败"
+            return "Fumble"
+        return "Failure"
     if roll <= value // 5:
-        return "极难成功"
+        return "Extreme success"
     if roll <= value // 2:
-        return "困难成功"
-    return "普通成功"
+        return "Hard success"
+    return "Regular success"
 
 
 def main(argv: list[str]) -> int:
