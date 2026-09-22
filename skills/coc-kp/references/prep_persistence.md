@@ -37,8 +37,8 @@ For a solo gamebook, the same layout works: the book goes in `01_source/`, and `
 
 ## Populate the folder
 
-- Copy the original scenario file into `01_source/`.
-- Extract text to `01_source/<scenario>.txt` when possible for fast search (e.g. `pdftotext -layout <scenario>.pdf <scenario>.txt`).
+- If the scenario is already in `assets/`, do not copy the PDF: extract it with `python scripts/library.py extract <pdf>` and record its path (and page ranges for the adventure, if it's part of a collection) in `README.md`. Search it in `library/`.
+- Otherwise, copy the original scenario file into `01_source/` and extract its text to `01_source/<scenario>.txt` for fast search (`python scripts/library.py extract` only covers `assets/`; for other files use PyMuPDF or `pdftotext -layout`).
 - Extract player-facing images/maps/handouts into `02_player_materials/handouts/`; create an index in `00_keeper/prep_index.md`.
 - Create `00_keeper/scenario_frame.md` with a spoiler-safe-for-KP framework: major locations, NPCs, timeline/day events, clue gates, handouts, night/dream triggers, hazards, and likely endings. This is a private guardrail, not a player summary.
 - Create `05_rules_and_conventions/style_reference.md` when scenario text is available. Record compact, spoiler-safe player-facing style samples or paraphrases for opening tone, location texture, document/object framing, and NPC dialogue cadence.
@@ -150,7 +150,7 @@ rg -n -i "keyword1|keyword2|old name|synonym" "01_source/<scenario>.txt"
 sed -n '<start>,<end>p' "01_source/<scenario>.txt"
 ```
 
-Search in the scenario's own language (a Spanish PDF needs Spanish keywords, even if the table plays in English).
+Search in the scenario's own language (a Spanish PDF needs Spanish keywords, even if the table plays in English). For books in `assets/`, `python scripts/library.py search "<regex>" "<file name fragment>"` returns matches with page numbers, and `pages <pdf> <n>-<m>` prints the passage.
 
 Examples:
 

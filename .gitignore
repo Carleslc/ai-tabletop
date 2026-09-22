@@ -3,3 +3,8 @@ node_modules/
 .DS_Store
 *.log
 __pycache__/
+library/
+
+# Your own books (copyrighted): keep them local or in a private repository
+assets/*
+!assets/README.md

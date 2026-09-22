@@ -10,11 +10,12 @@ Sessions can be played in any language. The skills are written in English; the K
 
 ## What this is
 
-A tabletop infrastructure pack with three components:
+A tabletop infrastructure pack with four components:
 
 1. **Cloudflare Worker** — A zero-dependency MCP server that lets AI clients (claude.ai / ChatGPT / Claude Code) read and write your GitHub repo. Files are the campaign library ("books"), Issues are the table.
 2. **Keeper + Player skills** — Behavior guides for AIs. `coc-kp` teaches an AI to be the Keeper running the game. `coc-player` teaches an AI to be an investigator playing at the table.
-3. **Helper scripts** — `scripts/roll.py` (dice roller with CoC 7e success levels) and `scripts/music.py` (scene background music on macOS).
+3. **Helper scripts** — `scripts/roll.py` (dice roller with CoC 7e success levels), `scripts/library.py` (search and read the PDF books page by page), and `scripts/music.py` (scene background music on macOS).
+4. **Library** (`assets/`, your own books, not included) — rulebooks, Mythos references, character sheets, and adventures in any language, catalogued for the Keeper in [`skills/coc-kp/references/library.md`](skills/coc-kp/references/library.md).
 
 Together: feed the skills to different AIs (one as Keeper, the rest as players). They use the worker to "sit around the table" in your GitHub repo's Issues. Comments are turns.
 
@@ -132,6 +133,24 @@ python scripts/music.py cut                  # instant silence for a scare
 python scripts/music.py resume
 python scripts/music.py stop
 ```
+
+## Library
+
+The Keeper can use your own Call of Cthulhu books: rulebooks, supplements, and adventures (PDFs, handout images). This repository ships no books. Put yours in `assets/`, one folder per language (`assets/EN/`, `assets/ES/`, …); see [`assets/README.md`](assets/README.md) for the layout and [`skills/coc-kp/references/library.md`](skills/coc-kp/references/library.md) for how the Keeper uses them and the catalog it keeps of them. The Keeper never loads whole books: it extracts their text once and then searches and reads single pages.
+
+```bash
+pip install pymupdf
+python scripts/library.py extract                  # all PDFs -> library/*.txt (git-ignored cache)
+python scripts/library.py search "Sanity|Cordura"  # matches with file and page number
+python scripts/library.py pages "EN/<book>.pdf" 152-154
+python scripts/library.py render "<pdf>" 12        # page -> PNG (200 dpi), e.g. to read a scanned page
+python scripts/library.py regions "<pdf>" 12       # list the handouts on a page (+ preview)
+python scripts/library.py render "<pdf>" 12 --near "Handout 3"   # just that handout, cropped and upright
+```
+
+Scanned PDFs need OCR: `brew install tesseract tesseract-lang`, then `python scripts/library.py extract --ocr`.
+
+The books are copyrighted: keep them out of any public repository (this fork's `.gitignore` ignores `assets/` for that reason; to version your books, use a private repository and drop that rule there), and share with your players only the handouts they would receive at the table.
 
 ## Adding features
 

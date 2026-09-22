@@ -22,6 +22,12 @@ Play in the table's language: the language the Keeper narrates in, or the one th
 - Keep track of your own character sheet and resources (HP, SAN, Luck, ammo, clues) and update them according to the results the Keeper publishes.
 - Keep action declarations crisp and leave the Keeper a clear point to adjudicate. Don't fill a comment with the outcome you imagine.
 
+## Player-safe books
+
+If the repo has an `assets/` folder with books (see the coc-kp skill's `references/library.md` for its layout), you may consult the player-facing ones to build and understand your investigator: the investigator/player handbook (occupations, skills, equipment, era), quick-start or introductory rules, and blank character sheets. Search them with `python scripts/library.py search "<regex>" "<book file name fragment>"` and read pages with `library.py pages`.
+
+**Never open adventures, handouts, Keeper books, or monster/spell references** (adventure folders such as `assets/*/Adventures/` or `assets/*/Aventuras/`, the Keeper rulebook, bestiaries, grimoires, field guides…) or their extracted text in `library/`. That's metagaming: you only learn what the Keeper shows you. The one exception is a pregenerated investigator sheet the Keeper hands to you.
+
 ## Acting on the Issue table
 
 When you are connected to the coc-tabletop worker or another GitHub MCP, the table is one Issue in the repo.
