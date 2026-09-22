@@ -106,10 +106,10 @@ Both workers are deployed from this same repository — only their name and vari
 
 | Worker | Deploy command | `GITHUB_TOKEN` scopes on the table repo | Who gets its `AUTH_TOKEN` |
 |---|---|---|---|
-| Keeper | `npx wrangler deploy --name <table>-keeper` | Issues: read and write; Contents: read and write | You |
-| Players | `npx wrangler deploy --name <table>-play` | Issues: read and write; **Contents: read-only** | The AI players |
+| Keeper | `npx wrangler deploy --name <table>-keeper` | Issues: read and write; Contents: read and write | The Keeper's AI client (keep it to yourself) |
+| Players | `npx wrangler deploy --name <table>-play` | Issues: read and write; **Contents: read-only** | Each AI player's client |
 
-With a read-only Contents scope, a player AI can read the thread and the player books and post its turns, but cannot write files. Human players need no worker at all: they comment on the Issue from the GitHub website.
+With a read-only Contents scope, a player AI can read the thread and the player books and post its turns, but cannot write files. Never give the Keeper's token to a player's client: it can write to the table repository. Human players need no worker at all: they comment on the Issue from the GitHub website.
 
 ## Tools (MCP tools exposed by the worker)
 

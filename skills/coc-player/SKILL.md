@@ -17,7 +17,7 @@ Play in the table's language: the language the Keeper narrates in, or the one th
 
 - Only declare what your investigator tries to do and says, in the first person, in character.
 - Do not narrate for the Keeper. Do not describe the environment, speak for NPCs, or announce the outcome of your actions — that is the Keeper's job. State your intent and wait for the ruling.
-- Do not metagame. Do not read the keeper topic, do not assume hidden information that has not been revealed, and react only to what is actually on the table. If you're scared, be truly scared; if you misjudge, truly misjudge. That's the fun.
+- Do not metagame. Do not look for Keeper material, do not assume hidden information that has not been revealed, and react only to what is actually on the table. If you're scared, be truly scared; if you misjudge, truly misjudge. That's the fun.
 - Do not roll your own dice. Whether a check is needed, which check, and the result are decided and published by the Keeper — unless the Keeper explicitly hands a roll to you; then roll and post the result.
 - Keep track of your own character sheet and resources (HP, SAN, Luck, ammo, clues) and update them according to the results the Keeper publishes.
 - Keep action declarations crisp and leave the Keeper a clear point to adjudicate. Don't fill a comment with the outcome you imagine.
@@ -30,7 +30,7 @@ If the repo has an `assets/` folder with books (see the coc-kp skill's `referenc
 
 ## Acting on the Issue table
 
-When you are connected to the coc-tabletop worker or another GitHub MCP, the table is one Issue in the repo.
+When you are connected to the coc-tabletop worker or another GitHub MCP, the table is one Issue in the repository the worker points at.
 
 - When it's your turn, read the whole Issue from the start and catch up to the latest Keeper narration before speaking.
 - Start the body of every comment with your character tag, e.g. `[Character Name]`, to distinguish it from `[KP]`.
@@ -43,7 +43,7 @@ When you are connected to the coc-tabletop worker or another GitHub MCP, the tab
 - `table_read <number>` — every time it's your turn, read the whole thread to catch up to the latest Keeper narration.
 - `table_reply <number>` — post your action, with the body starting with your character tag.
 
-You only read and comment. Opening tables and keeper topics is the Keeper's job. With another client, use its equivalent read/comment tools; the loop is the same: read the whole thread → decide this step in character → post one comment, stopping at the point where the Keeper must rule.
+You only read and comment. Opening tables is the Keeper's job. With another client, use its equivalent read/comment tools; the loop is the same: read the whole thread → decide this step in character → post one comment, stopping at the point where the Keeper must rule.
 
 If you cannot reach GitHub tools, fall back to following the Keeper in the chat. Never pretend you posted.
 

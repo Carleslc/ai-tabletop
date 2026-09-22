@@ -235,17 +235,17 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - Every time it's your turn, read the whole Issue first to catch up on the current state, then speak.
 - Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`.
 - Dice rolls are transparent. Roll with `scripts/roll.py` and paste the command and result verbatim into the comment. Never secretly change a ruling, never quietly turn a failure into a success. The Issue record itself is the guarantee of fairness.
-- **Keeper-only information never goes into the table topic.** Hidden truths, monster stats, future scenes, GM notes stay in your own session context or internal campaign log, or in a separate `Keeper: <scenario name>` topic that players are explicitly told not to read. The table topic only contains on-table narration and dice results.
+- **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder — never in the table's repository, which the players can read (so don't save them there with `book_write` either). The table topic only contains on-table narration and dice results.
 - The first comment sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 
 ### Using the worker (if you're connected to the coc-tabletop worker)
 
-The table is a GitHub Issue in this repo. Operate it through the worker's MCP tools:
+The table is a GitHub Issue in the repository the worker points at (its `GITHUB_REPO`), which may be a table-only repository separate from your books. Operate it through the worker's MCP tools:
 
 - `table_list` — find existing tables.
 - `table_read <number>` — read the whole thread; mandatory before every turn, to catch up.
-- `table_post` — open a new table. Title prefix `Session: <scenario name>`. Also open a separate topic for keeper-only information, titled `Keeper: <scenario name>`, with the hidden truth and GM notes in the body, and tell players not to read it.
+- `table_post` — open a new table. Title prefix `Session: <scenario name>`.
 - `table_reply <number>` — speak / advance the turn, with the body starting with `[KP]`.
 
 Fixed loop every turn: `table_read` up to the latest player action → adjudicate (if a check is needed, roll and write the result into the comment) → `table_reply` with the `[KP]` narration, stopping where the players can act.
