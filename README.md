@@ -70,7 +70,7 @@ CF Dashboard → **Workers & Pages** → **Create** → **Workers** →
 
 - **Root directory**: leave empty (repo root)
 - Build command: leave empty (zero dependencies)
-- Deploy command: leave empty (Cloudflare reads `wrangler.toml`)
+- Deploy command: leave empty (Cloudflare reads `wrangler.toml`), or `npx wrangler deploy --name <worker-name>` to choose the worker's name, which is what its URL uses
 
 After deploying, go to Worker → **Settings** → **Variables and Secrets** and add:
 
@@ -83,17 +83,33 @@ After deploying, go to Worker → **Settings** → **Variables and Secrets** and
 
 ### 4. Connect AI clients
 
-Your worker URL will be something like `https://coc-tabletop.<your-subdomain>.workers.dev`.
+Your worker URL is `https://<worker-name>.<your-subdomain>.workers.dev` (the name from `wrangler.toml`, or the one you passed to `--name`).
 
 In claude.ai → Settings → Connectors → Add custom connector, enter:
 
 ```
-https://coc-tabletop.<your-subdomain>.workers.dev/mcp?token=<your AUTH_TOKEN>
+https://<worker-name>.<your-subdomain>.workers.dev/mcp?token=<your AUTH_TOKEN>
 ```
 
 Then give `skills/coc-kp/SKILL.md` to one AI (as Keeper, or invoke `/coc-kp`) and `skills/coc-player/SKILL.md` to each AI player.
 
 The Keeper opens an Issue in your repo as the table using `table_post`. Players take turns by commenting on the Issue with `table_reply`.
+
+### 5. Keep the adventures away from the players (multiplayer)
+
+Anyone invited to a repository can read all of it, so a single repository holding both the table and your adventures lets any player — human or AI — read ahead. Split them:
+
+- **A table repository**, shared with your players: the session Issues, and at most player-facing books (handbook, introductory rules, character sheets). No adventures, no Keeper books, no Keeper notes.
+- **Your library**, private and unshared: adventures, Keeper books, handouts and prep. The Keeper reads these locally with `scripts/library.py`; they never need to be online.
+
+Both workers are deployed from this same repository — only their name and variables differ — and both point at the table repository:
+
+| Worker | Deploy command | `GITHUB_TOKEN` scopes on the table repo | Who gets its `AUTH_TOKEN` |
+|---|---|---|---|
+| Keeper | `npx wrangler deploy --name <table>-keeper` | Issues: read and write; Contents: read and write | You |
+| Players | `npx wrangler deploy --name <table>-play` | Issues: read and write; **Contents: read-only** | The AI players |
+
+With a read-only Contents scope, a player AI can read the thread and the player books and post its turns, but cannot write files. Human players need no worker at all: they comment on the Issue from the GitHub website.
 
 ## Tools (MCP tools exposed by the worker)
 
@@ -152,15 +168,9 @@ Scanned PDFs need OCR: `brew install tesseract tesseract-lang`, then `python scr
 
 The books are copyrighted: keep them out of any public repository (this fork's `.gitignore` ignores `assets/` for that reason; to version your books, use a private repository and drop that rule there), and share with your players only the handouts they would receive at the table.
 
-## Adding features
+## Adding tools
 
-This repo follows a feature-folder convention; features stay independent of each other:
-
-1. Create `features/<name>/` with `state.json` (initial state), `skill.md` (gameplay rules), and optionally `panel/` (frontend).
-2. If the feature needs new MCP tools, register them in `src/index.js`.
-3. `git push` — Cloudflare auto-deploys.
-
-The worker only does generic read/write (files + Issues). No game logic lives there.
+The worker only does generic read/write (files + Issues); no game logic lives there, it belongs in the skills. To add an MCP tool, register it in `src/index.js` and `git push`: Cloudflare redeploys on its own.
 
 ## Credits
 
