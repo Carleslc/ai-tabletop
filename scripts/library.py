@@ -7,7 +7,9 @@ text with page markers, then search and read only the pages you need.
 Usage:
   library.py extract [--ocr] [path ...]
                                        Extract PDFs (default: all of assets/) to library/<path>.txt.
-                                       Skips files already up to date. Prints PDFs with no text
+                                       Skips files already up to date (same PDF size; file times are
+                                       ignored, since git rewrites them), updating their path if the
+                                       PDF moved. Never replaces OCR'd text without --ocr. Prints PDFs with no text
                                        layer (scanned). With --ocr, pages without text are OCR'd with
                                        Tesseract (slow), in the language of the file's language folder
                                        (assets/<System>/ES/ -> Spanish; see OCR_LANGS), English
@@ -127,12 +129,44 @@ def ocr_lang(pdf):
     return "eng"
 
 
-def is_ocred(out):
+def read_header(out):
+    """The header of an extracted text (source, size, pages, ocr) as a dict, or None."""
+    head = {}
     try:
         with open(out, encoding="utf-8") as fh:
-            return "ocr: " in "".join(fh.readline() for _ in range(3))
+            for line in fh:
+                line = line.rstrip("\n")
+                if not line or PAGE_RE.match(line):
+                    break
+                key, _, value = line.partition(": ")
+                head[key] = value
     except OSError:
+        return None
+    return head
+
+
+def same_pdf(head, pdf, f):
+    """Whether an extracted text still matches its PDF. File times are not used: git
+    checkouts and syncing rewrite them. Texts from before the size line compare pages."""
+    if "size" in head:
+        return head["size"] == str(os.path.getsize(pdf))
+    try:
+        doc = f.open(pdf)
+    except Exception:
         return False
+    return head.get("pages") == str(doc.page_count)
+
+
+def update_header(out, rel, size):
+    """Point an up-to-date text at its PDF's current path, and record the PDF size.
+    Other header lines (pages, ocr, notes) and the text itself are kept as they are."""
+    with open(out, encoding="utf-8", newline="") as fh:
+        text = fh.read()
+    end = text.index("\n\n") + 1 if "\n\n" in text else len(text)
+    lines = ["source: %s" % rel, "size: %d" % size]
+    lines += [l for l in text[:end].splitlines() if not l.startswith(("source: ", "size: "))]
+    with open(out, "w", encoding="utf-8", newline="") as fh:
+        fh.write("\n".join(lines) + "\n" + text[end:])
 
 
 def extract(paths):
@@ -143,8 +177,16 @@ def extract(paths):
     for pdf in iter_pdfs(paths):
         out = text_path(pdf)
         rel = os.path.relpath(pdf, ROOT)
-        fresh = os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(pdf)
-        if fresh and (not ocr or is_ocred(out) or text_coverage(out) >= 0.5):
+        size = os.path.getsize(pdf)
+        head = read_header(out)
+        if head is not None and same_pdf(head, pdf, f):
+            if not ocr or "ocr" in head or text_coverage(out) >= 0.5:
+                if head.get("source") != rel or head.get("size") != str(size):
+                    update_header(out, rel, size)
+                continue
+        elif head is not None and "ocr" in head and not ocr:
+            # Never replace OCR'd text with an extraction without OCR.
+            print("changed, kept its OCR'd text (run `extract --ocr` to redo it): %s" % rel)
             continue
         try:
             doc = f.open(pdf)
@@ -155,7 +197,7 @@ def extract(paths):
         empty = 0
         lang = ocr_lang(pdf)
         with open(out, "w", encoding="utf-8") as fh:
-            fh.write("source: %s\npages: %d\n" % (rel, doc.page_count))
+            fh.write("source: %s\nsize: %d\npages: %d\n" % (rel, size, doc.page_count))
             if ocr:
                 fh.write("ocr: tesseract (%s), expect recognition errors\n" % lang)
             toc = doc.get_toc()
