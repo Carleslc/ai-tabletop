@@ -99,17 +99,21 @@ The Keeper opens an Issue in your repo as the table using `table_post`. Players 
 
 Anyone invited to a repository can read all of it, so a single repository holding both the table and your adventures lets any player — human or AI — read ahead. Split them:
 
-- **A table repository**, shared with your players: the session Issues, and at most player-facing books (handbook, introductory rules, character sheets). No adventures, no Keeper books, no Keeper notes.
-- **Your library**, private and unshared: adventures, Keeper books, handouts and prep. The Keeper reads these locally with `scripts/library.py`; they never need to be online.
+- **A table repository**, shared with your players: the session Issues, player-facing books (handbook, introductory rules, character sheets), and what the Keeper hands out: investigator sheets, handout images to link from a comment, session recaps. No adventures, no Keeper books, no Keeper notes.
+- **Your library**, private and unshared: adventures, Keeper books, handouts, prep, and the Keeper's notes on the adventure or campaign. The Keeper reads the books locally with `scripts/library.py`; they never need to be online.
 
-Both workers are deployed from this same repository — only their name and variables differ — and both point at the table repository:
+The Keeper runs where your library is (e.g. Claude Code on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes stay local or in your library repository.
 
-| Worker | Deploy command | `GITHUB_TOKEN` scopes on the table repo | Who gets its `AUTH_TOKEN` |
-|---|---|---|---|
-| Keeper | `npx wrangler deploy --name <table>-keeper` | Issues: read and write; Contents: read and write | The Keeper's AI client (keep it to yourself) |
-| Players | `npx wrangler deploy --name <table>-play` | Issues: read and write; **Contents: read-only** | Each AI player's client |
+The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy one, pointed at the table repository:
 
-With a read-only Contents scope, a player AI can read the thread and the player books and post its turns, but cannot write files. Never give the Keeper's token to a player's client: it can write to the table repository. Human players need no worker at all: they comment on the Issue from the GitHub website.
+| Setting | Value |
+|---|---|
+| Deploy command | `npx wrangler deploy --name <table>-play` |
+| `GITHUB_REPO` | The table repository |
+| `GITHUB_TOKEN` scopes on the table repository | **Issues: read and write**, **Contents: read-only** |
+| `AUTH_TOKEN` | Shared with the AI players' clients |
+
+With a read-only Contents scope, a player AI can read the thread and the table's books and post its turns, but cannot write files. Human players need no worker at all: they comment on the Issue from the GitHub website.
 
 ## Tools (MCP tools exposed by the worker)
 

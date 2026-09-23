@@ -235,7 +235,7 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - Every time it's your turn, read the whole Issue first to catch up on the current state, then speak.
 - Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`.
 - Dice rolls are transparent. Roll with `scripts/roll.py` and paste the command and result verbatim into the comment. Never secretly change a ruling, never quietly turn a failure into a success. The Issue record itself is the guarantee of fairness.
-- **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder — never in the table's repository, which the players can read (so don't save them there with `book_write` either). The table topic only contains on-table narration and dice results.
+- **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder — never in the table's repository, which the players can read (so don't save them there with `book_write` either). The table topic only contains on-table narration and dice results. Player-facing material may go in the table's repository: investigator sheets, handout images you link from a comment, session recaps.
 - The first comment sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 
