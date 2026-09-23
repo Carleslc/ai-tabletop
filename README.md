@@ -39,11 +39,11 @@ Together: feed the skills to different AIs (one as GM, the rest as players). The
 
 ## Systems
 
-| System | Books in | GM skill | Player skill | GM tag |
-|---|---|---|---|---|
-| Call of Cthulhu 7th Edition | `assets/CoC/` | [`coc-kp`](skills/coc-kp/SKILL.md) (the Keeper) | [`coc-player`](skills/coc-player/SKILL.md) (an investigator) | `[KP]` |
+| System | Books in | GM skill | Player skill | GM tag | Table label |
+|---|---|---|---|---|---|
+| Call of Cthulhu 7th Edition | `assets/CoC/` | [`coc-kp`](skills/coc-kp/SKILL.md) (the Keeper) | [`coc-player`](skills/coc-player/SKILL.md) (an investigator) | `[KP]` | `Call of Cthulhu` |
 
-Skills are named `<system>-<role>`: the player skill is `<system>-player`, and the GM skill takes the system's name for its GM (`coc-kp` for the Keeper; a Dungeons & Dragons one would be `dnd-dm`).
+Each table Issue carries its game's label, so one table repository can hold games of several systems and list them by label. Skills are named `<system>-<role>`: the player skill is `<system>-player`, and the GM skill takes the system's name for its GM (`coc-kp` for the Keeper; a Dungeons & Dragons one would be `dnd-dm`).
 
 ## Ways to play
 
@@ -121,7 +121,7 @@ https://<worker-name>.<your-subdomain>.workers.dev/mcp?token=<your AUTH_TOKEN>
 
 Then give the GM skill to one AI (e.g. `skills/coc-kp/SKILL.md`, or invoke `/coc-kp`) and the player skill to each AI player (e.g. `skills/coc-player/SKILL.md`).
 
-The GM opens an Issue in your repo as the table using `table_post`. Players take turns by commenting on the Issue with `table_reply`.
+The GM opens an Issue in your repo as the table using `table_post`, labeled with the game (e.g. `Call of Cthulhu`). Players take turns by commenting on the Issue with `table_reply`.
 
 ### 5. Keep the adventures away from the players (multiplayer)
 
@@ -219,7 +219,8 @@ The books are copyrighted: keep them out of any public repository (this fork's `
 2. **Skills**: create `skills/<system>-<gm>/SKILL.md` (e.g. `dnd-dm`) and `skills/<system>-player/SKILL.md`, with that system's rules, tone, character sheets and GM tag. The Call of Cthulhu skills are a good model: most of `coc-kp` (running the table on Issues, prep and campaign notes, reading the books, publishing player material) is not specific to Call of Cthulhu, only its rules and tone are.
 3. **Catalog**: in the GM skill's `references/library.md`, list the system's books in `assets/<System>/` (see `coc-kp`'s for the format).
 4. **Dice**: `scripts/roll.py` rolls any `NdX+M` expression; `check` is the d100 roll-under of Call of Cthulhu and similar systems. Add a subcommand if the system needs another mechanic (dice pools, exploding dice…).
-5. Add the system to the [Systems](#systems) table.
+5. Choose the label its tables will carry (the game's name, e.g. `Dungeons & Dragons`) and have the GM skill apply it.
+6. Add the system to the [Systems](#systems) table.
 
 ## Adding tools
 

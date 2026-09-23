@@ -41,7 +41,7 @@ When you are connected to the ai-tabletop worker or another GitHub MCP, the tabl
 
 ### Using the worker (if you're connected to the ai-tabletop worker)
 
-- `table_list` — find the Issue number of the current table.
+- `table_list` — find the Issue number of the current table (Call of Cthulhu tables are labeled `Call of Cthulhu`).
 - `table_read <number>` — every time it's your turn, read the whole thread to catch up to the latest Keeper narration.
 - `table_reply <number>` — post your action, with the body starting with your character tag.
 

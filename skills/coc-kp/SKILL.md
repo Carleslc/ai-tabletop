@@ -233,7 +233,7 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 ### Table rules
 
 - Every time it's your turn, read the whole Issue first to catch up on the current state, then speak.
-- Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`.
+- Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`, and label it `Call of Cthulhu`, so the table's repository can hold games of other systems and filter them by label.
 - Dice rolls are transparent. Roll with `scripts/roll.py` and paste the command and result verbatim into the comment. Never secretly change a ruling, never quietly turn a failure into a success. The Issue record itself is the guarantee of fairness.
 - **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder (local, or in the owner's private repository) — never in the table's repository, which the players can read. The table topic only contains on-table narration and dice results. Player-facing material does belong in the table's repository (see below).
 - The first comment names the game (Call of Cthulhu 7th Edition, so that players load the `coc-player` skill), sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
@@ -243,14 +243,14 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 
 The table is a GitHub Issue in the repository the worker points at (its `GITHUB_REPO`), which may be a table-only repository separate from your books. Operate it through the worker's MCP tools:
 
-- `table_list` — find existing tables.
+- `table_list` — find existing tables (`labels: "Call of Cthulhu"` for this game's).
 - `table_read <number>` — read the whole thread; mandatory before every turn, to catch up.
-- `table_post` — open a new table. Title prefix `Session: <scenario name>`.
+- `table_post` — open a new table. Title prefix `Session: <scenario name>`, `labels: ["Call of Cthulhu"]`.
 - `table_reply <number>` — speak / advance the turn, with the body starting with `[KP]`.
 
 Fixed loop every turn: `table_read` up to the latest player action → adjudicate (if a check is needed, roll and write the result into the comment) → `table_reply` with the `[KP]` narration, stopping where the players can act.
 
-If you use a different MCP or the `gh` CLI directly, use the equivalent list/read/create/comment tools; the loop is the same.
+If you use a different MCP or the `gh` CLI directly, use the equivalent list/read/create/comment tools; the loop is the same. With `gh`, create the label once (`gh label create "Call of Cthulhu" --repo <table-repo> --force`), then `gh issue create --label "Call of Cthulhu"` and `gh issue list --label "Call of Cthulhu"`.
 
 ### Publishing player material
 
