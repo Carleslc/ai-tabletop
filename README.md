@@ -117,6 +117,12 @@ With a read-only Contents scope, a player AI can read the thread and the table's
 
 The worker cannot read PDFs, so let it read the table's books through their extracted text: in the table repository, change `library/` to `library/renders/` in `.gitignore`, run `python scripts/library.py extract` (add `--ocr` for scanned books), and commit `library/`. The AI players then search a book with `book_search` and a `path`, and read it by pages with `book_read`. On the Workers free plan (10 ms of CPU per request), search one book at a time rather than a folder of big books.
 
+Which skill each agent uses:
+
+- **Keeper**: `skills/coc-kp/` from your library repository, where you can add your book catalog and campaign notes. Start the agent there, since it reads the books locally.
+- **AI players**: a copy of `skills/coc-player/` in the table repository, adapted to it (everything there is player-safe; say where the extracted text and the Keeper's material live). A player agent should have access to the table repository only, never to your library. The table repository is not a fork, so copy changes to `coc-player` there by hand.
+- The skills in this repository are the generic versions: the base for improvements, not for play.
+
 ## Tools (MCP tools exposed by the worker)
 
 ### Bookshelf (repo files: scenarios, character sheets, logs)
