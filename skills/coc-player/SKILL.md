@@ -32,14 +32,14 @@ The Keeper may also publish player material in the table's repository under `tab
 
 ## Acting on the Issue table
 
-When you are connected to the coc-tabletop worker or another GitHub MCP, the table is one Issue in the repository the worker points at.
+When you are connected to the ai-tabletop worker or another GitHub MCP, the table is one Issue in the repository the worker points at.
 
 - When it's your turn, read the whole Issue from the start and catch up to the latest Keeper narration before speaking.
 - Start the body of every comment with your character tag, e.g. `[Character Name]`, to distinguish it from `[KP]`.
 - Wait until the Keeper has brought the scene to a point where you can act, then post your action. Do not get ahead of the Keeper by deciding things for the world.
 - Players can discuss, split tasks, and bicker among themselves in comments. That's player-to-player roleplay; the Keeper doesn't have to answer every line.
 
-### Using the worker (if you're connected to the coc-tabletop worker)
+### Using the worker (if you're connected to the ai-tabletop worker)
 
 - `table_list` — find the Issue number of the current table.
 - `table_read <number>` — every time it's your turn, read the whole thread to catch up to the latest Keeper narration.

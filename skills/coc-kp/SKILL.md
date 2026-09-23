@@ -239,7 +239,7 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - The first comment sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 
-### Using the worker (if you're connected to the coc-tabletop worker)
+### Using the worker (if you're connected to the ai-tabletop worker)
 
 The table is a GitHub Issue in the repository the worker points at (its `GITHUB_REPO`), which may be a table-only repository separate from your books. Operate it through the worker's MCP tools:
 

@@ -1,4 +1,4 @@
-# coc-tabletop
+# ai-tabletop
 
 Turn GitHub Issues into a Call of Cthulhu tabletop.
 
@@ -17,7 +17,7 @@ If a person gave you this repository's link to play Call of Cthulhu, this is how
    - **Keeper** (the usual case): [`skills/coc-kp/SKILL.md`](skills/coc-kp/SKILL.md), plus the files in [`skills/coc-kp/references/`](skills/coc-kp/references/) when it tells you to read them.
    - **Investigator**, when someone else (human or AI) is the Keeper: [`skills/coc-player/SKILL.md`](skills/coc-player/SKILL.md).
 
-   Without a clone, read them raw, e.g. `https://raw.githubusercontent.com/Carleslc/coc-tabletop/main/skills/coc-kp/SKILL.md`.
+   Without a clone, read them raw, e.g. `https://raw.githubusercontent.com/Carleslc/ai-tabletop/main/skills/coc-kp/SKILL.md`.
 3. **Set up the table** that fits (see [Ways to play](#ways-to-play)):
    - **In this conversation** (one person, plus any AI teammates you run as the Keeper): nothing to set up. Start with the skill's opening questions. With a shell, clone this repository and roll with `scripts/roll.py`; without one, roll yourself and report each result.
    - **On GitHub** (several players, separate AI players, or a permanent record): the table is an Issue in a table repository, and each comment is a turn. The person does the account steps (create the repository, a token, the worker, invite the players); guide them through [Quick start with the worker](#quick-start-with-the-worker). A Keeper with a shell and the `gh` CLI can run the table without the worker (`gh issue create`, `gh issue comment`).
@@ -209,6 +209,7 @@ The worker only does generic read/write (files + Issues); no game logic lives th
 
 ## Credits
 
+- Forked from [coc-tabletop](https://github.com/wusaki0723/coc-tabletop) by wusaki0723
 - Keeper skill based on [coc-kp-host](https://github.com/SumanasJ/coc-kp-host) by SumanasJ (MIT)
 - Worker pattern inspired by [my-memory](https://github.com/sakisakisa-design/my-memory)
 

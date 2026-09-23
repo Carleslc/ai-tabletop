@@ -1,4 +1,4 @@
-name = "coc-tabletop"
+name = "ai-tabletop"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
 # Keep the variables set in the dashboard (GITHUB_REPO, DEFAULT_BRANCH) on every deploy;

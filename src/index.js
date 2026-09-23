@@ -1,5 +1,5 @@
 /**
- * coc-tabletop MCP server (Cloudflare Worker, zero-dep)
+ * ai-tabletop MCP server (Cloudflare Worker, zero-dep)
  *
  * Remote MCP bridge that turns GitHub Issues into a tabletop RPG table.
  * The Keeper and the player AIs each connect from their own client and share
@@ -15,7 +15,7 @@
  * CF environment variables (set in the CF dashboard, never exposed to any AI context):
  *   AUTH_TOKEN     connection password
  *   GITHUB_TOKEN   GitHub fine-grained PAT
- *   GITHUB_REPO    target repo, e.g. yourname/coc-tabletop
+ *   GITHUB_REPO    target repo, e.g. yourname/ai-tabletop
  *   DEFAULT_BRANCH default branch, defaults to main
  */
 
@@ -24,13 +24,13 @@ const PROTOCOL_VERSION = "2024-11-05";
 // ---------- GitHub API ----------
 
 function gh(env) {
-  const repo = env.GITHUB_REPO || "yourname/coc-tabletop";
+  const repo = env.GITHUB_REPO || "yourname/ai-tabletop";
   const branch = env.DEFAULT_BRANCH || "main";
   const base = "https://api.github.com";
   const headers = {
     Authorization: `Bearer ${env.GITHUB_TOKEN}`,
     Accept: "application/vnd.github+json",
-    "User-Agent": "coc-tabletop-worker",
+    "User-Agent": "ai-tabletop-worker",
     "X-GitHub-Api-Version": "2022-11-28",
   };
 
@@ -530,7 +530,7 @@ async function handleRpc(msg, env) {
       result: {
         protocolVersion: params.protocolVersion || PROTOCOL_VERSION,
         capabilities: { tools: {} },
-        serverInfo: { name: "coc-tabletop", version: "1.0.0" },
+        serverInfo: { name: "ai-tabletop", version: "1.0.0" },
       },
     };
   }
@@ -584,7 +584,7 @@ async function handleRequest(request, env) {
   const url = new URL(request.url);
 
   if (url.pathname === "/" || url.pathname === "") {
-    return new Response("coc-tabletop worker alive", {
+    return new Response("ai-tabletop worker alive", {
       headers: { "content-type": "text/plain; charset=utf-8" },
     });
   }
