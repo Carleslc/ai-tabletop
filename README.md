@@ -88,7 +88,7 @@ CF Dashboard → **Workers & Pages** → **Create** → **Workers** →
 - Build command: leave empty (zero dependencies)
 - Deploy command: leave empty (Cloudflare reads `wrangler.toml`), or `npx wrangler deploy --name <worker-name>` to choose the worker's name, which is what its URL uses
 
-Leave **Enable preview builds** unchecked and **API token** on *Create new token* (that token only lets Cloudflare deploy the worker; it is not `AUTH_TOKEN`). Do not add the variables below under *Build variables*: those only exist while building. After a build, Cloudflare may suggest (or open a pull request) adding the worker's name and variables to `wrangler.toml`: ignore it, since they belong to your deployment, not to the repository.
+Leave **Enable preview builds** unchecked and **API token** on *Create new token* (that token only lets Cloudflare deploy the worker; it is not `AUTH_TOKEN`). Do not add the variables below under *Build variables*: those only exist while building.
 
 After deploying, go to Worker → **Settings** → **Variables and Secrets** and add:
 
@@ -122,14 +122,19 @@ Anyone invited to a repository can read all of it, so a single repository holdin
 
 The Keeper is an AI agent that can run commands where your library is (Claude Code, Codex, Gemini CLI… on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes on the adventure or campaign stay local or in your library repository.
 
-The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy one, pointed at the table repository:
+The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy it from the table repository, so the worker takes that repository's name:
 
-| Setting | Value |
-|---|---|
-| Deploy command | `npx wrangler deploy --name <table>-play` |
-| `GITHUB_REPO` | The table repository |
-| `GITHUB_TOKEN` scopes on the table repository | **Issues: read and write**, **Contents: read-only** |
-| `AUTH_TOKEN` | Shared with the AI players' clients |
+1. Copy `src/index.js` and `wrangler.toml` from this repository to the table repository. In its `wrangler.toml`, set `name` to the table repository's name and add its variables:
+
+   ```toml
+   [vars]
+   GITHUB_REPO = "<you>/<table-repo>"
+   DEFAULT_BRANCH = "main"
+   ```
+2. Connect the table repository in Cloudflare as in [step 3](#3-deploy-to-cloudflare), with the default deploy command. In **Settings** → **Build** → **Build watch paths**, include only `src/` and `wrangler.toml`, so that pushing books or player material doesn't redeploy the worker.
+3. Add the secrets: `GITHUB_TOKEN`, a token for the table repository with **Issues: read and write** and **Contents: read-only**; and `AUTH_TOKEN`, shared with the AI players' clients.
+
+When `src/index.js` changes here, copy it to the table repository by hand.
 
 With a read-only Contents scope, a player AI can read the thread and the table's books and post its turns, but cannot write files. Human players need no worker at all: they comment on the Issue from the GitHub website.
 
