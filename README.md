@@ -32,7 +32,7 @@ A tabletop infrastructure pack with four components:
 
 1. **Cloudflare Worker** — A zero-dependency MCP server that lets AI clients (claude.ai / ChatGPT / Claude Code) read and write your GitHub repo. Files are the campaign library ("books"), Issues are the table.
 2. **Skills, per game system** — Behavior guides for AIs: a GM skill teaches an AI to run the game, a player skill to play a character at the table. Each system has its own, because each has its own rules (see [Systems](#systems)).
-3. **Helper scripts**, shared by every system — `scripts/roll.py` (any dice expression, plus d100 roll-under checks with success levels), `scripts/library.py` (search and read the PDF books page by page, extract handouts), and `scripts/music.py` (scene background music on macOS).
+3. **Helper scripts**, shared by every system — `scripts/roll.py` (standard dice notation for any system, plus Call of Cthulhu checks), `scripts/library.py` (search and read the PDF books page by page, extract handouts), and `scripts/music.py` (scene background music on macOS).
 4. **Library** (`assets/`, your own books, not included) — rulebooks, supplements, character sheets, and adventures, one folder per system and language, catalogued for the GM in the GM skill's `references/library.md`.
 
 Together: feed the skills to different AIs (one as GM, the rest as players). They use the worker to "sit around the table" in your GitHub repo's Issues. Comments are turns.
@@ -183,9 +183,14 @@ Which skill each agent uses:
 
 ```bash
 python scripts/roll.py 1d6
-python scripts/roll.py 1d4+2
-python scripts/roll.py d100
-python scripts/roll.py check 55   # d100 roll-under vs 55 → Critical / Extreme / Hard / Regular success, Failure, Fumble (Call of Cthulhu)
+python scripts/roll.py 1d8+2d6+3       # several terms
+python scripts/roll.py 2d20kh1+5       # keep highest (advantage); kl = keep lowest
+python scripts/roll.py 4d6dl1          # drop lowest (dh = drop highest)
+python scripts/roll.py 3d6!            # exploding dice
+python scripts/roll.py "5d10>=8"       # dice pool: count successes (also 5d10!>=8)
+python scripts/roll.py 4dF             # Fate dice
+python scripts/roll.py check 55        # Call of Cthulhu: d100 vs 55 → Critical / Extreme / Hard / Regular success, Failure, Fumble
+python scripts/roll.py check 55 --bonus 1   # with a bonus die (or --penalty N)
 ```
 
 ```bash
@@ -218,7 +223,7 @@ The books are copyrighted: keep them out of any public repository (this fork's `
 1. **Books**: put them in `assets/<System>/<LANG>/` (a short folder name: `DnD`, `7Sea`…).
 2. **Skills**: create `skills/<system>-<gm>/SKILL.md` (e.g. `dnd-dm`) and `skills/<system>-player/SKILL.md`, with that system's rules, tone, character sheets and GM tag. The Call of Cthulhu skills are a good model: most of `coc-kp` (running the table on Issues, prep and campaign notes, reading the books, publishing player material) is not specific to Call of Cthulhu, only its rules and tone are.
 3. **Catalog**: in the GM skill's `references/library.md`, list the system's books in `assets/<System>/` (see `coc-kp`'s for the format).
-4. **Dice**: `scripts/roll.py` rolls any `NdX+M` expression; `check` is the d100 roll-under of Call of Cthulhu and similar systems. Add a subcommand if the system needs another mechanic (dice pools, exploding dice…).
+4. **Dice**: `scripts/roll.py` understands standard dice notation: several terms, keep or drop dice (`2d20kh1`, `4d6dl1`), exploding dice (`d6!`), success pools (`5d10>=8`) and Fate dice (`4dF`); `check` is Call of Cthulhu's d100 roll with bonus and penalty dice. For a mechanic of its own (such as 7th Sea's raises), add a subcommand.
 5. Choose the label its tables will carry (the game's name, e.g. `Dungeons & Dragons`) and have the GM skill apply it.
 6. Add the system to the [Systems](#systems) table.
 

@@ -120,11 +120,12 @@ For detailed templates, read `references/prep_persistence.md`.
 Use `scripts/roll.py` for dice whenever code execution is available:
 
 ```bash
-python scripts/roll.py check 55
+python scripts/roll.py check 55             # skill or characteristic check with its success level
+python scripts/roll.py check 55 --bonus 1   # with a bonus die (--penalty 1 for a penalty die; up to 2)
 python scripts/roll.py d100
 python scripts/roll.py 1d6
 python scripts/roll.py 1d4+2
-python scripts/roll.py 2d6
+python scripts/roll.py 1d8+1d4               # damage plus damage bonus
 ```
 
 If the environment cannot execute scripts, roll manually but keep the same output format.

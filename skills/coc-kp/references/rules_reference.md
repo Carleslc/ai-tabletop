@@ -69,6 +69,7 @@ percent, ignore it (light rain = nothing; blinding downpour = penalty die). Mech
   (usually lower) tens result; penalty die → keep the worse (usually higher).
 - **One bonus and one penalty cancel.** Normally at most one; in extreme cases two.
 - Prefer bonus/penalty dice over ad-hoc % modifiers.
+- Roll them with `scripts/roll.py check <value> --bonus N` or `--penalty N`: it shows every tens die.
 
 ## Pushing a roll
 
