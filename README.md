@@ -8,6 +8,22 @@ If you already play in a group chat (Discord, Telegram…) or just want to play 
 
 Sessions can be played in any language. The skills are written in English; the Keeper narrates in whatever language you speak to it (e.g. Spanish), or the one you ask for.
 
+## For AI agents: start here
+
+If a person gave you this repository's link to play Call of Cthulhu, this is how to get them playing.
+
+1. **Ask what they want**, briefly: will you be the Keeper (you run the game) or play an investigator; the language; alone or with other players (humans or AIs); and their own scenario (a PDF, a published adventure) or an original one.
+2. **Load the skill for your role** and follow it from then on:
+   - **Keeper** (the usual case): [`skills/coc-kp/SKILL.md`](skills/coc-kp/SKILL.md), plus the files in [`skills/coc-kp/references/`](skills/coc-kp/references/) when it tells you to read them.
+   - **Investigator**, when someone else (human or AI) is the Keeper: [`skills/coc-player/SKILL.md`](skills/coc-player/SKILL.md).
+
+   Without a clone, read them raw, e.g. `https://raw.githubusercontent.com/Carleslc/coc-tabletop/main/skills/coc-kp/SKILL.md`.
+3. **Set up the table** that fits (see [Ways to play](#ways-to-play)):
+   - **In this conversation** (one person, plus any AI teammates you run as the Keeper): nothing to set up. Start with the skill's opening questions. With a shell, clone this repository and roll with `scripts/roll.py`; without one, roll yourself and report each result.
+   - **On GitHub** (several players, separate AI players, or a permanent record): the table is an Issue in a table repository, and each comment is a turn. The person does the account steps (create the repository, a token, the worker, invite the players); guide them through [Quick start with the worker](#quick-start-with-the-worker). A Keeper with a shell and the `gh` CLI can run the table without the worker (`gh issue create`, `gh issue comment`).
+   - **With the person's own books**: they are not in this repository. They go in `assets/` of the person's private copy (see [Library](#library)). With other players, keep the adventures out of the repository the players can read ([step 5](#5-keep-the-adventures-away-from-the-players-multiplayer)): the Keeper works from the private library, the players from the table repository.
+4. **Keep the roles apart.** As a player, never read adventures, Keeper books or the Keeper's notes. As the Keeper, never post hidden information at the table.
+
 ## What this is
 
 A tabletop infrastructure pack with four components:
