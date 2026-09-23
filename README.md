@@ -88,7 +88,7 @@ CF Dashboard → **Workers & Pages** → **Create** → **Workers** →
 - Build command: leave empty (zero dependencies)
 - Deploy command: leave empty (Cloudflare reads `wrangler.toml`), or `npx wrangler deploy --name <worker-name>` to choose the worker's name, which is what its URL uses
 
-Leave **Enable preview builds** unchecked and **API token** on *Create new token* (that token only lets Cloudflare deploy the worker; it is not `AUTH_TOKEN`). Do not add the variables below under *Build variables*: those only exist while building.
+Leave **Enable preview builds** unchecked and **API token** on *Create new token* (that token only lets Cloudflare deploy the worker; it is not `AUTH_TOKEN`). Do not add the variables below under *Build variables*: those only exist while building. After a build, Cloudflare may suggest (or open a pull request) adding the worker's name and variables to `wrangler.toml`: ignore it, since they belong to your deployment, not to the repository.
 
 After deploying, go to Worker → **Settings** → **Variables and Secrets** and add:
 
