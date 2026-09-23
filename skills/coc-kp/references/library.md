@@ -20,10 +20,12 @@ python scripts/library.py render "<pdf>" 86 --near "Handout 2"   # one handout, 
 python scripts/library.py info "<pdf>"                 # page count, usable-text coverage
 ```
 
-- Paths may be given relative to `assets/`. The `library/` folder is a local, git-ignored cache; if a `.txt` is missing, run `extract` first. A full `extract` also removes the text of PDFs that were renamed or deleted.
+- Paths may be given relative to `assets/`. The `library/` folder is a local, git-ignored cache (a table repository may commit it so that AI players can read its books through the worker); if a `.txt` is missing, run `extract` first. A full `extract` also removes the text of PDFs that were renamed or deleted.
 - Page numbers are **PDF page indices** (1-based), which can differ by a few pages from the printed page numbers. Search, then read the surrounding pages with `pages`. With plain tools, `rg -n "term" library/` also works; the text files mark pages as `=== page N ===`.
 - Search in the book's language: Spanish books need Spanish terms (`Cordura`, `Guardián`, `forzar la tirada`), English books English terms.
 - **Scanned PDFs** have no text layer until OCR'd (`extract` lists them). OCR text is searchable but noisy: stray symbols from borders and illustrations, broken words, mixed-up columns, misread numbers. Some native text layers are garbled too (odd symbols, missing accents, overlapping text).
+
+Without a shell, connected only to the worker, you can still read books whose extracted text is committed in the worker's repository: `book_search` with `path` set to a book's `.pdf` path or a folder (`library/EN`) returns `<file> p.<page>: <line>`, and `book_read` with the book's `.pdf` path and `pages` (`"155-158"`) reads those pages. Rendering pages and handouts needs a shell.
 
 ### Extracted text is an index, the page is the source
 
@@ -128,8 +130,8 @@ Many adventures, especially older translations, use earlier editions. The offici
   3. **Look at the result** before showing it: the desired handout, complete, legible, upright, nothing extra (no Keeper text, no other handout, no label). If not, adjust: `--rect x0,y0,x1,y1` (page fractions read off the preview grid) to fix the area, `--rotate 90|180|270` to rotate, `--pad` to add margin, `300` dpi for small print, `--no-isolate` if hiding removed part of the handout, `--keep-labels` if the "label" was actually in-world text, `--raster` for scanned pages. Iterate until it is right.
 - Image-file handouts that hold a single handout can be shown directly. On scanned pages and image files, labels are found by OCR and painted over; on normal PDF pages they are removed from the text layer without touching the picture.
 - If a clean image cannot be obtained, give the handout's text instead: transcribe it from the page image, or use plain-text handout versions if the adventure includes them. Never show a crop that includes Keeper text or another handout.
-- On the Issue table, upload the rendered handout image if possible; otherwise describe the handout or paste its text. Do not upload whole pages of the books.
+- On the Issue table, publish the rendered handout to the table's repository and link it from your comment (see "Publishing player material" in `SKILL.md`); if you cannot, describe the handout or paste its text. Never publish whole pages of the books.
 
 ## Prep with the library
 
-When starting an adventure from `assets/`: `extract` it (OCR if scanned), read the introduction and Keeper background privately, build `00_keeper/scenario_frame.md` as in `prep_persistence.md` pointing at the source PDF and page numbers instead of copying the PDF, list its handouts/pregens, and note if it needs conversion. Keep all of this Keeper-only.
+When starting an adventure from `assets/`: `extract` it (OCR if scanned), read the introduction and Keeper background privately, build `00_keeper/scenario_frame.md` as in `prep_persistence.md` pointing at the source PDF and page numbers instead of copying the PDF, list its handouts/pregens, and note if it needs conversion. Keep all of this Keeper-only, in your private campaign folder.

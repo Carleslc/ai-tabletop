@@ -6,7 +6,7 @@ Folder and file names below are in English. Write file *contents* (cards, logs, 
 
 ## Create a campaign prep folder
 
-When a writable workspace is available, create a durable project folder before or during prep. Prefer the workspace root unless the user specifies another location.
+When a private writable workspace is available, create a durable campaign folder before or during prep: a local folder, or the owner's private repository (prefer its root unless the user specifies another location). The whole folder is Keeper-only. Never create it in the table's repository, which the players can read: if that is the only place you can write (e.g. through a worker pointed at it), keep Keeper notes in the conversation and write only player material there.
 
 Recommended structure:
 
@@ -32,6 +32,16 @@ campaigns/<scenario-name>/
 ```
 
 Keep player-facing and Keeper-only materials separate. Never expose `00_keeper/` or full `01_source/` content to the player unless that content is explicitly player-facing.
+
+## Publish player material to the table
+
+When the table is a GitHub Issue, copy to the table's repository, under `table/<scenario-name>/`, only what the players have already been shown or given (how: "Publishing player material" in `SKILL.md`):
+
+- `sheets/`: investigator cards from `03_character_cards/`, and NPC teammate cards that hold nothing Keeper-only.
+- `handouts/`: handouts from `02_player_materials/handouts/`, once handed out.
+- `recaps/session-<n>.md`: a player-facing recap drawn from the session log (what happened, clues found, open leads, status), without its Keeper notes.
+
+Never publish anything from `00_keeper/` or `01_source/`, NPC performance cards, or the scenario frame.
 
 For a solo gamebook, the same layout works: the book goes in `01_source/`, and `04_session_logs/session_log.md` also records the current entry number, visited entries, and flags/codewords.
 

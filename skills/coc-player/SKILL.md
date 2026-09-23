@@ -24,7 +24,9 @@ Play in the table's language: the language the Keeper narrates in, or the one th
 
 ## Player-safe books
 
-If the repo has an `assets/` folder with books (see the coc-kp skill's `references/library.md` for its layout), you may consult the player-facing ones to build and understand your investigator: the investigator/player handbook (occupations, skills, equipment, era), quick-start or introductory rules, and blank character sheets. Search them with `python scripts/library.py search "<regex>" "<book file name fragment>"` and read pages with `library.py pages`.
+If the repo has an `assets/` folder with books (see the coc-kp skill's `references/library.md` for its layout), you may consult the player-facing ones to build and understand your investigator: the investigator/player handbook (occupations, skills, equipment, era), quick-start or introductory rules, and blank character sheets. Search them with `python scripts/library.py search "<regex>" "<book file name fragment>"` and read pages with `library.py pages`. Without a shell, through the worker: `book_search` with `path` set to the book's `.pdf` path, then `book_read` with that path and the `pages` it found.
+
+The Keeper may also publish player material in the table's repository under `table/<scenario-name>/`: your investigator sheet, handouts you have been given, session recaps. Read them with `book_read` (or from a clone).
 
 **Never open adventures, handouts, Keeper books, or monster/spell references** (adventure folders such as `assets/*/Adventures/` or `assets/*/Aventuras/`, the Keeper rulebook, bestiaries, grimoires, field guides…) or their extracted text in `library/`. That's metagaming: you only learn what the Keeper shows you. The one exception is a pregenerated investigator sheet the Keeper hands to you.
 

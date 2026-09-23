@@ -34,6 +34,24 @@ function gh(env) {
     "X-GitHub-Api-Version": "2022-11-28",
   };
 
+  // Raw file content (text), for files of up to 100 MB (the JSON API stops at 1 MB).
+  async function raw(path) {
+    const res = await fetch(
+      `${base}/repos/${repo}/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}?ref=${branch}`,
+      { headers: { ...headers, Accept: "application/vnd.github.raw" } }
+    );
+    const text = await res.text();
+    if (!res.ok) {
+      let msg = res.statusText;
+      try { msg = JSON.parse(text).message || msg; } catch { /* not JSON */ }
+      throw new Error(`GitHub GET ${path} -> ${res.status}: ${msg}`);
+    }
+    if ((res.headers.get("content-type") || "").includes("json") && text.startsWith("[")) {
+      throw new Error("path is a directory, use book_list");
+    }
+    return text;
+  }
+
   async function req(method, path, body) {
     const res = await fetch(base + path, {
       method,
@@ -50,7 +68,7 @@ function gh(env) {
     return data;
   }
 
-  return { repo, branch, req };
+  return { repo, branch, req, raw };
 }
 
 function encodeBase64Utf8(str) {
@@ -70,30 +88,99 @@ function decodeBase64Utf8(b64) {
 
 // ---------- Bookshelf tools (repo files: scenarios, character sheets, logs, rules) ----------
 
-async function bookSearch(env, { query, limit }) {
-  const g = gh(env);
-  const n = Math.max(1, Math.min(parseInt(limit, 10) || 8, 25));
-  const q = `${query} repo:${g.repo} extension:md`;
-  const data = await g.req("GET", `/search/code?q=${encodeURIComponent(q)}&per_page=${n}`);
-  const items = (data.items || []).slice(0, n);
-  if (!items.length) return `No matches for: ${query}`;
-  return items.map((it) => `${it.path}`).join("\n");
+// A book PDF is read through its extracted text: scripts/library.py extract writes
+// assets/<path>.pdf to library/<path>.txt, with a "=== page N ===" line before each page.
+function textPath(path) {
+  let p = String(path || "").trim().replace(/^\/+|\/+$/g, "");
+  if (p.includes("..")) throw new Error("invalid path");
+  if (/\.pdf$/i.test(p)) p = p.replace(/\.pdf$/i, ".txt");
+  if (p === "assets" || p.startsWith("assets/")) p = "library" + p.slice("assets".length);
+  return p;
 }
 
-async function bookRead(env, { path }) {
+const PAGE_MARK = /^=== page (\d+) ===$/;
+const MAX = 80000;
+
+function cap(text) {
+  return text.length > MAX ? text.slice(0, MAX) + "\n\n[truncated]" : text;
+}
+
+async function bookSearch(env, { query, limit, path }) {
   const g = gh(env);
-  const p = String(path || "").trim();
+  const q = String(query || "").trim();
+  if (!q) throw new Error("query is required");
+  if (!path) {
+    const n = Math.max(1, Math.min(parseInt(limit, 10) || 8, 25));
+    const data = await g.req(
+      "GET",
+      `/search/code?q=${encodeURIComponent(`${q} repo:${g.repo} extension:md`)}&per_page=${n}`
+    );
+    const items = (data.items || []).slice(0, n);
+    if (!items.length) return `No matches for: ${q} (to search the books, pass a path such as "library/" or a book)`;
+    return items.map((it) => `${it.path}`).join("\n");
+  }
+
+  // Search the extracted text of one book or of every book under a folder.
+  const p = textPath(path);
+  let files;
+  if (p.endsWith(".txt")) {
+    files = [p];
+  } else {
+    const prefix = p ? p + "/" : "";
+    const tree = await g.req("GET", `/repos/${g.repo}/git/trees/${g.branch}?recursive=1`);
+    files = (tree.tree || [])
+      .filter((e) => e.type === "blob" && e.path.startsWith(prefix) && e.path.endsWith(".txt"))
+      .map((e) => e.path);
+    if (!files.length) return `No extracted text under ${p || "/"} (run scripts/library.py extract and commit library/)`;
+    if (files.length > 20) {
+      return `${files.length} books under ${p}: narrow the path to a subfolder or one book:\n` + files.slice(0, 50).join("\n");
+    }
+  }
+  let rx;
+  try { rx = new RegExp(q, "i"); } catch { rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"); }
+  const n = Math.max(1, Math.min(parseInt(limit, 10) || 20, 50));
+  const hits = [];
+  for (const f of files) {
+    const text = await g.raw(f);
+    let page = 0;
+    for (const line of text.split("\n")) {
+      const m = PAGE_MARK.exec(line);
+      if (m) { page = parseInt(m[1], 10); continue; }
+      if (rx.test(line)) {
+        hits.push(`${f} ${page ? `p.${page}` : "bookmarks"}: ${line.trim().slice(0, 200)}`);
+        if (hits.length >= n) return hits.join("\n") + "\n[limit reached]";
+      }
+    }
+  }
+  return hits.length ? hits.join("\n") : `No matches for: ${q} in ${p}`;
+}
+
+async function bookRead(env, { path, pages }) {
+  const g = gh(env);
+  if (!String(path || "").trim()) throw new Error("path is required");
+  const p = textPath(path);
   if (!p) throw new Error("path is required");
-  if (p.includes("..") || p.startsWith("/")) throw new Error("invalid path");
-  const data = await g.req(
-    "GET",
-    `/repos/${g.repo}/contents/${encodeURIComponent(p).replace(/%2F/g, "/")}?ref=${g.branch}`
-  );
-  if (Array.isArray(data)) throw new Error("path is a directory, use book_list");
-  if (data.encoding !== "base64") throw new Error("unexpected encoding");
-  const decoded = decodeBase64Utf8(data.content);
-  const MAX = 80000;
-  return decoded.length > MAX ? decoded.slice(0, MAX) + "\n\n[truncated]" : decoded;
+  const text = await g.raw(p);
+  const parts = text.split(/\n=== page (\d+) ===\n/);
+  if (parts.length < 3) return cap(text);
+
+  // parts: [header (source, page count, bookmarks), n1, page1, n2, page2, ...]
+  const header = parts[0].trim();
+  if (!pages) {
+    if (text.length <= MAX) return text;
+    return cap(header) + `\n\n[This book is long: read it by pages, e.g. pages "12-14". Find them with book_search and this path.]`;
+  }
+  const m = /^\s*(\d+)\s*(?:-\s*(\d+))?\s*$/.exec(String(pages));
+  if (!m) throw new Error('pages must look like "12" or "12-14"');
+  const from = parseInt(m[1], 10);
+  const to = m[2] ? parseInt(m[2], 10) : from;
+  const out = [header.split("\n")[0]];
+  for (let i = 1; i < parts.length; i += 2) {
+    const n = parseInt(parts[i], 10);
+    if (n >= from && n <= to) out.push(`=== page ${n} ===\n${parts[i + 1]}`);
+  }
+  if (out.length === 1) throw new Error(`no pages ${pages} in ${p}`);
+  return cap(out.join("\n"));
 }
 
 async function bookList(env, { path }) {
@@ -274,12 +361,13 @@ async function tableClose(env, { number, action }) {
 const TOOLS = [
   {
     name: "book_search",
-    description: "Search markdown files in the campaign library (scenarios, character sheets, rules, logs).",
+    description: "Search the repository. Without path: markdown files (sheets, recaps, notes), returns file paths. With path: the extracted text of the books (a book's .pdf or .txt path, or a folder such as library/EN), returns <file> p.<page>: <line>.",
     inputSchema: {
       type: "object",
       properties: {
-        query: { type: "string", description: "Words to search for." },
-        limit: { type: "integer", description: "Max files, up to 25." },
+        query: { type: "string", description: "Words, or a case-insensitive regex such as \"Sanity|Cordura\"." },
+        path: { type: "string", description: "Book or folder to search, e.g. assets/EN/Investigator_Handbook.pdf or library/ES. Omit to search markdown files." },
+        limit: { type: "integer", description: "Max results: files without path (up to 25), lines with path (up to 50)." },
       },
       required: ["query"],
     },
@@ -287,10 +375,13 @@ const TOOLS = [
   },
   {
     name: "book_read",
-    description: "Read one file from the campaign library by relative path.",
+    description: "Read one file by relative path. A book's .pdf path reads its extracted text (library/<path>.txt); pass pages to read part of it.",
     inputSchema: {
       type: "object",
-      properties: { path: { type: "string", description: "Relative path, e.g. campaigns/my-scenario/README.md." } },
+      properties: {
+        path: { type: "string", description: "Relative path, e.g. table/my-scenario/recap-1.md or assets/EN/Investigator_Handbook.pdf." },
+        pages: { type: "string", description: "PDF page or range of a book, e.g. \"12\" or \"12-14\" (page indices as in book_search results)." },
+      },
       required: ["path"],
     },
     handler: bookRead,

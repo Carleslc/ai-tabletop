@@ -29,7 +29,7 @@ Default setup when unspecified:
 - Teammates: provide one useful but non-dominating NPC teammate.
 - Dice: roll on behalf of the table and report clear results.
 - Atmosphere: treat ambient music and player-facing visuals as default tools, not extras. Run the Atmosphere loop (below) from prep through every scene.
-- Persistence: when a workspace is available and the session has a provided scenario or is likely to continue, create or update a campaign prep folder instead of relying only on chat memory.
+- Persistence: when a private workspace is available and the session has a provided scenario or is likely to continue, create or update a campaign prep folder instead of relying only on chat memory.
 
 ## Table style
 
@@ -254,7 +254,7 @@ If you use a different MCP or the `gh` CLI directly, use the equivalent list/rea
 
 ### Publishing player material
 
-Put what the players may keep in the table's repository, so it outlives the thread: investigator sheets, handout images, session recaps. Use one folder per scenario, e.g. `table/<scenario-name>/` (`sheets/`, `handouts/`, `recaps/`). Only what the players have already been shown or given; check every file against the source first (a handout page can carry Keeper-only text).
+Put what the players may keep in the table's repository, so it outlives the thread: investigator sheets, handout images, session recaps. Use one folder per scenario, `table/<scenario-name>/` (`sheets/`, `handouts/`, `recaps/`; what goes where: `references/prep_persistence.md`). Only what the players have already been shown or given; check every file against the source first (a handout page can carry Keeper-only text).
 
 - **Text** (sheets, recaps) as markdown: AI players can read it with `book_read`. If the worker's token can write Contents, save it with `book_write`.
 - **Otherwise, and for images**, push from a local clone of the table repository with your own GitHub credentials:

@@ -102,7 +102,7 @@ Anyone invited to a repository can read all of it, so a single repository holdin
 - **A table repository**, shared with your players: the session Issues, player-facing books (handbook, introductory rules, character sheets), and what the Keeper hands out: investigator sheets, handout images to link from a comment, session recaps. No adventures, no Keeper books, no Keeper notes.
 - **Your library**, private and unshared: adventures, Keeper books, handouts, prep, and the Keeper's notes on the adventure or campaign. The Keeper reads the books locally with `scripts/library.py`; they never need to be online.
 
-The Keeper runs where your library is (e.g. Claude Code on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes stay local or in your library repository.
+The Keeper is an AI agent that can run commands where your library is (Claude Code, Codex, Gemini CLI… on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes on the adventure or campaign stay local or in your library repository.
 
 The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy one, pointed at the table repository:
 
@@ -115,14 +115,16 @@ The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy
 
 With a read-only Contents scope, a player AI can read the thread and the table's books and post its turns, but cannot write files. Human players need no worker at all: they comment on the Issue from the GitHub website.
 
+The worker cannot read PDFs, so let it read the table's books through their extracted text: in the table repository, change `library/` to `library/renders/` in `.gitignore`, run `python scripts/library.py extract` (add `--ocr` for scanned books), and commit `library/`. The AI players then search a book with `book_search` and a `path`, and read it by pages with `book_read`. On the Workers free plan (10 ms of CPU per request), search one book at a time rather than a folder of big books.
+
 ## Tools (MCP tools exposed by the worker)
 
 ### Bookshelf (repo files: scenarios, character sheets, logs)
 
 | Tool | Purpose |
 |---|---|
-| `book_search` | Search markdown files |
-| `book_read` | Read a file |
+| `book_search` | Search markdown files; with a `path`, the extracted text of a book or folder (returns page numbers) |
+| `book_read` | Read a file; a book's `.pdf` path reads its extracted text, optionally only some `pages` |
 | `book_list` | List directory contents |
 | `book_write` | Write a text file (sheets, recaps); needs a token with Contents write |
 
