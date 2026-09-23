@@ -9,12 +9,13 @@ Usage:
                                        Extract PDFs (default: all of assets/) to library/<path>.txt.
                                        Skips files already up to date. Prints PDFs with no text
                                        layer (scanned). With --ocr, pages without text are OCR'd with
-                                       Tesseract (slow): Spanish ("spa") for files under ES/, English
+                                       Tesseract (slow), in the language of the file's language folder
+                                       (assets/<System>/ES/ -> Spanish; see OCR_LANGS), English
                                        otherwise. Needs the language data: brew install tesseract-lang.
                                        A full run (no paths) also deletes text of PDFs no longer in assets/.
   library.py search <regex> [subpath]  Case-insensitive search over extracted text.
                                        Prints <file> p.<page>: <line>. subpath filters files,
-                                       e.g. "ES/", "Keeper", or "Adventures/<name>".
+                                       e.g. "CoC/", "CoC/ES/", "Keeper", or "Adventures/<name>".
   library.py toc <pdf>                 Print the PDF's bookmarks (outline) with page numbers.
   library.py pages <pdf> <n>[-<m>]     Print the text of page n (or pages n..m), 1-based.
   library.py regions <pdf|image> <n> [--raster]
@@ -114,9 +115,16 @@ def iter_pdfs(paths):
                     yield os.path.join(dirpath, name)
 
 
+# Tesseract language for each language folder (assets/<System>/<LANG>/...).
+OCR_LANGS = {"EN": "eng", "ES": "spa", "CA": "cat", "FR": "fra", "DE": "deu", "IT": "ita", "PT": "por"}
+
+
 def ocr_lang(pdf):
     rel = os.path.relpath(pdf, ASSETS).replace(os.sep, "/")
-    return "spa" if rel.startswith("ES/") else "eng"
+    for part in rel.split("/")[:-1]:
+        if part.upper() in OCR_LANGS:
+            return OCR_LANGS[part.upper()]
+    return "eng"
 
 
 def is_ocred(out):

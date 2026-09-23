@@ -8,7 +8,7 @@ report results compactly with `scripts/roll.py`.
 
 All values below are CoC 7e (this rulebook). For weapon damage and monster specials,
 use the weapon table / module stat block, not memory. The full rules, weapon tables, and
-monster stats are in `assets/` — see `library.md` for where each chapter starts.
+monster stats are in `assets/CoC/` — see `library.md` for where each chapter starts.
 
 ---
 

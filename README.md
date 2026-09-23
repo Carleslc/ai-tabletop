@@ -1,55 +1,65 @@
 # ai-tabletop
 
-Turn GitHub Issues into a Call of Cthulhu tabletop.
+Turn GitHub Issues into a tabletop role-playing table, run and played by AI agents and people.
 
-One fork, everyone at the table. The Keeper and the player AIs each connect through their own clients and play together in the same GitHub repo via Issues. Transparent dice rolls, permanent session logs, seamless cross-device continuity.
+One set of tools for any game system: the table (GitHub Issues), the worker, the dice and the book library are shared, and each system brings its own skills with its rules. The game master (GM) and the player AIs each connect through their own clients and play together in the same GitHub repo via Issues. Transparent dice rolls, permanent session logs, seamless cross-device continuity.
 
-If you already play in a group chat (Discord, Telegram…) or just want to play in a single AI conversation, you don't need to deploy the worker — feed the `skills/` SKILL.md files directly to your AIs. The worker is for people without a group chat, or who want sessions recorded publicly on GitHub.
+If you already play in a group chat (Discord, Telegram…) or just want to play in a single AI conversation, you don't need to deploy the worker — feed the skills' SKILL.md files directly to your AIs. The worker is for people without a group chat, or who want sessions recorded on GitHub.
 
-Sessions can be played in any language. The skills are written in English; the Keeper narrates in whatever language you speak to it (e.g. Spanish), or the one you ask for.
+Sessions can be played in any language. The skills are written in English; the GM narrates in whatever language you speak to it (e.g. Spanish), or the one you ask for.
 
 ## For AI agents: start here
 
-If a person gave you this repository's link to play Call of Cthulhu, this is how to get them playing.
+If a person gave you this repository's link to play a tabletop role-playing game, this is how to get them playing.
 
-1. **Ask what they want**, briefly: will you be the Keeper (you run the game) or play an investigator; the language; alone or with other players (humans or AIs); and their own scenario (a PDF, a published adventure) or an original one.
-2. **Load the skill for your role** and follow it from then on:
-   - **Keeper** (the usual case): [`skills/coc-kp/SKILL.md`](skills/coc-kp/SKILL.md), plus the files in [`skills/coc-kp/references/`](skills/coc-kp/references/) when it tells you to read them.
-   - **Investigator**, when someone else (human or AI) is the Keeper: [`skills/coc-player/SKILL.md`](skills/coc-player/SKILL.md).
+1. **Ask what they want**, briefly: which game (see [Systems](#systems)); will you be the GM (you run the game) or play a character; the language; alone or with other players (humans or AIs); and their own scenario (a PDF, a published adventure) or an original one.
+2. **Load the skill for that system and your role** (see [Systems](#systems)) and follow it from then on:
+   - **GM** (the usual case): the system's GM skill, e.g. [`skills/coc-kp/SKILL.md`](skills/coc-kp/SKILL.md) for Call of Cthulhu, plus the files in its `references/` folder when it tells you to read them.
+   - **Player**, when someone else (human or AI) is the GM: the system's player skill, e.g. [`skills/coc-player/SKILL.md`](skills/coc-player/SKILL.md).
 
    Without a clone, read them raw, e.g. `https://raw.githubusercontent.com/Carleslc/ai-tabletop/main/skills/coc-kp/SKILL.md`.
+
+   If the game has no skills here yet, say so: you can still run it from its rulebook, or the person can add the system (see [Adding a game system](#adding-a-game-system)).
 3. **Set up the table** that fits (see [Ways to play](#ways-to-play)):
-   - **In this conversation** (one person, plus any AI teammates you run as the Keeper): nothing to set up. Start with the skill's opening questions. With a shell, clone this repository and roll with `scripts/roll.py`; without one, roll yourself and report each result.
-   - **On GitHub** (several players, separate AI players, or a permanent record): the table is an Issue in a table repository, and each comment is a turn. The person does the account steps (create the repository, a token, the worker, invite the players); guide them through [Quick start with the worker](#quick-start-with-the-worker). A Keeper with a shell and the `gh` CLI can run the table without the worker (`gh issue create`, `gh issue comment`).
-   - **With the person's own books**: they are not in this repository. They go in `assets/` of the person's private copy (see [Library](#library)). With other players, keep the adventures out of the repository the players can read ([step 5](#5-keep-the-adventures-away-from-the-players-multiplayer)): the Keeper works from the private library, the players from the table repository.
-4. **Keep the roles apart.** As a player, never read adventures, Keeper books or the Keeper's notes. As the Keeper, never post hidden information at the table.
+   - **In this conversation** (one person, plus any AI teammates you run as the GM): nothing to set up. Start with the skill's opening questions. With a shell, clone this repository and roll with `scripts/roll.py`; without one, roll yourself and report each result.
+   - **On GitHub** (several players, separate AI players, or a permanent record): the table is an Issue in a table repository, and each comment is a turn. The person does the account steps (create the repository, a token, the worker, invite the players); guide them through [Quick start with the worker](#quick-start-with-the-worker). A GM with a shell and the `gh` CLI can run the table without the worker (`gh issue create`, `gh issue comment`).
+   - **With the person's own books**: they are not in this repository. They go in `assets/<System>/<LANG>/` of the person's private copy (see [Library](#library)). With other players, keep the adventures out of the repository the players can read ([step 5](#5-keep-the-adventures-away-from-the-players-multiplayer)): the GM works from the private library, the players from the table repository.
+4. **Keep the roles apart.** As a player, never read adventures, GM books or the GM's notes. As the GM, never post hidden information at the table.
 
 ## What this is
 
 A tabletop infrastructure pack with four components:
 
 1. **Cloudflare Worker** — A zero-dependency MCP server that lets AI clients (claude.ai / ChatGPT / Claude Code) read and write your GitHub repo. Files are the campaign library ("books"), Issues are the table.
-2. **Keeper + Player skills** — Behavior guides for AIs. `coc-kp` teaches an AI to be the Keeper running the game. `coc-player` teaches an AI to be an investigator playing at the table.
-3. **Helper scripts** — `scripts/roll.py` (dice roller with CoC 7e success levels), `scripts/library.py` (search and read the PDF books page by page), and `scripts/music.py` (scene background music on macOS).
-4. **Library** (`assets/`, your own books, not included) — rulebooks, Mythos references, character sheets, and adventures in any language, catalogued for the Keeper in [`skills/coc-kp/references/library.md`](skills/coc-kp/references/library.md).
+2. **Skills, per game system** — Behavior guides for AIs: a GM skill teaches an AI to run the game, a player skill to play a character at the table. Each system has its own, because each has its own rules (see [Systems](#systems)).
+3. **Helper scripts**, shared by every system — `scripts/roll.py` (any dice expression, plus d100 roll-under checks with success levels), `scripts/library.py` (search and read the PDF books page by page, extract handouts), and `scripts/music.py` (scene background music on macOS).
+4. **Library** (`assets/`, your own books, not included) — rulebooks, supplements, character sheets, and adventures, one folder per system and language, catalogued for the GM in the GM skill's `references/library.md`.
 
-Together: feed the skills to different AIs (one as Keeper, the rest as players). They use the worker to "sit around the table" in your GitHub repo's Issues. Comments are turns.
+Together: feed the skills to different AIs (one as GM, the rest as players). They use the worker to "sit around the table" in your GitHub repo's Issues. Comments are turns.
+
+## Systems
+
+| System | Books in | GM skill | Player skill | GM tag |
+|---|---|---|---|---|
+| Call of Cthulhu 7th Edition | `assets/CoC/` | [`coc-kp`](skills/coc-kp/SKILL.md) (the Keeper) | [`coc-player`](skills/coc-player/SKILL.md) (an investigator) | `[KP]` |
+
+Skills are named `<system>-<role>`: the player skill is `<system>-player`, and the GM skill takes the system's name for its GM (`coc-kp` for the Keeper; a Dungeons & Dragons one would be `dnd-dm`).
 
 ## Ways to play
 
-| Mode | Keeper | Investigators | What you need |
+| Mode | GM | Players | What you need |
 |---|---|---|---|
-| **Solo gamebook** | The published solo adventure (e.g. a PDF) | You | `coc-kp` in *solo gamebook mode* as an assistant: it tracks your sheet, rolls dice, and follows the numbered entries without spoiling others. Or run the book fully by yourself with `scripts/roll.py`. |
-| **Solo with an AI Keeper** | AI (`coc-kp`) | You, optionally plus AI teammates | One AI conversation. Teammates can be run by the Keeper (lightweight) or by separate AIs with `coc-player` (true hidden information). |
-| **You play, AI players join** | AI (`coc-kp`) | You + other AIs (`coc-player`) | The worker (or a group chat), one AI client per seat. Use this when a scenario needs more players than you. |
-| **You Keep, AIs play** | You | AIs (`coc-player`) | The worker (or a group chat). |
-| **Fully simulated** | AI (`coc-kp`) | AIs (`coc-player`) | The worker. You read the Issue thread like a story. Use separate AI sessions per seat so players never see the Keeper's secrets. |
+| **Solo gamebook** | The published solo adventure (e.g. a PDF) | You | The GM skill as an assistant (`coc-kp` has a *solo gamebook mode*): it tracks your sheet, rolls dice, and follows the numbered entries without spoiling others. Or run the book fully by yourself with `scripts/roll.py`. |
+| **Solo with an AI GM** | AI (GM skill) | You, optionally plus AI teammates | One AI conversation. Teammates can be run by the GM (lightweight) or by separate AIs with the player skill (true hidden information). |
+| **You play, AI players join** | AI (GM skill) | You + other AIs (player skill) | The worker (or a group chat), one AI client per seat. Use this when a scenario needs more players than you. |
+| **You GM, AIs play** | You | AIs (player skill) | The worker (or a group chat). |
+| **Fully simulated** | AI (GM skill) | AIs (player skill) | The worker. You read the Issue thread like a story. Use separate AI sessions per seat so players never see the GM's secrets. |
 
-Each role signs its Issue comments with a tag: `[KP]`, `[Character Name]`.
+Each role signs its Issue comments with a tag: the GM with its system's tag (`[KP]` in Call of Cthulhu), players with `[Character Name]`.
 
 ## Quick start without the worker (single conversation)
 
-1. Paste `skills/coc-kp/SKILL.md` into your AI (as a system prompt, project instructions, or a Claude skill — see below).
+1. Paste your system's GM skill into your AI, e.g. `skills/coc-kp/SKILL.md` (as a system prompt, project instructions, or a Claude skill — see below).
 2. Optionally attach your scenario PDF, or a solo adventure PDF.
 3. Say something like *"Let's play Call of Cthulhu in Spanish, I'll be the investigator"* or *"Help me play this solo adventure"*.
 
@@ -61,7 +71,7 @@ Claude Code loads skills from `.claude/skills/` (per project) or `~/.claude/skil
 mkdir -p .claude && ln -s ../skills .claude/skills
 ```
 
-Then invoke `/coc-kp` or `/coc-player`. Run Claude Code from the repo root so `scripts/roll.py` and `scripts/music.py` resolve.
+Then invoke a skill by name, e.g. `/coc-kp` or `/coc-player`. Run Claude Code from the repo root so `scripts/roll.py` and `scripts/music.py` resolve.
 
 ## Quick start with the worker
 
@@ -109,18 +119,18 @@ In claude.ai → Settings → Connectors → Add custom connector, enter:
 https://<worker-name>.<your-subdomain>.workers.dev/mcp?token=<your AUTH_TOKEN>
 ```
 
-Then give `skills/coc-kp/SKILL.md` to one AI (as Keeper, or invoke `/coc-kp`) and `skills/coc-player/SKILL.md` to each AI player.
+Then give the GM skill to one AI (e.g. `skills/coc-kp/SKILL.md`, or invoke `/coc-kp`) and the player skill to each AI player (e.g. `skills/coc-player/SKILL.md`).
 
-The Keeper opens an Issue in your repo as the table using `table_post`. Players take turns by commenting on the Issue with `table_reply`.
+The GM opens an Issue in your repo as the table using `table_post`. Players take turns by commenting on the Issue with `table_reply`.
 
 ### 5. Keep the adventures away from the players (multiplayer)
 
 Anyone invited to a repository can read all of it, so a single repository holding both the table and your adventures lets any player — human or AI — read ahead. Split them:
 
-- **A table repository**, shared with your players: the session Issues, player-facing books (handbook, introductory rules, character sheets), and what the Keeper hands out: investigator sheets, handout images to link from a comment, session recaps. No adventures, no Keeper books, no Keeper notes.
-- **Your library**, private and unshared: adventures, Keeper books, handouts, prep, and the Keeper's notes on the adventure or campaign. The Keeper reads the books locally with `scripts/library.py`; they never need to be online.
+- **A table repository**, shared with your players: the session Issues, player-facing books (player handbooks, introductory rules, character sheets), and what the GM hands out: character sheets, handout images to link from a comment, session recaps. No adventures, no GM books, no GM notes.
+- **Your library**, private and unshared: adventures, GM books, handouts, prep, and the GM's notes on the adventure or campaign. The GM reads the books locally with `scripts/library.py`; they never need to be online.
 
-The Keeper is an AI agent that can run commands where your library is (Claude Code, Codex, Gemini CLI… on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes on the adventure or campaign stay local or in your library repository.
+The GM is an AI agent that can run commands where your library is (Claude Code, Codex, Gemini CLI… on your computer) and needs no worker: it runs the table with the `gh` CLI and publishes player material by pushing to a clone of the table repository, both with your own GitHub credentials. Its private notes on the adventure or campaign stay local or in your library repository.
 
 The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy it from the table repository, so the worker takes that repository's name:
 
@@ -142,8 +152,8 @@ The worker cannot read PDFs, so let it read the table's books through their extr
 
 Which skill each agent uses:
 
-- **Keeper**: `skills/coc-kp/` from your library repository, where you can add your book catalog and campaign notes. Start the agent there, since it reads the books locally.
-- **AI players**: a copy of `skills/coc-player/` in the table repository, adapted to it (everything there is player-safe; say where the extracted text and the Keeper's material live). A player agent should have access to the table repository only, never to your library. The table repository is not a fork, so copy changes to `coc-player` there by hand.
+- **GM**: the system's GM skill (e.g. `skills/coc-kp/`) from your library repository, where you can add your book catalog and campaign notes. Start the agent there, since it reads the books locally.
+- **AI players**: a copy of the system's player skill (e.g. `skills/coc-player/`) in the table repository, adapted to it (everything there is player-safe; say where the extracted text and the GM's material live). A player agent should have access to the table repository only, never to your library. The table repository is not a fork, so copy changes to the player skills there by hand.
 - The skills in this repository are the generic versions: the base for improvements, not for play.
 
 ## Tools (MCP tools exposed by the worker)
@@ -172,10 +182,10 @@ Which skill each agent uses:
 ## Scripts
 
 ```bash
-python scripts/roll.py check 55   # 1D100 vs 55 → Critical / Extreme / Hard / Regular success, Failure, Fumble
-python scripts/roll.py d100
 python scripts/roll.py 1d6
 python scripts/roll.py 1d4+2
+python scripts/roll.py d100
+python scripts/roll.py check 55   # d100 roll-under vs 55 → Critical / Extreme / Hard / Regular success, Failure, Fumble (Call of Cthulhu)
 ```
 
 ```bash
@@ -187,21 +197,29 @@ python scripts/music.py stop
 
 ## Library
 
-The Keeper can use your own Call of Cthulhu books: rulebooks, supplements, and adventures (PDFs, handout images). This repository ships no books. Put yours in `assets/`, one folder per language (`assets/EN/`, `assets/ES/`, …); see [`assets/README.md`](assets/README.md) for the layout and [`skills/coc-kp/references/library.md`](skills/coc-kp/references/library.md) for how the Keeper uses them and the catalog it keeps of them. The Keeper never loads whole books: it extracts their text once and then searches and reads single pages.
+The GM can use your own books: rulebooks, supplements, and adventures (PDFs, handout images). This repository ships no books. Put yours in `assets/`, one folder per system and, inside it, one per language (`assets/CoC/EN/`, `assets/CoC/ES/`, `assets/DnD/EN/`…); see [`assets/README.md`](assets/README.md) for the layout. Each GM skill explains how it uses them and keeps a catalog of them in its `references/library.md` (e.g. [`coc-kp`'s](skills/coc-kp/references/library.md)). The GM never loads whole books: it extracts their text once and then searches and reads single pages.
 
 ```bash
 pip install pymupdf
-python scripts/library.py extract                  # all PDFs -> library/*.txt (git-ignored cache)
-python scripts/library.py search "Sanity|Cordura"  # matches with file and page number
-python scripts/library.py pages "EN/<book>.pdf" 152-154
+python scripts/library.py extract                  # all PDFs -> library/<same path>.txt (git-ignored cache)
+python scripts/library.py search "Sanity|Cordura" "CoC/"   # matches with file and page number
+python scripts/library.py pages "CoC/EN/<book>.pdf" 152-154
 python scripts/library.py render "<pdf>" 12        # page -> PNG (200 dpi), e.g. to read a scanned page
 python scripts/library.py regions "<pdf>" 12       # list the handouts on a page (+ preview)
 python scripts/library.py render "<pdf>" 12 --near "Handout 3"   # just that handout, cropped and upright
 ```
 
-Scanned PDFs need OCR: `brew install tesseract tesseract-lang`, then `python scripts/library.py extract --ocr`.
+Scanned PDFs need OCR: `brew install tesseract tesseract-lang`, then `python scripts/library.py extract --ocr`. The OCR language comes from the language folder (`ES/` → Spanish, `FR/` → French…; English otherwise).
 
 The books are copyrighted: keep them out of any public repository (this fork's `.gitignore` ignores `assets/` for that reason; to version your books, use a private repository and drop that rule there), and share with your players only the handouts they would receive at the table.
+
+## Adding a game system
+
+1. **Books**: put them in `assets/<System>/<LANG>/` (a short folder name: `DnD`, `7Sea`…).
+2. **Skills**: create `skills/<system>-<gm>/SKILL.md` (e.g. `dnd-dm`) and `skills/<system>-player/SKILL.md`, with that system's rules, tone, character sheets and GM tag. The Call of Cthulhu skills are a good model: most of `coc-kp` (running the table on Issues, prep and campaign notes, reading the books, publishing player material) is not specific to Call of Cthulhu, only its rules and tone are.
+3. **Catalog**: in the GM skill's `references/library.md`, list the system's books in `assets/<System>/` (see `coc-kp`'s for the format).
+4. **Dice**: `scripts/roll.py` rolls any `NdX+M` expression; `check` is the d100 roll-under of Call of Cthulhu and similar systems. Add a subcommand if the system needs another mechanic (dice pools, exploding dice…).
+5. Add the system to the [Systems](#systems) table.
 
 ## Adding tools
 

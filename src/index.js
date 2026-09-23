@@ -2,7 +2,7 @@
  * ai-tabletop MCP server (Cloudflare Worker, zero-dep)
  *
  * Remote MCP bridge that turns GitHub Issues into a tabletop RPG table.
- * The Keeper and the player AIs each connect from their own client and share
+ * The game master and the player AIs each connect from their own client and share
  * the same GitHub repo as the table through this worker.
  *
  * If you already have a group chat (Discord / Telegram...), you don't need this
@@ -369,12 +369,12 @@ async function tableClose(env, { number, action }) {
 const TOOLS = [
   {
     name: "book_search",
-    description: "Search the repository. Without path: markdown files (sheets, recaps, notes), returns file paths. With path: the extracted text of the books (a book's .pdf or .txt path, or a folder such as library/EN), returns <file> p.<page>: <line>.",
+    description: "Search the repository. Without path: markdown files (sheets, recaps, notes), returns file paths. With path: the extracted text of the books (a book's .pdf or .txt path, or a folder such as library/CoC/EN), returns <file> p.<page>: <line>.",
     inputSchema: {
       type: "object",
       properties: {
         query: { type: "string", description: "Words, or a case-insensitive regex such as \"Sanity|Cordura\"." },
-        path: { type: "string", description: "Book or folder to search, e.g. assets/EN/Investigator_Handbook.pdf or library/ES. Omit to search markdown files." },
+        path: { type: "string", description: "Book or folder to search, e.g. assets/CoC/EN/Investigator_Handbook.pdf or library/CoC/ES. Omit to search markdown files." },
         limit: { type: "integer", description: "Max results: files without path (up to 25), lines with path (up to 50)." },
       },
       required: ["query"],
@@ -387,7 +387,7 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: {
-        path: { type: "string", description: "Relative path, e.g. table/my-scenario/recap-1.md or assets/EN/Investigator_Handbook.pdf." },
+        path: { type: "string", description: "Relative path, e.g. table/my-scenario/recap-1.md or assets/CoC/EN/Investigator_Handbook.pdf." },
         pages: { type: "string", description: "PDF page or range of a book, e.g. \"12\" or \"12-14\" (page indices as in book_search results)." },
       },
       required: ["path"],

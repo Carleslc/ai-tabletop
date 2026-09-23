@@ -1,8 +1,8 @@
-# Library: rulebooks, supplements, and adventures in `assets/`
+# Library: rulebooks, supplements, and adventures in `assets/CoC/`
 
-Read this when you need an exact rule, a monster/spell/tome write-up, a list of playable adventures, a pre-generated investigator, a handout, or when preparing any scenario that lives in `assets/`.
+Read this when you need an exact rule, a monster/spell/tome write-up, a list of playable adventures, a pre-generated investigator, a handout, or when preparing any scenario that lives in `assets/CoC/`.
 
-`assets/` holds the table owner's own Call of Cthulhu books (PDFs and images): rulebooks, supplements, adventures, handouts, and character sheets, organized by language. It is not part of this repository: books are copyrighted, so each owner keeps theirs locally or in a private repository (see `assets/README.md`). **When a book is available, look the rule up instead of relying on memory**, and when rules text and this skill disagree, the book wins (unless the user set a house rule).
+`assets/` holds the table owner's own books, one folder per game system; the Call of Cthulhu ones are in `assets/CoC/` (PDFs and images): rulebooks, supplements, adventures, handouts, and character sheets, organized by language. It is not part of this repository: books are copyrighted, so each owner keeps theirs locally or in a private repository (see `assets/README.md`). **When a book is available, look the rule up instead of relying on memory**, and when rules text and this skill disagree, the book wins (unless the user set a house rule).
 
 ## How to read the books
 
@@ -25,7 +25,7 @@ python scripts/library.py info "<pdf>"                 # page count, usable-text
 - Search in the book's language: Spanish books need Spanish terms (`Cordura`, `Guardián`, `forzar la tirada`), English books English terms.
 - **Scanned PDFs** have no text layer until OCR'd (`extract` lists them). OCR text is searchable but noisy: stray symbols from borders and illustrations, broken words, mixed-up columns, misread numbers. Some native text layers are garbled too (odd symbols, missing accents, overlapping text).
 
-Without a shell, connected only to the worker, you can still read books whose extracted text is committed in the worker's repository: `book_search` with `path` set to a book's `.pdf` path or a folder (`library/EN`) returns `<file> p.<page>: <line>`, and `book_read` with the book's `.pdf` path and `pages` (`"155-158"`) reads those pages. Rendering pages and handouts needs a shell.
+Without a shell, connected only to the worker, you can still read books whose extracted text is committed in the worker's repository: `book_search` with `path` set to a book's `.pdf` path or a folder (`library/CoC/EN`) returns `<file> p.<page>: <line>`, and `book_read` with the book's `.pdf` path and `pages` (`"155-158"`) reads those pages. Rendering pages and handouts needs a shell.
 
 ### Extracted text is an index, the page is the source
 
@@ -42,17 +42,18 @@ Never present garbled OCR to a player, and never "fix" it by guessing: read the 
 
 ```text
 assets/
-├── Character Sheets/            blank sheets (per era), starter-set pregens
-├── EN/                          English books
-│   ├── <core rulebooks, quick-start rules, Keeper references>.pdf
-│   ├── <supplement>/            bestiaries, grimoires, setting books (+ their PDF packs)
-│   └── Adventures/
-│       ├── <adventure or collection>.pdf
-│       └── <adventure>/         book + handouts, pregens, player/Keeper maps, portraits
-└── ES/                          Spanish books (same layout; adventures in Aventuras/)
+└── CoC/                             Call of Cthulhu (other systems have their own folders)
+    ├── Character Sheets/            blank sheets (per era), starter-set pregens
+    ├── EN/                          English books
+    │   ├── <core rulebooks, quick-start rules, Keeper references>.pdf
+    │   ├── <supplement>/            bestiaries, grimoires, setting books (+ their PDF packs)
+    │   └── Adventures/
+    │       ├── <adventure or collection>.pdf
+    │       └── <adventure>/         book + handouts, pregens, player/Keeper maps, portraits
+    └── ES/                          Spanish books (same layout; adventures in Aventuras/)
 ```
 
-Other languages follow the same pattern (`assets/<LANG>/`). Files whose name says Keeper (`Keeper_Maps`, `Keepers-Diagrams`, `keeper_only`, `spoiler`…) are Keeper-only. See `assets/README.md` for naming tips.
+Other languages follow the same pattern (`assets/CoC/<LANG>/`). Paths in the catalog below are relative to `assets/`, as `library.py` accepts them (`CoC/EN/…`). Files whose name says Keeper (`Keeper_Maps`, `Keepers-Diagrams`, `keeper_only`, `spoiler`…) are Keeper-only. See `assets/README.md` for naming tips.
 
 ## Language pairing
 
@@ -60,7 +61,7 @@ Prefer the edition in the table's language. When a book exists in several langua
 
 ## Catalog
 
-The sections below describe *this* library. They start empty: the library owner fills them in, or asks you to. **To build or update the catalog**: list `assets/` (`find assets -type f`), run `extract` (with `--ocr` for scans), and for each book check its bookmarks (`toc`), introduction, and credits page; note the language, rules edition (7e stat blocks use characteristics of 15–90; older editions use 3–18, a Resistance Table, or "POW×5"-style rolls), contents, player count, era, which files are handouts, pregens, or maps, what is Keeper-only, and whether it is scanned. Keep entries short and spoiler-free (contents are scenario titles and premises, never secrets). Until the catalog is filled, explore `assets/` the same way when you need a book.
+The sections below describe *this* library. They start empty: the library owner fills them in, or asks you to. **To build or update the catalog**: list `assets/CoC/` (`find assets/CoC -type f`), run `extract` (with `--ocr` for scans), and for each book check its bookmarks (`toc`), introduction, and credits page; note the language, rules edition (7e stat blocks use characteristics of 15–90; older editions use 3–18, a Resistance Table, or "POW×5"-style rolls), contents, player count, era, which files are handouts, pregens, or maps, what is Keeper-only, and whether it is scanned. Keep entries short and spoiler-free (contents are scenario titles and premises, never secrets). Until the catalog is filled, explore `assets/CoC/` the same way when you need a book.
 
 Legend for the tables: **7e** = ready to play. **old** = earlier edition, convert as you go (see Converting). 🖼 = scanned (OCR'd text, verify against the page image). Paths are relative to `assets/`.
 
@@ -134,4 +135,4 @@ Many adventures, especially older translations, use earlier editions. The offici
 
 ## Prep with the library
 
-When starting an adventure from `assets/`: `extract` it (OCR if scanned), read the introduction and Keeper background privately, build `00_keeper/scenario_frame.md` as in `prep_persistence.md` pointing at the source PDF and page numbers instead of copying the PDF, list its handouts/pregens, and note if it needs conversion. Keep all of this Keeper-only, in your private campaign folder.
+When starting an adventure from `assets/CoC/`: `extract` it (OCR if scanned), read the introduction and Keeper background privately, build `00_keeper/scenario_frame.md` as in `prep_persistence.md` pointing at the source PDF and page numbers instead of copying the PDF, list its handouts/pregens, and note if it needs conversion. Keep all of this Keeper-only, in your private campaign folder.

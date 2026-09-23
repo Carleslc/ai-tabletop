@@ -47,7 +47,7 @@ For a solo gamebook, the same layout works: the book goes in `01_source/`, and `
 
 ## Populate the folder
 
-- If the scenario is already in `assets/`, do not copy the PDF: extract it with `python scripts/library.py extract <pdf>` and record its path (and page ranges for the adventure, if it's part of a collection) in `README.md`. Search it in `library/`.
+- If the scenario is already in `assets/CoC/`, do not copy the PDF: extract it with `python scripts/library.py extract <pdf>` and record its path (and page ranges for the adventure, if it's part of a collection) in `README.md`. Search it in `library/`.
 - Otherwise, copy the original scenario file into `01_source/` and extract its text to `01_source/<scenario>.txt` for fast search (`python scripts/library.py extract` only covers `assets/`; for other files use PyMuPDF or `pdftotext -layout`).
 - Extract player-facing images/maps/handouts into `02_player_materials/handouts/`; create an index in `00_keeper/prep_index.md`.
 - Create `00_keeper/scenario_frame.md` with a spoiler-safe-for-KP framework: major locations, NPCs, timeline/day events, clue gates, handouts, night/dream triggers, hazards, and likely endings. This is a private guardrail, not a player summary.

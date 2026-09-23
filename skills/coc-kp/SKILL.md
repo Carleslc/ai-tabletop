@@ -63,7 +63,7 @@ When possessions, weapons, or purchases matter — filling Possessions on a card
 
 When play enters a rules-dense situation — combat, sanity loss or madness, an opposed contest, or a pushed roll — read `references/rules_reference.md`.
 
-If the repo has an `assets/` folder, it holds the table owner's own books: rulebooks, Mythos references (monsters, deities, spells), character sheets, pregens, handouts, and adventures, organized by language. Read `references/library.md` whenever you need an exact rule, a stat block or spell, a list of adventures to offer, or are preparing one of them. It explains how to search and read the PDFs page by page with `scripts/library.py` without loading whole books, and how to convert older-edition adventures.
+If the repo has an `assets/CoC/` folder, it holds the table owner's own Call of Cthulhu books: rulebooks, Mythos references (monsters, deities, spells), character sheets, pregens, handouts, and adventures, organized by language (`assets/CoC/<LANG>/`). Other folders in `assets/` belong to other game systems: ignore them. Read `references/library.md` whenever you need an exact rule, a stat block or spell, a list of adventures to offer, or are preparing one of them. It explains how to search and read the PDFs page by page with `scripts/library.py` without loading whole books, and how to convert older-edition adventures.
 
 ## Teammate NPCs
 
@@ -162,7 +162,7 @@ If no scenario is provided, create a compact original investigative scenario wit
 
 Do not overprepare in the visible response. Start with the hook and reveal through play.
 
-When `assets/` is available, ground the design and your running of the game in the books' Keeper advice instead of improvising from memory (see `references/library.md` for paths and how to read them page by page):
+When `assets/CoC/` is available, ground the design and your running of the game in the books' Keeper advice instead of improvising from memory (see `references/library.md` for paths and how to read them page by page):
 - **The core Keeper rulebook's Keeper-advice chapter** ("Playing the Game"; its start page is in the catalog's chapter index): preparing a session and setting the tone, NPCs, pacing, the Idea roll, disseminating information and obvious clues, handouts, action scenes, presenting the Mythos, scaring the players, ending a story, **creating scenarios**, and using Lovecraftian themes.
 - **Keeper-advice supplements and references**, if present: ground rules and safety, preparation, handling players, designing scenarios, horror, sanity, the Mythos, NPCs, monsters, and online play.
 - **Setting and threat sources**: setting or era supplements for the place and period (some change rules, such as occupations, skills, or the game system: follow them in that era), the investigator handbook's era chapters for period detail, cult books for cult design, bestiaries and field guides for the threat, and grimoires for its magic.
@@ -174,7 +174,7 @@ For detailed prep workflow, read `references/prep_persistence.md`.
 
 ## Solo gamebook mode
 
-Use this mode when the user provides or picks a published solo adventure (`assets/` may have some, see `references/library.md`): a book of numbered entries where each entry ends with choices or checks that send the reader to another entry (e.g. *Alone Against the Flames*). The book is the Keeper; you are its faithful assistant. Ask which style the user wants if unclear:
+Use this mode when the user provides or picks a published solo adventure (`assets/CoC/` may have some, see `references/library.md`): a book of numbered entries where each entry ends with choices or checks that send the reader to another entry (e.g. *Alone Against the Flames*). The book is the Keeper; you are its faithful assistant. Ask which style the user wants if unclear:
 
 - **Assisted reading** (default): the user reads the book themselves. You keep their character sheet, roll dice on request with `scripts/roll.py`, apply the book's stated results (SAN/HP/Luck changes, items, flags, codewords), track which entries were visited, and answer rules questions. Never read ahead or reveal entries the user has not reached.
 - **Narrated play**: you read the book privately and present one entry at a time, following its text and branching exactly. Paraphrase or narrate the current entry in the table's language, present its choices as the book does (this is the one case where listing options is correct, because the book offers them), roll the checks it calls for, and jump to the entry the result points to. Do not improvise outcomes the book defines; improvise only to answer questions the book leaves open, and keep it consistent with the text.
@@ -187,7 +187,7 @@ When a provided scenario contains player-facing images, maps, diagrams, portrait
 
 Only show materials that are explicitly player-facing or that the Keeper would normally hand to players. Do not reveal keeper-only maps, stat blocks, room keys, future scenes, hidden truths, or GM notes. If an image contains both player-facing and keeper-only information, crop or recreate only the safe player-facing portion, or describe it instead.
 
-For uploaded DOCX/PDF scenario files, extract images when useful and keep a small indexed list for private reference. For adventures in `assets/`, extract exactly the handout or image the investigator should receive with `scripts/library.py regions` and `render --near/--region` (see Handouts in `references/library.md`), check the image before showing it, and never show files, pages, or parts of a page meant for the Keeper only.
+For uploaded DOCX/PDF scenario files, extract images when useful and keep a small indexed list for private reference. For adventures in `assets/CoC/`, extract exactly the handout or image the investigator should receive with `scripts/library.py regions` and `render --near/--region` (see Handouts in `references/library.md`), check the image before showing it, and never show files, pages, or parts of a page meant for the Keeper only.
 
 ## Atmosphere loop
 
