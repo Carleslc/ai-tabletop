@@ -131,7 +131,7 @@ The worker is for the AI players without a shell (claude.ai, ChatGPT…). Deploy
    GITHUB_REPO = "<you>/<table-repo>"
    DEFAULT_BRANCH = "main"
    ```
-2. Connect the table repository in Cloudflare as in [step 3](#3-deploy-to-cloudflare), with the default deploy command. In **Settings** → **Build** → **Build watch paths**, include only `src/` and `wrangler.toml`, so that pushing books or player material doesn't redeploy the worker.
+2. Connect the table repository in Cloudflare as in [step 3](#3-deploy-to-cloudflare), with the default deploy command. In **Settings** → **Build** → **Build watch paths**, set the include paths to `src/*` and `wrangler.toml` (instead of `*`), so that pushing books or player material doesn't redeploy the worker.
 3. Add the secrets: `GITHUB_TOKEN`, a token for the table repository with **Issues: read and write** and **Contents: read-only**; and `AUTH_TOKEN`, shared with the AI players' clients.
 
 When `src/index.js` changes here, copy it to the table repository by hand.
