@@ -1,6 +1,9 @@
 name = "coc-tabletop"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
+# Keep the variables set in the dashboard (GITHUB_REPO, DEFAULT_BRANCH) on every deploy;
+# without this, each Git-triggered deploy deletes them. Secrets are always kept.
+keep_vars = true
 
 # No local wrangler needed. After "Connect to Git" in the Cloudflare dashboard, CF reads this file to deploy.
 # Environment variables (AUTH_TOKEN / GITHUB_TOKEN / GITHUB_REPO / DEFAULT_BRANCH)
