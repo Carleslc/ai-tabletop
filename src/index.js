@@ -160,7 +160,15 @@ async function bookRead(env, { path, pages }) {
   if (!String(path || "").trim()) throw new Error("path is required");
   const p = textPath(path);
   if (!p) throw new Error("path is required");
-  const text = await g.raw(p);
+  let text;
+  try {
+    text = await g.raw(p);
+  } catch (e) {
+    if (/-> 404:/.test(e.message) && p.startsWith("library/") && p.endsWith(".txt")) {
+      throw new Error(`No extracted text for this book (${p}). library/ is git-ignored by default: run scripts/library.py extract and commit library/ in this repository.`);
+    }
+    throw e;
+  }
   const parts = text.split(/\n=== page (\d+) ===\n/);
   if (parts.length < 3) return cap(text);
 
