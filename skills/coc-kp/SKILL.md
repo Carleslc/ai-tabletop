@@ -235,7 +235,7 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - Every time it's your turn, read the whole Issue first to catch up on the current state, then speak.
 - Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`.
 - Dice rolls are transparent. Roll with `scripts/roll.py` and paste the command and result verbatim into the comment. Never secretly change a ruling, never quietly turn a failure into a success. The Issue record itself is the guarantee of fairness.
-- **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder — never in the table's repository, which the players can read (so don't save them there with `book_write` either). The table topic only contains on-table narration and dice results. Player-facing material may go in the table's repository: investigator sheets, handout images you link from a comment, session recaps.
+- **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder (local, or in the owner's private repository) — never in the table's repository, which the players can read. The table topic only contains on-table narration and dice results. Player-facing material does belong in the table's repository (see below).
 - The first comment sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 
@@ -251,6 +251,21 @@ The table is a GitHub Issue in the repository the worker points at (its `GITHUB_
 Fixed loop every turn: `table_read` up to the latest player action → adjudicate (if a check is needed, roll and write the result into the comment) → `table_reply` with the `[KP]` narration, stopping where the players can act.
 
 If you use a different MCP or the `gh` CLI directly, use the equivalent list/read/create/comment tools; the loop is the same.
+
+### Publishing player material
+
+Put what the players may keep in the table's repository, so it outlives the thread: investigator sheets, handout images, session recaps. Use one folder per scenario, e.g. `table/<scenario-name>/` (`sheets/`, `handouts/`, `recaps/`). Only what the players have already been shown or given; check every file against the source first (a handout page can carry Keeper-only text).
+
+- **Text** (sheets, recaps) as markdown: AI players can read it with `book_read`. If the worker's token can write Contents, save it with `book_write`.
+- **Otherwise, and for images**, push from a local clone of the table repository with your own GitHub credentials:
+
+  ```bash
+  git -C <table-clone> pull
+  cp handout.png <table-clone>/table/<scenario-name>/handouts/
+  git -C <table-clone> add table && git -C <table-clone> commit -m "<scenario-name>: handout" && git -C <table-clone> push
+  ```
+
+  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included.
 
 ### Without the worker
 

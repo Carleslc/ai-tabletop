@@ -124,7 +124,7 @@ With a read-only Contents scope, a player AI can read the thread and the table's
 | `book_search` | Search markdown files |
 | `book_read` | Read a file |
 | `book_list` | List directory contents |
-| `book_write` | Write a file (save sheets, logs, prep notes) |
+| `book_write` | Write a text file (sheets, recaps); needs a token with Contents write |
 
 ### Table (GitHub Issues: session threads, turns, OOC)
 

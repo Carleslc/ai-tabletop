@@ -127,11 +127,19 @@ async function bookWrite(env, { path, content, message }) {
     branch: g.branch,
     ...(sha ? { sha } : {}),
   };
-  const data = await g.req(
-    "PUT",
-    `/repos/${g.repo}/contents/${encodeURIComponent(p).replace(/%2F/g, "/")}`,
-    body
-  );
+  let data;
+  try {
+    data = await g.req(
+      "PUT",
+      `/repos/${g.repo}/contents/${encodeURIComponent(p).replace(/%2F/g, "/")}`,
+      body
+    );
+  } catch (e) {
+    if (/-> 403:/.test(e.message)) {
+      throw new Error(`This worker's GitHub token is read-only on Contents, so it cannot write ${p}. Push the file from a local clone instead.`);
+    }
+    throw e;
+  }
   return `Wrote ${p} (commit ${data.commit && data.commit.sha ? data.commit.sha.slice(0, 7) : "?"})`;
 }
 
@@ -298,7 +306,7 @@ const TOOLS = [
   },
   {
     name: "book_write",
-    description: "Write a file to the campaign library (save character sheets, session logs, scenario notes).",
+    description: "Write a text file to the repository (character sheets, session recaps). Everyone with access to the repository can read it. Fails if the worker's token is read-only on Contents.",
     inputSchema: {
       type: "object",
       properties: {
