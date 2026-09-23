@@ -236,7 +236,7 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - Start the body of every comment with `[KP]` to distinguish it from players (players post as `[Character Name]`). Prefix the Issue title, e.g. `Session: <scenario name>`.
 - Dice rolls are transparent. Roll with `scripts/roll.py` and paste the command and result verbatim into the comment. Never secretly change a ruling, never quietly turn a failure into a success. The Issue record itself is the guarantee of fairness.
 - **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder (local, or in the owner's private repository) — never in the table's repository, which the players can read. The table topic only contains on-table narration and dice results. Player-facing material does belong in the table's repository (see below).
-- The first comment sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
+- The first comment names the game (Call of Cthulhu 7th Edition, so that players load the `coc-player` skill), sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 
 ### Using the worker (if you're connected to the ai-tabletop worker)
