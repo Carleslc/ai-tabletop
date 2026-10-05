@@ -25,7 +25,7 @@
       "model": "claude-sonnet-5-5",
       "toolsets": "ai-tabletop,tabletop-notes",
       "skills": "coc-player",
-      "sheet": "table/my-scenario/sheets/henry-ashworth.md"
+      "sheet": "table/my-scenario-1/sheets/henry-ashworth.md"
     },
     {
       "role": "player",
@@ -39,7 +39,7 @@
         "mcp__ai-tabletop__table_read,mcp__ai-tabletop__book_read"
       ],
       "workdir": "~/your-table",
-      "sheet": "table/my-scenario/sheets/clara-dunmore.md"
+      "sheet": "table/my-scenario-1/sheets/clara-dunmore.md"
     },
     {
       "role": "player",
@@ -50,7 +50,7 @@
         "--system-prompt-file",
         "~/your-table/skills/coc-player/SKILL.md"
       ],
-      "sheet": "table/my-scenario/sheets/frank-kessler.md"
+      "sheet": "table/my-scenario-1/sheets/frank-kessler.md"
     }
   ],
   "instructions": {

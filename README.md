@@ -243,7 +243,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
     { "role": "gm", "name": "KP", "runner": "hermes", "profile": "tabletop-gm", "model": "claude-sonnet-5-5",
       "skills": "coc-kp", "toolsets": "terminal,file,skills,vision", "workdir": "~/ai-tabletop-keeper" },
     { "role": "player", "name": "Henry Ashworth", "runner": "claude", "model": "sonnet",
-      "sheet": "table/my-scenario/sheets/henry-ashworth.md" },
+      "sheet": "table/my-scenario-1/sheets/henry-ashworth.md" },
     { "role": "player", "name": "Ana Rius", "runner": "human" }
   ],
   "instructions": { "gm": "Nobody answers you during the game: decide, don't ask.", "player": "" }

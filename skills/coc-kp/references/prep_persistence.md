@@ -39,7 +39,7 @@ Write each table comment as a draft in `06_drafts/<table>/turn-<nn>.md` before p
 
 ## Publish player material to the table
 
-When the table is a GitHub Issue, copy to the table's repository, under `table/<scenario-name>/`, only what the players have already been shown or given (how: "Publishing player material" in `SKILL.md`):
+When the table is a GitHub Issue, copy to the table's repository, under the table's own folder `table/<scenario-name>-<issue>/` (one per table, e.g. `table/the-haunting-2/`), only what the players have already been shown or given (how: "Publishing player material" in `SKILL.md`):
 
 - `sheets/`: investigator cards from `03_character_cards/`, and NPC teammate cards that hold nothing Keeper-only.
 - `handouts/`: handouts from `02_player_materials/handouts/`, once handed out.

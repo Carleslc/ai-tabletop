@@ -259,18 +259,18 @@ If you use a different MCP or the `gh` CLI directly, use the equivalent list/rea
 
 ### Publishing player material
 
-Put what the players may keep in the table's repository, so it outlives the thread: investigator sheets, handout images, session recaps. Use one folder per scenario, `table/<scenario-name>/` (`sheets/`, `handouts/`, `recaps/`; what goes where: `references/prep_persistence.md`). Only what the players have already been shown or given; check every file against the source first (a handout page can carry Keeper-only text).
+Put what the players may keep in the table's repository, so it outlives the thread: investigator sheets, handout images, session recaps. Use one folder per table, `table/<scenario-name>-<issue>/` (e.g. `table/the-haunting-2/` for the table on Issue #2), so several tables of the same adventure never mix their material: `sheets/`, `handouts/`, `recaps/` (what goes where: `references/prep_persistence.md`). Copy into it the files of this table, even when an earlier table of the same adventure published them already. Only what the players have already been shown or given; check every file against the source first (a handout page can carry Keeper-only text).
 
 - **Text** (sheets, recaps) as markdown: AI players can read it with `book_read`. If the worker's token can write Contents, save it with `book_write`.
 - **Otherwise, and for images**, push from a local clone of the table repository with your own GitHub credentials:
 
   ```bash
   git -C <table-clone> pull
-  cp handout.png <table-clone>/table/<scenario-name>/handouts/
-  git -C <table-clone> add table && git -C <table-clone> commit -m "<scenario-name>: handout" && git -C <table-clone> push
+  cp handout.png <table-clone>/table/<scenario-name>-<issue>/handouts/
+  git -C <table-clone> add table && git -C <table-clone> commit -m "<scenario-name>-<issue>: handout" && git -C <table-clone> push
   ```
 
-  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included. AI players see it too: the table runner attaches the images of new replies to their turn, and the worker's `book_read` returns image files as images. Still, describe every image in the comment (what it is, what can be seen) and transcribe the text an investigator can read in it: not every player, human or AI, reads images well, and a description makes the handout searchable in the thread.
+  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>-<issue>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included. AI players see it too: the table runner attaches the images of new replies to their turn, and the worker's `book_read` returns image files as images. Still, describe every image in the comment (what it is, what can be seen) and transcribe the text an investigator can read in it: not every player, human or AI, reads images well, and a description makes the handout searchable in the thread.
 
 ### Without the worker
 
