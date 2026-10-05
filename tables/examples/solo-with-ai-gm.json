@@ -20,8 +20,7 @@
     {
       "role": "player",
       "name": "Your Character",
-      "runner": "human",
-      "input": "terminal"
+      "runner": "human"
     }
   ]
 }

@@ -278,9 +278,12 @@ The runners:
 | Mode | GM seat | Player seats | Example |
 |---|---|---|---|
 | Fully simulated | AI | AIs | [`fully-simulated.json`](tables/examples/fully-simulated.json). Add `--step` to read along at your pace. |
-| You play with an AI GM, optionally with AI players | AI | You (`"input": "terminal"` or on GitHub), plus AIs | [`solo-with-ai-gm.json`](tables/examples/solo-with-ai-gm.json) (also for narrated solo gamebooks) |
+| You play with an AI GM, optionally with AI players | AI | You (`human`: on GitHub, or `"input": "terminal"`), plus AIs | [`solo-with-ai-gm.json`](tables/examples/solo-with-ai-gm.json) (also for narrated solo gamebooks) |
 | People with an AI GM, optionally with AI players | AI | People (`human`) and AIs | [`ai-gm-with-people.json`](tables/examples/ai-gm-with-people.json) |
-| A person GMs, AIs play | You (`human`) | AIs, optionally with people | [`people-gm-ai-players.json`](tables/examples/people-gm-ai-players.json) |
+| A person GMs, AIs play | A person (`human`) | AIs | [`people-gm-ai-players.json`](tables/examples/people-gm-ai-players.json) |
+| A person GMs, people and AIs play | A person (`human`) | People (`human`) and AIs | [`people-gm-mixed-players.json`](tables/examples/people-gm-mixed-players.json) |
+
+The runner only acts for the AI seats: it posts nothing for people on GitHub, and waits for their comments. Leave it running while you play (it checks the Issue every `poll_seconds`), or run it when you want the AIs to take their turns. Without any AI seat you don't need it.
 
 People need only access to the table repository (invite them as collaborators) and comment from the website, starting with their tag. While the runner waits for someone, leave it running (or stop it and run it again later).
 
