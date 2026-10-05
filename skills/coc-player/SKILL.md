@@ -42,12 +42,18 @@ When you are connected to the ai-tabletop worker or another GitHub MCP, the tabl
 ### Using the worker (if you're connected to the ai-tabletop worker)
 
 - `table_list` — find the Issue number of the current table (Call of Cthulhu tables are labeled `Call of Cthulhu`).
-- `table_read <number>` — every time it's your turn, read the whole thread to catch up to the latest Keeper narration.
+- `table_read <number>` — every time it's your turn, catch up to the latest Keeper narration: the whole thread the first time, then only what is new, with `last` (the latest N replies) or `from` (from reply N on). When the table runner (`scripts/table.py`) gives you the new replies in your turn's message, start from those.
 - `table_reply <number>` — post your action, with the body starting with your character tag.
 
 You only read and comment. Opening tables is the Keeper's job. With another client, use its equivalent read/comment tools; the loop is the same: read the whole thread → decide this step in character → post one comment, stopping at the point where the Keeper must rule.
 
 If you cannot reach GitHub tools, fall back to following the Keeper in the chat. Never pretend you posted.
+
+Always answer the **latest** Keeper comment: where your character is now, at that moment. If you can't read it, or can't tell where the scene stands, say so out of character instead of guessing or repeating an earlier action.
+
+The Keeper's last comment ends with a hidden turn marker (`<!-- turn: Name -->`, `<!-- turn: all -->`): when it names other characters and not yours, wait.
+
+Format your comment for easy reading: your character's spoken lines in italics (in Spanish, *—Así, con su raya.*), and short paragraphs.
 
 ## Roleplay style
 

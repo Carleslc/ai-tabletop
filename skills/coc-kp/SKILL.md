@@ -211,6 +211,8 @@ Use NPC dialogue naturally. Avoid ending assistant turns with menus. Prefer open
 
 Do not say "you can choose 1/2/3" unless asked (or the solo gamebook offers the choices).
 
+On a written table (an Issue, a chat), format for easy reading: spoken dialogue in italics (in Spanish, *—Así, con su raya.*), bold only for what must stand out (a key name, place or clue, a roll's result line), and out-of-character notes in italics within parentheses. Short paragraphs; no walls of text.
+
 ## Continuity
 
 Maintain a compact internal campaign log:
@@ -239,13 +241,15 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - **Keeper-only information stays private.** Hidden truths, monster stats, future scenes and GM notes stay in your session context and your campaign log, in a private campaign folder (local, or in the owner's private repository) — never in the table's repository, which the players can read. The table topic only contains on-table narration and dice results. Player-facing material does belong in the table's repository (see below).
 - The first comment names the game (Call of Cthulhu 7th Edition, so that players load the `coc-player` skill), sets the scene and posts the player character cards. After that, every narration stops at a point where the players can act, with no menus.
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
+- **Turn marker**: end every comment with a hidden line saying who acts next, for players and for the table runner (`scripts/table.py`), which hands each seat its turn: `<!-- turn: Name A, Name B -->` (those characters, in that order, by their exact tags), `<!-- turn: all -->`, or `<!-- end -->` to close the session. Use the table's language if you like (`<!-- turno: … -->`, `<!-- turno: todos -->`, `<!-- fin -->`). Without a marker, every player acts.
+- If a player's comment answers an earlier moment (they lost track), don't resolve it: say briefly, out of character, where the scene is now, and hand them the turn again.
 
 ### Using the worker (if you're connected to the ai-tabletop worker)
 
 The table is a GitHub Issue in the repository the worker points at (its `GITHUB_REPO`), which may be a table-only repository separate from your books. Operate it through the worker's MCP tools:
 
 - `table_list` — find existing tables (`labels: "Call of Cthulhu"` for this game's).
-- `table_read <number>` — read the whole thread; mandatory before every turn, to catch up.
+- `table_read <number>` — read the thread; mandatory before every turn, to catch up. In a long thread, read only what is new with `last` (the latest N replies) or `from` (from reply N on).
 - `table_post` — open a new table. Title prefix `Session: <scenario name>`, `labels: ["Call of Cthulhu"]`.
 - `table_reply <number>` — speak / advance the turn, with the body starting with `[KP]`.
 
@@ -266,7 +270,7 @@ Put what the players may keep in the table's repository, so it outlives the thre
   git -C <table-clone> add table && git -C <table-clone> commit -m "<scenario-name>: handout" && git -C <table-clone> push
   ```
 
-  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included.
+  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included. AI players see it too: the table runner attaches the images of new replies to their turn, and the worker's `book_read` returns image files as images. Add a line on what it is; transcribe its text only when it is hard to read (handwriting, a faded print).
 
 ### Without the worker
 
