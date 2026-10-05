@@ -163,7 +163,7 @@ Which skill each agent uses:
 | Tool | Purpose |
 |---|---|
 | `book_search` | Search markdown files; with a `path`, the extracted text of a book or folder (returns page numbers) |
-| `book_read` | Read a file; a book's `.pdf` path reads its extracted text, optionally only some `pages` |
+| `book_read` | Read a file; a book's `.pdf` path reads its extracted text, optionally only some `pages`; an image (handout, map) comes back as an image |
 | `book_list` | List directory contents |
 | `book_write` | Write a text file (sheets, recaps); needs a token with Contents write |
 

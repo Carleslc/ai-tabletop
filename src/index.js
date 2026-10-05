@@ -35,11 +35,12 @@ function gh(env) {
   };
 
   // Raw file content (text), for files of up to 100 MB (the JSON API stops at 1 MB).
-  async function raw(path) {
+  async function raw(path, { binary = false } = {}) {
     const res = await fetch(
       `${base}/repos/${repo}/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}?ref=${branch}`,
       { headers: { ...headers, Accept: "application/vnd.github.raw" } }
     );
+    if (binary && res.ok) return new Uint8Array(await res.arrayBuffer());
     const text = await res.text();
     if (!res.ok) {
       let msg = res.statusText;
@@ -155,11 +156,39 @@ async function bookSearch(env, { query, limit, path }) {
   return hits.length ? hits.join("\n") : `No matches for: ${q} in ${p}`;
 }
 
+const IMAGE_TYPES = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp" };
+const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+
+function base64(bytes) {
+  let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin);
+}
+
+// An image file (a handout, a map) as an MCP image block, so clients that see images can look at it.
+async function readImage(g, p, mimeType) {
+  const bytes = await g.raw(p, { binary: true });
+  const link = `https://github.com/${g.repo}/blob/${g.branch}/${p}?raw=true`;
+  if (bytes.length > MAX_IMAGE_BYTES) {
+    return `${p}: image too large to send (${Math.round(bytes.length / 1024)} KB). Link: ${link}`;
+  }
+  return {
+    content: [
+      { type: "text", text: `${p} (${Math.round(bytes.length / 1024)} KB). Link: ${link}` },
+      { type: "image", data: base64(bytes), mimeType },
+    ],
+  };
+}
+
 async function bookRead(env, { path, pages }) {
   const g = gh(env);
   if (!String(path || "").trim()) throw new Error("path is required");
   const p = textPath(path);
   if (!p) throw new Error("path is required");
+  const ext = (p.split(".").pop() || "").toLowerCase();
+  if (IMAGE_TYPES[ext]) return readImage(g, p, IMAGE_TYPES[ext]);
   let text;
   try {
     text = await g.raw(p);
@@ -400,7 +429,7 @@ const TOOLS = [
   },
   {
     name: "book_read",
-    description: "Read one file by relative path. A book's .pdf path reads its extracted text (library/<path>.txt); pass pages to read part of it.",
+    description: "Read one file by relative path. A book's .pdf path reads its extracted text (library/<path>.txt); pass pages to read part of it. An image (.png, .jpg, .gif, .webp: handouts, maps) is returned as an image.",
     inputSchema: {
       type: "object",
       properties: {
@@ -581,12 +610,10 @@ async function handleRpc(msg, env) {
     }
     try {
       const args = params.arguments || {};
-      const text = await tool.handler(env, args);
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: { content: [{ type: "text", text }] },
-      };
+      const out = await tool.handler(env, args);
+      // Handlers return text, or a full result with other content blocks (images).
+      const result = typeof out === "string" ? { content: [{ type: "text", text: out }] } : out;
+      return { jsonrpc: "2.0", id, result };
     } catch (e) {
       return {
         jsonrpc: "2.0",
