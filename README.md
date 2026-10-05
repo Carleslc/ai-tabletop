@@ -172,7 +172,7 @@ Which skill each agent uses:
 | Tool | Purpose |
 |---|---|
 | `table_list` | List table topics |
-| `table_read` | Read a topic + all replies |
+| `table_read` | Read a topic and its replies (`last` / `from` for only the latest ones) |
 | `table_post` | Create a new topic (start a session, recruit, OOC) |
 | `table_reply` | Reply to a topic (your turn) |
 | `table_update` | Edit topic title/body |

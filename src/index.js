@@ -257,17 +257,34 @@ async function tableList(env, { state, labels, limit }) {
     .join("\n");
 }
 
-async function tableRead(env, { number }) {
+async function tableRead(env, { number, from, last }) {
   const g = gh(env);
   const num = parseInt(number, 10);
   if (!num) throw new Error("number is required");
   const issue = await g.req("GET", `/repos/${g.repo}/issues/${num}`);
-  const comments = await g.req("GET", `/repos/${g.repo}/issues/${num}/comments?per_page=50`);
+  // Every reply, however long the thread: GitHub pages comments 100 at a time.
+  const comments = [];
+  for (let page = 1; ; page++) {
+    const batch = await g.req("GET", `/repos/${g.repo}/issues/${num}/comments?per_page=100&page=${page}`);
+    comments.push(...(batch || []));
+    if (!batch || batch.length < 100) break;
+  }
+  const total = comments.length;
+  let start = 1; // replies are numbered from 1
+  if (from) start = Math.max(1, parseInt(from, 10) || 1);
+  else if (last) start = Math.max(1, total - (parseInt(last, 10) || total) + 1);
+  const partial = start > 1;
+
   let out = `#${issue.number} ${issue.title} [${issue.state}]\n`;
-  out += `labels: ${(issue.labels || []).map((l) => l.name).join(", ") || "none"}\n\n`;
-  out += `${issue.body || "(no body)"}\n`;
-  for (const c of comments || []) {
-    out += `\n--- ${c.user && c.user.login} ---\n${c.body || ""}\n`;
+  out += `labels: ${(issue.labels || []).map((l) => l.name).join(", ") || "none"}\n`;
+  out += `replies: ${total}${partial ? ` (showing ${start}-${total}; read the rest with from or last)` : ""}\n\n`;
+  if (!partial) out += `${issue.body || "(no body)"}\n`;
+  comments.slice(start - 1).forEach((c, i) => {
+    out += `\n--- reply ${start + i} (${c.user && c.user.login}, ${c.created_at}) ---\n${c.body || ""}\n`;
+  });
+  if (!partial && out.length > MAX) {
+    out = out.slice(0, 2000) + `\n\n[...]\n\n` + out.slice(-(MAX - 2100));
+    out += `\n\n[Long thread: the middle was cut. Read it in parts with from (reply number) or last (latest replies).]`;
   }
   return out;
 }
@@ -432,10 +449,14 @@ const TOOLS = [
   },
   {
     name: "table_read",
-    description: "Read one table topic and all its replies by number.",
+    description: "Read one table topic and its replies by number. Replies are numbered from 1. In a long thread, read only what is new with last (the latest N replies) or from (from reply N on).",
     inputSchema: {
       type: "object",
-      properties: { number: { type: "integer", description: "Issue number." } },
+      properties: {
+        number: { type: "integer", description: "Issue number." },
+        last: { type: "integer", description: "Only the latest N replies (without the topic body)." },
+        from: { type: "integer", description: "Only replies from this number on (without the topic body)." },
+      },
       required: ["number"],
     },
     handler: tableRead,
