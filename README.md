@@ -279,7 +279,7 @@ The runners:
 |---|---|---|---|
 | Fully simulated | AI | AIs | [`fully-simulated.json`](tables/examples/fully-simulated.json). Add `--step` to read along at your pace. |
 | You play with an AI GM, optionally with AI players | AI | You (`human`: on GitHub, or `"input": "terminal"`), plus AIs | [`solo-with-ai-gm.json`](tables/examples/solo-with-ai-gm.json) (also for narrated solo gamebooks) |
-| People with an AI GM, optionally with AI players | AI | People (`human`) and AIs | [`ai-gm-with-people.json`](tables/examples/ai-gm-with-people.json) |
+| People and AIs play, with an AI GM | AI | People (`human`) and AIs | [`ai-gm-mixed-players.json`](tables/examples/ai-gm-mixed-players.json) |
 | A person GMs, AIs play | A person (`human`) | AIs | [`people-gm-ai-players.json`](tables/examples/people-gm-ai-players.json) |
 | A person GMs, people and AIs play | A person (`human`) | People (`human`) and AIs | [`people-gm-mixed-players.json`](tables/examples/people-gm-mixed-players.json) |
 
