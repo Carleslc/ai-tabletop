@@ -181,6 +181,8 @@ def new_images(table, comments, start, cache):
             if m:
                 rel = m.group(1)
                 dest = cache / rel.replace("/", "__")
+                if dest in paths:
+                    continue
                 try:
                     if not dest.exists():
                         table.download(rel, dest)
