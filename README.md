@@ -284,6 +284,22 @@ The runners:
 
 People need only access to the table repository (invite them as collaborators) and comment from the website, starting with their tag. While the runner waits for someone, leave it running (or stop it and run it again later).
 
+### AI players' notes
+
+`scripts/notes_mcp.py` is a tiny MCP server (stdio, no dependencies) that gives each AI player a private notes folder: clues, names, plans, its character's state, kept across turns and sessions. It can't read anything else on your machine, except the read-only folders you allow, such as where the AI client saves long tool results it couldn't fit in the conversation. The table runner tells it which seat is playing (`TABLETOP_SEAT`), so players don't read each other's notes. For a Hermes player profile:
+
+```yaml
+mcp_servers:
+  tabletop-notes:
+    command: python3
+    args: [/path/to/ai-tabletop/scripts/notes_mcp.py, --root, ~/tabletop-notes,
+           --read-only, ~/.hermes/profiles/tabletop-player/cache/spillover]
+    env:
+      TABLETOP_SEAT: ${TABLETOP_SEAT}
+```
+
+Then add `tabletop-notes` to the seat's `toolsets`. (A file or terminal tool would also let a player write notes, but it can read the whole machine, the GM's library included.)
+
 Keep each AI seat's access to what its role may know: the players' agents work from the table repository (a clone, or the worker), never from the GM's private library (see [step 5](#5-keep-the-adventures-away-from-the-players-multiplayer)).
 
 ## Library

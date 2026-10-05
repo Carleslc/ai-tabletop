@@ -16,7 +16,7 @@
       "profile": "tabletop-player",
       "provider": "anthropic",
       "model": "claude-sonnet-5-5",
-      "toolsets": "ai-tabletop",
+      "toolsets": "ai-tabletop,tabletop-notes",
       "skills": "coc-player"
     },
     {
@@ -26,7 +26,7 @@
       "profile": "tabletop-player",
       "provider": "lmstudio",
       "model": "qwen3.8-27b",
-      "toolsets": "ai-tabletop",
+      "toolsets": "ai-tabletop,tabletop-notes",
       "skills": "coc-player"
     }
   ]

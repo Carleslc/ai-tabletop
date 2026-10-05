@@ -213,8 +213,9 @@ def one_image(paths, cache):
     return dest
 
 
-def run_agent(seat, prompt, image, state, dry_run):
-    """Run one agent turn; returns its final answer. Keeps the agent's session in state."""
+def run_agent(seat, prompt, image, state, dry_run, seat_id=""):
+    """Run one agent turn; returns its final answer. Keeps the agent's session in state.
+    The agent gets TABLETOP_SEAT=<seat_id>, e.g. for its notes (scripts/notes_mcp.py)."""
     key = f"session:{seat['name']}"
     runner = seat.get("runner", "hermes")
     workdir = Path(os.path.expanduser(seat.get("workdir", "~")))
@@ -263,7 +264,7 @@ def run_agent(seat, prompt, image, state, dry_run):
         return ""
     t0 = time.time()
     proc = subprocess.run(cmd, input=stdin, capture_output=True, text=True, cwd=workdir,
-                          timeout=seat.get("timeout", 1800))
+                          timeout=seat.get("timeout", 1800), env={**os.environ, "TABLETOP_SEAT": seat_id})
     os.unlink(prompt_file)
     out = proc.stdout
     if runner == "hermes":
@@ -405,7 +406,8 @@ def run(cfg_path, step=False, turns=None, dry_run=False):
 
         posted, answer = False, ""
         for attempt in range(2):
-            answer = run_agent(seat, prompt, image, state, dry_run)
+            answer = run_agent(seat, prompt, image, state, dry_run,
+                               seat_id=f"{cfg['repo'].replace('/', '-')}-{cfg['issue']}/{name}")
             save()
             if dry_run:
                 posted = True

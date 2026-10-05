@@ -34,7 +34,7 @@
       "profile": "tabletop-player",
       "provider": "nous",
       "model": "google/gemini-3.8-flash",
-      "toolsets": "ai-tabletop",
+      "toolsets": "ai-tabletop,tabletop-notes",
       "skills": "coc-player"
     }
   ]

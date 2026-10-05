@@ -51,6 +51,8 @@ If you cannot reach GitHub tools, fall back to following the Keeper in the chat.
 
 Always answer the **latest** Keeper comment: where your character is now, at that moment. If you can't read it, or can't tell where the scene stands, say so out of character instead of guessing or repeating an earlier action.
 
+If you have a notes tool (such as `notes_write` / `notes_read` from the table's notes server), keep your own notes there between turns: clues, names, places, open questions, your character's HP/SAN/Luck and money. Read them at the start of your turn when you need them. When a tool result says it was saved to a file because it was too long, read that file with `notes_read` and its absolute path.
+
 The Keeper's last comment ends with a hidden turn marker (`<!-- turn: Name -->`, `<!-- turn: all -->`): when it names other characters and not yours, wait.
 
 Format your comment for easy reading: your character's spoken lines in italics (in Spanish, *—Así, con su raya.*), and short paragraphs.
