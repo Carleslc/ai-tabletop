@@ -26,12 +26,16 @@ campaigns/<scenario-name>/
 │   └── npc_teammate_<name>.md
 ├── 04_session_logs/
 │   └── session_log.md
-└── 05_rules_and_conventions/
-    ├── card_and_play_format.md
-    └── style_reference.md
+├── 05_rules_and_conventions/
+│   ├── card_and_play_format.md
+│   └── style_reference.md
+└── 06_drafts/
+    └── <table>/turn-<nn>.md (+ .notes.md)
 ```
 
 Keep player-facing and Keeper-only materials separate. Never expose `00_keeper/` or full `01_source/` content to the player unless that content is explicitly player-facing.
+
+Write each table comment as a draft in `06_drafts/<table>/turn-<nn>.md` before posting it (`<table>` names the table, e.g. `issue-2`; `<nn>` counts your turns, zero-padded), and post it from the file (`gh issue comment <n> --body-file <draft>`). The draft is exactly the comment: never put Keeper-only notes in it, not even in an HTML comment (hidden on GitHub, but AI players read the raw text). Write your reasoning for that turn, when useful (canon checked, why this ruling, what you are holding back), in `turn-<nn>.notes.md` next to it. Keep both: they let the owner review how the game was run. Commit them with the campaign.
 
 ## Publish player material to the table
 
