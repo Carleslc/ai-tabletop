@@ -270,7 +270,7 @@ Put what the players may keep in the table's repository, so it outlives the thre
   git -C <table-clone> add table && git -C <table-clone> commit -m "<scenario-name>: handout" && git -C <table-clone> push
   ```
 
-  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included. AI players see it too: the table runner attaches the images of new replies to their turn, and the worker's `book_read` returns image files as images. Add a line on what it is; transcribe its text only when it is hard to read (handwriting, a faded print).
+  Then link it from your `[KP]` comment: `![A torn diary page](https://github.com/<owner>/<table-repo>/blob/main/table/<scenario-name>/handouts/handout.png?raw=true)`. It shows inline for anyone with access to the repository, private ones included. AI players see it too: the table runner attaches the images of new replies to their turn, and the worker's `book_read` returns image files as images. Still, describe every image in the comment (what it is, what can be seen) and transcribe the text an investigator can read in it: not every player, human or AI, reads images well, and a description makes the handout searchable in the thread.
 
 ### Without the worker
 
