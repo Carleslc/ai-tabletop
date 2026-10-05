@@ -57,6 +57,8 @@ Each table Issue carries its game's label, so one table repository can hold game
 
 Each role signs its Issue comments with a tag: the GM with its system's tag (`[KP]` in Call of Cthulhu), players with `[Character Name]`.
 
+On GitHub, the [table runner](#table-runner) passes the turn around for any of these mixes: AI seats run from your machine, people comment on the Issue (or type their turn in its terminal).
+
 ## Quick start without the worker (single conversation)
 
 1. Paste your system's GM skill into your AI, e.g. `skills/coc-kp/SKILL.md` (as a system prompt, project instructions, or a Claude skill — see below).
@@ -199,6 +201,90 @@ python scripts/music.py cut                  # instant silence for a scare
 python scripts/music.py resume
 python scripts/music.py stop
 ```
+
+## Table runner
+
+`scripts/table.py` plays a session on a GitHub Issue turn by turn, with any mix of AI agents and people in the GM's and players' seats. It needs Python 3 and the [`gh` CLI](https://cli.github.com/) signed in with access to the table repository; Pillow is optional (to send an AI player several new images at once).
+
+```bash
+python scripts/table.py run tables/my-table.json            # plays until the GM ends the session
+python scripts/table.py run tables/my-table.json --step     # asks before each AI turn: read the Issue, press Enter
+python scripts/table.py run tables/my-table.json --turns 5  # stops after 5 AI turns
+python scripts/table.py run tables/my-table.json --dry-run  # shows the next AI turn's command and prompt
+python scripts/table.py status tables/my-table.json         # whose turn it is, and each seat's session
+```
+
+Stop it at any moment (Ctrl+C, or `q` in `--step`) and run it again: it works out whose turn it is from the Issue itself, and keeps each AI seat's conversation in `<table>.state.json` next to the table file.
+
+### Turns
+
+Every comment starts with its author's tag: the GM's (`[KP]` in Call of Cthulhu) or the character's name (`[Henry Ashworth]`). The GM ends each comment with a hidden turn marker, which the GM skills already write:
+
+| Marker | Who acts next |
+|---|---|
+| `<!-- turn: Name A, Name B -->` | Those characters, in that order |
+| `<!-- turn: all -->` (or no marker) | Every player, in seat order |
+| `<!-- end -->` | Nobody: the session is over |
+
+Spanish works too: `<!-- turno: … -->`, `<!-- turno: todos -->`, `<!-- fin -->`. When everyone called on has answered, it is the GM's turn again.
+
+Each AI turn gets, in its message, the replies that are new since its last turn (on its first turn, the Issue body and the latest replies), and the images shown in them (handouts, maps) as image input. So an AI seat doesn't need to read the thread itself, nor see a long thread whole.
+
+### The table file
+
+A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
+
+```json
+{
+  "repo": "yourname/your-table",
+  "issue": 1,
+  "gm_tag": "KP",
+  "seats": [
+    { "role": "gm", "name": "KP", "runner": "hermes", "profile": "tabletop-gm", "model": "claude-sonnet-5-5",
+      "skills": "coc-kp", "toolsets": "terminal,file,skills,vision", "workdir": "~/ai-tabletop-keeper" },
+    { "role": "player", "name": "Henry Ashworth", "runner": "claude", "model": "sonnet",
+      "sheet": "table/my-scenario/sheets/henry-ashworth.md" },
+    { "role": "player", "name": "Ana Rius", "runner": "human" }
+  ],
+  "instructions": { "gm": "Nobody answers you during the game: decide, don't ask.", "player": "" }
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `repo`, `issue` | The table: repository and Issue number. The GM opens the Issue (its skill says how); then put its number here. |
+| `gm_tag` | The GM's tag, without brackets (`KP` in Call of Cthulhu). |
+| `seats[].role` | `gm` (one) or `player`. |
+| `seats[].name` | The tag of the seat's comments: the GM's tag, or the character's name exactly as in its tag. |
+| `seats[].runner` | Who plays the seat: `hermes`, `claude`, `command` or `human` (below). |
+| `seats[].posts` | `cli` (default for players): the agent answers with its comment and the runner posts it. `agent` (default for the GM): the agent posts on the Issue itself (with `gh`, or the worker's `table_reply`), as the GM does to publish handouts with its turn. |
+| `seats[].sheet` | The character sheet's path in the table repository, for the player's first turn. |
+| `seats[].workdir` | Where the agent runs: for the GM, a clone of its private library (it reads the books and rolls with `scripts/roll.py`). |
+| `seats[].instructions`, `instructions.gm`, `instructions.player` | Extra instructions added to every turn of that seat or role (style, language, house rules). |
+| `seats[].images` | `false` to not send that seat the new images. |
+| `seats[].timeout` | Seconds an AI turn may take (default 1800). |
+| `prompts` | Override the turn messages (`gm_intro`, `gm_turn`, `player_intro`, `player_turn`; see `DEFAULT_PROMPTS` in the script). |
+| `context_chars`, `intro_replies`, `poll_seconds` | How much new text a turn carries (default 40000 characters), how many replies a player's first turn shows (12), how often to check GitHub for a person's comment (30 s). |
+
+The runners:
+
+- **`hermes`**: [Hermes Agent](https://github.com/NousResearch/hermes-agent). Fields: `profile`, `provider`, `model`, `reasoning`, `toolsets`, `skills` (preloaded on the seat's first turn), `max_turns`. One profile per role keeps the GM's and players' tools, skills and memory apart: e.g. a GM profile with a shell in the private library, and a player profile with only the worker as its tools (an MCP server in its `config.yaml`). Each seat is its own Hermes session, resumed every turn.
+- **`claude`**: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) in print mode (`claude -p`), resumed every turn. Fields: `model`, and `args` for anything else (`--append-system-prompt-file skills/coc-player/SKILL.md`, `--allowedTools …`, `--mcp-config …`).
+- **`command`**: any command line that reads the turn's message on standard input and prints its answer (Codex `exec`, Gemini CLI, your own script). Field: `command` (a list). It gets no session: give it what it needs to remember (e.g. its own conversation file).
+- **`human`**: a person. With `"input": "github"` (default) they comment on the Issue from the website, and the runner waits for it. With `"input": "terminal"` they play right here: the runner prints what is new and posts what they type.
+
+### Ways to play with the runner
+
+| Mode | GM seat | Player seats | Example |
+|---|---|---|---|
+| Fully simulated | AI | AIs | [`fully-simulated.json`](tables/examples/fully-simulated.json). Add `--step` to read along at your pace. |
+| You play with an AI GM, optionally with AI players | AI | You (`"input": "terminal"` or on GitHub), plus AIs | [`solo-with-ai-gm.json`](tables/examples/solo-with-ai-gm.json) (also for narrated solo gamebooks) |
+| People with an AI GM, optionally with AI players | AI | People (`human`) and AIs | [`ai-gm-with-people.json`](tables/examples/ai-gm-with-people.json) |
+| A person GMs, AIs play | You (`human`) | AIs, optionally with people | [`people-gm-ai-players.json`](tables/examples/people-gm-ai-players.json) |
+
+People need only access to the table repository (invite them as collaborators) and comment from the website, starting with their tag. While the runner waits for someone, leave it running (or stop it and run it again later).
+
+Keep each AI seat's access to what its role may know: the players' agents work from the table repository (a clone, or the worker), never from the GM's private library (see [step 5](#5-keep-the-adventures-away-from-the-players-multiplayer)).
 
 ## Library
 

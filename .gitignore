@@ -8,3 +8,6 @@ library/
 # Your own books (copyrighted): keep them local or in a private repository
 assets/*
 !assets/README.md
+
+# Table runner state (AI seats sessions)
+*.state.json

@@ -1,0 +1,33 @@
+{
+  "repo": "yourname/your-table",
+  "issue": 3,
+  "gm_tag": "KP",
+  "poll_seconds": 30,
+  "seats": [
+    {
+      "role": "gm",
+      "name": "KP",
+      "runner": "human"
+    },
+    {
+      "role": "player",
+      "name": "Keiko Cain",
+      "runner": "hermes",
+      "profile": "tabletop-player",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5-5",
+      "toolsets": "ai-tabletop",
+      "skills": "coc-player"
+    },
+    {
+      "role": "player",
+      "name": "Jesse Williams",
+      "runner": "hermes",
+      "profile": "tabletop-player",
+      "provider": "lmstudio",
+      "model": "qwen3.8-27b",
+      "toolsets": "ai-tabletop",
+      "skills": "coc-player"
+    }
+  ]
+}

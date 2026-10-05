@@ -1,0 +1,27 @@
+{
+  "repo": "yourname/your-table",
+  "issue": 4,
+  "gm_tag": "KP",
+  "seats": [
+    {
+      "role": "gm",
+      "name": "KP",
+      "runner": "hermes",
+      "profile": "tabletop-gm",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5-5",
+      "reasoning": "medium",
+      "toolsets": "terminal,file,skills,vision",
+      "skills": "coc-kp",
+      "workdir": "~/ai-tabletop-keeper",
+      "timeout": 2400,
+      "instructions": "Solo gamebook, narrated play: one entry per turn, its choices as the book gives them."
+    },
+    {
+      "role": "player",
+      "name": "Your Character",
+      "runner": "human",
+      "input": "terminal"
+    }
+  ]
+}
