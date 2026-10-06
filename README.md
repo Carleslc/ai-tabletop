@@ -216,6 +216,12 @@ python scripts/table.py status tables/my-table.json         # whose turn it is, 
 
 Stop it at any moment (Ctrl+C, or `q` in `--step`) and run it again: it works out whose turn it is from the Issue itself, and keeps each AI seat's conversation in `<table>.state.json` next to the table file.
 
+What happened, and how:
+
+- **The story**: the Issue.
+- **The runner's log**: `<table>.log` next to the table file: every turn, how long it took, the comment it posted, and each AI seat's final answer.
+- **Each AI seat's whole conversation** (its reasoning, when the model shows it, and every tool call): in its own client. Hermes seats are named sessions, `<title> #<issue> · <seat>`, listed in Hermes Desktop and `hermes -p <profile> sessions list` under the seat's profile; export one with `hermes -p <profile> sessions export`. Claude Code seats are in `claude --resume`.
+
 ### Turns
 
 Every comment starts with its author's tag: the GM's (`[KP]` in Call of Cthulhu) or the character's name (`[Henry Ashworth]`). The GM ends each comment with a hidden turn marker, which the GM skills already write:
@@ -252,6 +258,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
 
 | Field | Meaning |
 |---|---|
+| `title` | A short name for the table (e.g. `The Haunting`): AI seats' sessions are named `<title> #<issue> · <seat>`. Defaults to the repository's name. |
 | `repo`, `issue` | The table: repository and Issue number. The GM opens the Issue (its skill says how); then put its number here. |
 | `gm_tag` | The GM's tag, without brackets (`KP` in Call of Cthulhu). |
 | `seats[].role` | `gm` (one) or `player`. |

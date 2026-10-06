@@ -68,8 +68,18 @@ POST_HOW = {
 }
 
 
-def log(msg):
-    print(f"[{datetime.now():%H:%M:%S}] {msg}", flush=True)
+LOG_FILE = None  # <table>.log next to the table file, set by run()
+
+
+def log(msg, detail=None):
+    """Print a line; also append it (and an optional longer detail) to the table's log file."""
+    line = f"[{datetime.now():%H:%M:%S}] {msg}"
+    print(line, flush=True)
+    if LOG_FILE:
+        with open(LOG_FILE, "a") as f:
+            f.write(f"[{datetime.now():%Y-%m-%d %H:%M:%S}] {msg}\n")
+            if detail:
+                f.write("    " + detail.strip().replace("\n", "\n    ") + "\n")
 
 
 def tag_of(body):
@@ -213,7 +223,7 @@ def one_image(paths, cache):
     return dest
 
 
-def run_agent(seat, prompt, image, state, dry_run, seat_id=""):
+def run_agent(seat, prompt, image, state, dry_run, seat_id="", title=""):
     """Run one agent turn; returns its final answer. Keeps the agent's session in state.
     The agent gets TABLETOP_SEAT=<seat_id>, e.g. for its notes (scripts/notes_mcp.py)."""
     key = f"session:{seat['name']}"
@@ -232,8 +242,12 @@ def run_agent(seat, prompt, image, state, dry_run, seat_id=""):
                 cmd += [flag, str(seat[field])]
         if resume:
             cmd += ["--resume", resume]
-        elif seat.get("skills"):
-            cmd += ["-s", seat["skills"]]
+        else:
+            # A named session is a regular one: Hermes lists it (Desktop, `hermes sessions list`),
+            # while unnamed one-shot (-Q) sessions are hidden from every session list.
+            cmd += ["-c", title or seat["name"], "--create-if-missing"]
+            if seat.get("skills"):
+                cmd += ["-s", seat["skills"]]
         if image:
             cmd += ["--image", str(image)]
         cmd += ["--query-file", prompt_file]
@@ -281,7 +295,7 @@ def run_agent(seat, prompt, image, state, dry_run, seat_id=""):
             pass
     if proc.returncode != 0:
         log(f"  {seat['name']} exited with {proc.returncode}: {(proc.stderr or out)[-500:]}")
-    log(f"← {seat['name']} in {time.time() - t0:.0f}s")
+    log(f"← {seat['name']} in {time.time() - t0:.0f}s (session {state.get(key)})", out)
     return out.strip()
 
 
@@ -331,6 +345,10 @@ def run(cfg_path, step=False, turns=None, dry_run=False):
     cfg = json.loads(cfg_path.read_text())
     state_path = cfg_path.with_name(cfg_path.stem + ".state.json")
     state = json.loads(state_path.read_text()) if state_path.exists() else {}
+    global LOG_FILE
+    if not dry_run:
+        LOG_FILE = cfg_path.with_name(cfg_path.stem + ".log")
+        log(f"run {cfg_path.name}" + (" --step" if step else "") + (f" --turns {turns}" if turns else ""))
     cache = Path(os.path.expanduser(cfg.get("cache_dir", "~/.cache/ai-tabletop"))) / cfg_path.stem
     cache.mkdir(parents=True, exist_ok=True)
 
@@ -407,7 +425,8 @@ def run(cfg_path, step=False, turns=None, dry_run=False):
         posted, answer = False, ""
         for attempt in range(2):
             answer = run_agent(seat, prompt, image, state, dry_run,
-                               seat_id=f"{cfg['repo'].replace('/', '-')}-{cfg['issue']}/{name}")
+                               seat_id=f"{cfg['repo'].replace('/', '-')}-{cfg['issue']}/{name}",
+                               title=f"{cfg.get('title') or cfg['repo'].split('/')[-1]} #{cfg['issue']} · {name}")
             save()
             if dry_run:
                 posted = True
