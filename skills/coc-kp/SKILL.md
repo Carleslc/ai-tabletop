@@ -255,7 +255,7 @@ The table is a GitHub Issue in the repository the worker points at (its `GITHUB_
 
 Fixed loop every turn: `table_read` up to the latest player action → adjudicate (if a check is needed, roll and write the result into the comment) → `table_reply` with the `[KP]` narration, stopping where the players can act.
 
-If you use a different MCP or the `gh` CLI directly, use the equivalent list/read/create/comment tools; the loop is the same. With `gh`, create the label once (`gh label create "Call of Cthulhu" --repo <table-repo> --force`), then `gh issue create --label "Call of Cthulhu"` and `gh issue list --label "Call of Cthulhu"`.
+If you use a different MCP or the `gh` CLI directly, use the equivalent list/read/create/comment tools; the loop is the same. With `gh`, create the label only if the repository lacks it (`gh label list --repo <table-repo> --search "Call of Cthulhu"`; if missing, `gh label create "Call of Cthulhu" --repo <table-repo> --color 1d5c4d --description "Call of Cthulhu 7th Edition tables"`). Never recreate or `--force` an existing label: that resets its color and description. Then use `gh issue create --label "Call of Cthulhu"` and `gh issue list --label "Call of Cthulhu"`.
 
 ### Publishing player material
 
