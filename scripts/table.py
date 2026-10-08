@@ -277,9 +277,16 @@ def run_agent(seat, prompt, image, state, dry_run, seat_id="", title=""):
         os.unlink(prompt_file)
         return ""
     t0 = time.time()
-    proc = subprocess.run(cmd, input=stdin, capture_output=True, text=True, cwd=workdir,
-                          timeout=seat.get("timeout", 1800), env={**os.environ, "TABLETOP_SEAT": seat_id})
-    os.unlink(prompt_file)
+    limit = seat.get("timeout", 1800)
+    try:
+        proc = subprocess.run(cmd, input=stdin, capture_output=True, text=True, cwd=workdir,
+                              timeout=limit, env={**os.environ, "TABLETOP_SEAT": seat_id})
+    except subprocess.TimeoutExpired:
+        log(f"{seat['name']} timed out after {limit}s. Stopping here; run again to retry its turn "
+            f"(nothing was posted). Set \"timeout\" (seconds) on the seat to wait less or more.")
+        sys.exit(1)
+    finally:
+        os.unlink(prompt_file)
     out = proc.stdout
     if runner == "hermes":
         ids = HERMES_SESSION_RE.findall(out + proc.stderr)
