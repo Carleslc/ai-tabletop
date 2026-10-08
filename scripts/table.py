@@ -277,7 +277,7 @@ def run_agent(seat, prompt, image, state, dry_run, seat_id="", title=""):
         os.unlink(prompt_file)
         return ""
     t0 = time.time()
-    limit = seat.get("timeout", 600)
+    limit = seat.get("timeout", 900 if seat.get("role") == "gm" else 600)
     try:
         proc = subprocess.run(cmd, input=stdin, capture_output=True, text=True, cwd=workdir,
                               timeout=limit, env={**os.environ, "TABLETOP_SEAT": seat_id})

@@ -269,7 +269,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
 | `seats[].workdir` | Where the agent runs: for the GM, a clone of its private library (it reads the books and rolls with `scripts/roll.py`). |
 | `seats[].instructions`, `instructions.gm`, `instructions.player` | Extra instructions added to every turn of that seat or role (style, language, house rules). |
 | `seats[].images` | `false` to not send that seat the new images. |
-| `seats[].timeout` | Seconds an AI turn may take (default 600). |
+| `seats[].timeout` | Seconds an AI turn may take (default 900 for the GM, 600 for players). |
 | `prompts` | Override the turn messages (`gm_intro`, `gm_turn`, `player_intro`, `player_turn`; see `DEFAULT_PROMPTS` in the script). |
 | `context_chars`, `intro_replies`, `poll_seconds` | How much new text a turn carries (default 40000 characters), how many replies a player's first turn shows (12), how often to check GitHub for a person's comment (30 s). |
 
