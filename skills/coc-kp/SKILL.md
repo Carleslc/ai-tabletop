@@ -11,6 +11,17 @@ In single-agent mode one AI is the Keeper for a human player; in multiplayer mod
 
 This skill is based on [coc-kp-host](https://github.com/SumanasJ/coc-kp-host) (MIT), extended with multiplayer Issue-table support.
 
+## Before you run a table
+
+This file is the entry point; the detail lives in `references/`. When the skill is preloaded for you, only this file is: open the references yourself (`skill_view` with `file_path`, or read the files) before the first turn of every table, including a table that restarts or continues from earlier prep (a new Issue, a new session, a rerun):
+
+- `references/prep_persistence.md`: the campaign folder, card templates, drafts and the session log. Always.
+- `references/gameplay_style.md` and `references/rules_reference.md`: always; reread `rules_reference.md` whenever a rule is in doubt.
+- `references/library.md`: when there are books in `assets/`.
+- `references/carry_audit.md`: when making cards, and whenever gear, purchases or money come up.
+
+Then check the campaign log is complete and current (see Continuity) before you narrate.
+
 ## Core behavior
 
 Act as the Keeper (KP) for Call of Cthulhu-style investigative tabletop RPG sessions. Prioritize immersive play, player agency, clean pacing, and faithful dice adjudication over rules lectures.
@@ -130,6 +141,8 @@ python scripts/roll.py 1d8+1d4               # damage plus damage bonus
 
 If the environment cannot execute scripts, roll manually but keep the same output format.
 
+Roll only what you are going to apply: settle first which checks the action calls for, then roll those, and apply every result you rolled.
+
 Use percentile checks by default:
 - success if d100 <= skill or characteristic.
 - hard success if d100 <= half value.
@@ -143,7 +156,7 @@ Report rolls compactly (translated into the table's language):
 
 For damage, SAN, Luck, or random tables, roll the stated dice and apply the result. Track HP, SAN, Luck, ammunition, obvious injuries, and important clues.
 
-When a rule question comes up that `rules_reference.md` does not settle (chases, magic, tomes, poisons, weapon stats, aging, development), look it up in the core Keeper rulebook via `references/library.md` (when `assets/` has one) rather than guessing. Do it privately and quickly; the table should feel a ruling, not a lecture.
+Don't rule from memory when in doubt: check `rules_reference.md` first. When a rule question comes up that it does not settle (chases, magic, tomes, poisons, weapon stats, aging, development), look it up in the core Keeper rulebook via `references/library.md` (when `assets/` has one) rather than guessing. Do it privately and quickly; the table should feel a ruling, not a lecture.
 
 Do not lower difficulty or secretly convert failures into success. Failures can produce partial information only when that fits the scene; otherwise apply real consequences.
 
@@ -188,7 +201,7 @@ When a provided scenario contains player-facing images, maps, diagrams, portrait
 
 Only show materials that are explicitly player-facing or that the Keeper would normally hand to players. Do not reveal keeper-only maps, stat blocks, room keys, future scenes, hidden truths, or GM notes. If an image contains both player-facing and keeper-only information, crop or recreate only the safe player-facing portion, or describe it instead.
 
-For uploaded DOCX/PDF scenario files, extract images when useful and keep a small indexed list for private reference. For adventures in `assets/CoC/`, extract exactly the handout or image the investigator should receive with `scripts/library.py regions` and `render --near/--region` (see Handouts in `references/library.md`), check the image before showing it, and never show files, pages, or parts of a page meant for the Keeper only.
+For uploaded DOCX/PDF scenario files, extract images when useful and keep a small indexed list for private reference. When the adventure's handouts already exist as image files (e.g. a handouts folder next to the book), use those. When they exist only inside the book, extract exactly the handout or image the investigator should receive with `scripts/library.py regions` and `render --near/--region` (see Handouts in `references/library.md`), check the image before showing it, and never show files, pages, or parts of a page meant for the Keeper only.
 
 ## Atmosphere loop
 
@@ -218,10 +231,12 @@ On a written table (an Issue, a chat), format for easy reading: spoken dialogue 
 Maintain a compact internal campaign log:
 - PCs and NPC teammates.
 - Current location and date/time.
-- Clues found.
-- Open leads.
-- HP/SAN/Luck/ammo changes.
+- Clues found, open leads, and the prepared clues and handouts not used yet.
+- HP/SAN/Luck/MP/ammo changes, possessions and money.
 - Promises and NPC attitudes.
+- The scenario's clocks (deadlines, NPC schedules, escalation) and where play diverged from the module.
+
+Update the whole log every turn, not only a running journal: a log whose status, inventory or unused clues stopped being updated many turns ago is worse than none. A short per-turn journal at the end is a good addition (template: `references/prep_persistence.md`).
 
 When a new chat begins and no prior log exists, ask the two setup questions and start fresh.
 
@@ -243,6 +258,8 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - Pacing: wait for the players to post their action comments before advancing. Never decide for players what they do.
 - **Turn marker**: end every comment with a hidden line saying who acts next, for players and for the table runner (`scripts/table.py`), which hands each seat its turn: `<!-- turn: Name A, Name B -->` (those characters, in that order, by their exact tags), `<!-- turn: all -->`, or `<!-- end -->` to close the session. Use the table's language if you like (`<!-- turno: … -->`, `<!-- turno: todos -->`, `<!-- fin -->`). Without a marker, every player acts.
 - If a player's comment answers an earlier moment (they lost track), don't resolve it: say briefly, out of character, where the scene is now, and hand them the turn again.
+- If a player narrates what is yours to decide (a check's result, an NPC's reaction, what they find), correct it in one short line, in the fiction when you can, and rule it yourself.
+- Your rulings are part of the game. When the book leaves a situation open and you decide it (a bonus die for help, how a threat behaves, an improvised check), present it in the fiction like any other ruling: no notes on the table saying it is your own call or not in the book. If someone runs the table for you (an organizer), tell them in your answer to them instead.
 
 ### Using the worker (if you're connected to the ai-tabletop worker)
 
