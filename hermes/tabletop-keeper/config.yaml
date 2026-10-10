@@ -14,5 +14,13 @@ memory:
 agent:
   max_turns: 60
   reasoning_effort: medium      # a seat's "reasoning" overrides it
+compression:                    # keep each turn's context, and its cost, from growing all game
+  threshold_tokens: 80000       # compact at 80K tokens, whatever the model's window
+  min_tail_user_messages: 3     # the last 3 turns (with the players' replies) stay verbatim
+auxiliary:
+  compression:                  # the summary, by a fast hosted model
+    provider: anthropic
+    model: claude-haiku-5-5
+    reasoning_effort: medium
 approvals:
   mode: false                   # unattended turns: no approval prompts

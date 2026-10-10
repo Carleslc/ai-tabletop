@@ -31,6 +31,9 @@ tool_budget:
 tools:
   tool_search:
     enabled: "off"              # few MCP tools: call them directly
+compression:
+  threshold_tokens: 50000       # compact early: the table's state is in the thread and the notes
+  min_tail_user_messages: 3     # the last 3 turns stay verbatim
 auxiliary:
   compression:                  # summarize long sessions with a fast hosted model
     provider: anthropic
