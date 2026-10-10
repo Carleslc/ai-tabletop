@@ -1,0 +1,38 @@
+# Hermes profile for AI players. scripts/hermes_profiles.sh installs it, filling in
+# {{AI_TABLETOP}} (this repository), {{PROFILE}} (the profile folder) and {{MCP_NAME}}.
+# The worker's token goes in the profile's .env as TABLETOP_AUTH_TOKEN, never here.
+model:
+  default: claude-sonnet-5-5
+  provider: anthropic
+providers:
+  lmstudio:                     # optional: local models
+    name: LM Studio
+    base_url: http://127.0.0.1:1234/v1
+    discover_models: true
+    context_length: 65536
+memory:
+  memory_enabled: false         # each seat starts clean; notes go to tabletop-notes
+  user_profile_enabled: false
+agent:
+  max_turns: 60
+  reasoning_effort: low         # a seat's "reasoning" overrides it
+mcp_servers:
+  {{MCP_NAME}}:                 # the worker (seats name it in "toolsets"), read tools only: the runner posts the turns
+    url: {{WORKER_URL}}/mcp?token=${TABLETOP_AUTH_TOKEN}
+    tools:
+      include: [table_list, table_read, book_search, book_read, book_list]
+  tabletop-notes:               # each seat's own notes
+    command: python3
+    args: [{{AI_TABLETOP}}/scripts/notes_mcp.py, --root, {{PROFILE}}/workspace/notes, --read-only, {{PROFILE}}/cache/spillover]
+    env:
+      TABLETOP_SEAT: ${TABLETOP_SEAT}
+tool_budget:
+  mcp_result_size_chars: 100000 # long thread reads reach the model whole
+tools:
+  tool_search:
+    enabled: "off"              # few MCP tools: call them directly
+auxiliary:
+  compression:                  # summarize long sessions with a fast hosted model
+    provider: anthropic
+    model: claude-haiku-5-5
+    reasoning_effort: medium
