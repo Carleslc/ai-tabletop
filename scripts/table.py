@@ -40,8 +40,9 @@ HERMES_SESSION_RE = re.compile(r"session_id:\s*(\S+)")
 DEFAULT_PROMPTS = {
     "gm_intro": (
         "You are the game master of the tabletop session on GitHub Issue #{issue} of {repo}, "
-        "tagged [{tag}]. Follow your GM skill. The table's opening (Issue body and first replies, "
-        "if any) is below."
+        "tagged [{tag}]. Follow your GM skill. Before your first reply, read its reference files "
+        "(a preloaded skill gives you only its main file) and the campaign's prep and log. "
+        "The table's opening (Issue body and first replies, if any) is below."
     ),
     "gm_turn": (
         "Your turn as GM on Issue #{issue} of {repo}. New since your last turn:\n\n{new}\n\n"
