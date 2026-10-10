@@ -17,7 +17,9 @@
       "provider": "anthropic",
       "model": "claude-sonnet-5-5",
       "toolsets": "ai-tabletop,tabletop-notes",
-      "skills": "coc-player"
+      "skills": "coc-player",
+      "timeout": 600,
+      "images": true
     },
     {
       "role": "player",
@@ -27,7 +29,9 @@
       "provider": "lmstudio",
       "model": "qwen3.8-27b",
       "toolsets": "ai-tabletop,tabletop-notes",
-      "skills": "coc-player"
+      "skills": "coc-player",
+      "timeout": 600,
+      "images": true
     }
   ]
 }

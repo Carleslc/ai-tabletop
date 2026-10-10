@@ -15,7 +15,8 @@
       "toolsets": "terminal,file,skills,vision,memory",
       "skills": "coc-kp",
       "workdir": "~/ai-tabletop-keeper",
-      "timeout": 2400
+      "timeout": 900,
+      "images": true
     },
     {
       "role": "player",
@@ -35,7 +36,9 @@
       "provider": "nous",
       "model": "google/gemini-3.8-flash",
       "toolsets": "ai-tabletop,tabletop-notes",
-      "skills": "coc-player"
+      "skills": "coc-player",
+      "timeout": 600,
+      "images": true
     }
   ]
 }

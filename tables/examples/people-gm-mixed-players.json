@@ -27,7 +27,9 @@
       "provider": "anthropic",
       "model": "claude-sonnet-5-5",
       "toolsets": "ai-tabletop,tabletop-notes",
-      "skills": "coc-player"
+      "skills": "coc-player",
+      "timeout": 600,
+      "images": true
     }
   ]
 }

@@ -14,7 +14,8 @@
       "toolsets": "terminal,file,skills,vision,memory",
       "skills": "coc-kp",
       "workdir": "~/ai-tabletop-keeper",
-      "timeout": 2400
+      "timeout": 900,
+      "images": true
     },
     {
       "role": "player",
@@ -25,7 +26,9 @@
       "model": "claude-sonnet-5-5",
       "toolsets": "ai-tabletop,tabletop-notes",
       "skills": "coc-player",
-      "sheet": "table/my-scenario-1/sheets/henry-ashworth.md"
+      "sheet": "table/my-scenario-1/sheets/henry-ashworth.md",
+      "timeout": 600,
+      "images": true
     },
     {
       "role": "player",
@@ -39,7 +42,9 @@
         "mcp__ai-tabletop__table_read,mcp__ai-tabletop__book_read"
       ],
       "workdir": "~/your-table",
-      "sheet": "table/my-scenario-1/sheets/clara-dunmore.md"
+      "sheet": "table/my-scenario-1/sheets/clara-dunmore.md",
+      "timeout": 600,
+      "images": true
     },
     {
       "role": "player",
@@ -50,7 +55,9 @@
         "--system-prompt-file",
         "~/your-table/skills/coc-player/SKILL.md"
       ],
-      "sheet": "table/my-scenario-1/sheets/frank-kessler.md"
+      "sheet": "table/my-scenario-1/sheets/frank-kessler.md",
+      "timeout": 600,
+      "images": true
     }
   ],
   "instructions": {
