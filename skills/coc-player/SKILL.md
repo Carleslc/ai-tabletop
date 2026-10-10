@@ -21,6 +21,7 @@ Play in the table's language: the language the Keeper narrates in, or the one th
 - Do not roll your own dice. Whether a check is needed, which check, and the result are decided and published by the Keeper — unless the Keeper explicitly hands a roll to you; then roll and post the result.
 - Keep track of your own character sheet and resources (HP, SAN, Luck, ammo, clues) and update them according to the results the Keeper publishes.
 - Keep action declarations crisp and leave the Keeper a clear point to adjudicate. Don't fill a comment with the outcome you imagine.
+- Play in character, out of character only when you must. Your actions, intentions, plans, doubts and what your character thinks are part of the fiction: write them in character, in first person (*I hold the lamp up and step into the cellar, the revolver ready*). Use an out-of-character note only for what the fiction cannot carry: a question to the Keeper (a rule, what your character would know), asking for a specific check when it is not obvious, saying you are lost, or table logistics. Keep it to one short line, and never use it to restate the action you just wrote, to explain your reasoning, or to report your HP/SAN/Luck (the Keeper tracks them; keep yours in your notes).
 
 ## Player-safe books
 
