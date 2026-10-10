@@ -208,19 +208,19 @@ Do not force a single solution, teleport the PC without cause, or negate reasona
 
 ## Strict investigator-card template
 
-Use this shape for player investigators (translate the field labels into the table's language):
+Use this shape for player investigators (translate the field labels into the table's language). Keep every `Label: value` field as a list item: Markdown joins consecutive plain lines into one paragraph, so without the dashes the fields run together on GitHub.
 
 ```markdown
 # Investigator: <name>
 
-Sex/gender:
-Age:
-Occupation:
-Education:
-Residence:
-Birthplace:
-Current date/time:
-Credit Rating: <number>, <lifestyle description>
+- **Sex/gender:**
+- **Age:**
+- **Occupation:**
+- **Education:**
+- **Residence:**
+- **Birthplace:**
+- **Current date/time:**
+- **Credit Rating:** <number>, <lifestyle description>
 
 ## Short background story
 
@@ -228,26 +228,26 @@ Credit Rating: <number>, <lifestyle description>
 
 ## Characteristics
 
-STR
-CON
-SIZ
-DEX
-APP
-INT
-POW
-EDU
-Total:
+- STR:
+- CON:
+- SIZ:
+- DEX:
+- APP:
+- INT:
+- POW:
+- EDU:
+- Total:
 
-HP
-MP
-SAN
-Luck
-MOV
-Damage bonus, Build
+- HP:
+- MP:
+- SAN:
+- Luck:
+- MOV:
+- Damage bonus, Build:
 
 ## Skills
 
-<10-14 skills with percentages, including Language (Own) when appropriate>
+<10-14 skills with percentages, one per list item, including Language (Own) when appropriate>
 
 ## Possessions
 
@@ -255,15 +255,15 @@ Damage bonus, Build
 
 ## Backstory
 
-Personal description / appearance:
-Ideology / beliefs:
-Significant people:
-Meaningful locations:
-Treasured possessions:
-Traits:
-Injuries & scars / phobias & manias / secrets:
+- **Personal description / appearance:**
+- **Ideology / beliefs:**
+- **Significant people:**
+- **Meaningful locations:**
+- **Treasured possessions:**
+- **Traits:**
+- **Injuries & scars / phobias & manias / secrets:**
 
-Key Connection ★: <mark one of the entries above; losing it costs 1/1D6 SAN, and the Keeper may not destroy it without giving the player a roll to save it>
+**Key Connection ★:** <mark one of the entries above; losing it costs 1/1D6 SAN, and the Keeper may not destroy it without giving the player a roll to save it>
 ```
 
 Omit optional background entries only when they truly do not fit, not for brevity.
@@ -275,13 +275,13 @@ Use this shape for recurring NPC teammates:
 ```markdown
 # NPC teammate: <name>
 
-Sex/gender:
-Age:
-Occupation / current status:
-Education:
-Residence:
-Birthplace:
-Credit Rating: <number>, <lifestyle description>
+- **Sex/gender:**
+- **Age:**
+- **Occupation / current status:**
+- **Education:**
+- **Residence:**
+- **Birthplace:**
+- **Credit Rating:** <number>, <lifestyle description>
 
 ## How they enter the case & relationships
 
@@ -297,22 +297,22 @@ Credit Rating: <number>, <lifestyle description>
 
 ## Characteristics
 
-STR
-CON
-SIZ
-DEX
-APP
-INT
-POW
-EDU
-Total:
+- STR:
+- CON:
+- SIZ:
+- DEX:
+- APP:
+- INT:
+- POW:
+- EDU:
+- Total:
 
-HP
-MP
-SAN
-Luck
-MOV
-Damage bonus, Build
+- HP:
+- MP:
+- SAN:
+- Luck:
+- MOV:
+- Damage bonus, Build:
 
 ## Skills
 
@@ -324,41 +324,62 @@ Damage bonus, Build
 
 ## Backstory
 
-Ideology / beliefs:
-Significant person / meaningful location:
-Treasured possession:
-Trait:
-Weakness:
-Key Connection ★: <mark one>
+- **Ideology / beliefs:**
+- **Significant person / meaningful location:**
+- **Treasured possession:**
+- **Trait:**
+- **Weakness:**
+
+**Key Connection ★:** <mark one>
 ```
 
 NPC teammates may exceed or fall short of PC point-buy totals, but their values should stay ordinary unless the scenario justifies otherwise.
 
 ## Session log template
 
-Update `04_session_logs/session_log.md` after each scene, before long pauses, and whenever HP/SAN/Luck/resources or clue state changes:
+Update `04_session_logs/session_log.md` every turn: the whole file, not only the journal at the end. Every section must describe the current state (when HP/SAN/Luck, possessions, money, clues or a clock change, edit that section in the same turn):
 
 ```markdown
 ## Current stop point
 
 <where play should resume; include the exact last prompt or scene beat (solo gamebook: current entry number)>
 
+## Status
+
+- PC: HP / MP / SAN / Luck / Mythos / injuries and conditions
+- NPC: HP / SAN / Luck / notable resources
+
+## Possessions and money
+
+<per PC: carried items that matter, weapons and ammunition, cash; what was bought, lost or handed over>
+
 ## Clues found
 
-<player-facing clues only>
+<what the investigators have learned, and the handouts they hold>
 
 ## Open leads
 
 <known leads the investigators can pursue>
 
-## Status
+## Not used yet
 
-- PC: HP / SAN / Luck / notable resources
-- NPC: HP / SAN / Luck / notable resources
+<prepared clues, handouts, locations and events the investigators have not reached>
+
+## Clocks
+
+<deadlines, NPC schedules and escalation, with the in-game date/time>
 
 ## NPC attitudes
 
 <brief relationship and attitude notes>
+
+## Divergences from the module
+
+<what changed from the book because of play, and your rulings that later scenes must respect>
+
+## Journal
+
+- T<nn> (<in-game time>): <one line per turn: what happened, rolls that mattered>
 ```
 
-Keep the log spoiler-safe from the player's perspective unless it is stored under `00_keeper/`.
+The log is Keeper-only: keep it in the private campaign folder, never in the table's repository.
