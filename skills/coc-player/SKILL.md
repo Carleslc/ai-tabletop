@@ -26,7 +26,7 @@ Play in the table's language: the language the Keeper narrates in, or the one th
 
 If the repo has an `assets/CoC/` folder with Call of Cthulhu books (see the coc-kp skill's `references/library.md` for its layout), you may consult the player-facing ones to build and understand your investigator: the investigator/player handbook (occupations, skills, equipment, era), quick-start or introductory rules, and blank character sheets. Search them with `python scripts/library.py search "<regex>" "<book file name fragment>"` and read pages with `library.py pages`. Without a shell, through the worker: `book_search` with `path` set to the book's `.pdf` path, then `book_read` with that path and the `pages` it found.
 
-The Keeper may also publish player material in the table's repository under the table's own folder, `table/<scenario-name>-<issue>/` (e.g. `table/the-haunting-2/` for Issue #2): your investigator sheet, handouts you have been given, session recaps. Read them with `book_read` (or from a clone).
+The Keeper may also publish player material in the table's repository under the table's own folder, `table/<scenario-name>-<issue>/` (e.g. `table/the-haunting-2/` for Issue #2): your investigator sheet, handouts you have been given, session recaps. Read them with `book_read` (or from a clone). Use only your own table's folder: another table of the same adventure (another Issue) is another game, and its recaps are not what happened to you.
 
 **Never open adventures, handouts, Keeper books, or monster/spell references** (adventure folders such as `assets/CoC/*/Adventures/` or `assets/CoC/*/Aventuras/`, the Keeper rulebook, bestiaries, grimoires, field guides…) or their extracted text in `library/`. That's metagaming: you only learn what the Keeper shows you. The one exception is a pregenerated investigator sheet the Keeper hands to you.
 
@@ -56,6 +56,8 @@ If you have a notes tool (such as `notes_write` / `notes_read` from the table's 
 The Keeper's last comment ends with a hidden turn marker (`<!-- turn: Name -->`, `<!-- turn: all -->`): when it names other characters and not yours, wait.
 
 Format your comment for easy reading: your character's spoken lines in italics (in Spanish, *—Así, con su raya.*), and short paragraphs.
+
+Keep each comment short, at most about 2,000 characters (some 500 tokens): what your character does and the essential dialogue, without retelling the scene or repeating what was already said. The table moves on many short turns, not a few long ones.
 
 ## Roleplay style
 
