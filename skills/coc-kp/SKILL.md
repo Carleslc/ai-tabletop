@@ -211,7 +211,7 @@ Music and visuals are part of the Keeper's toolkit, used quietly and without ask
 - When a scene's mood changes, switch the track: `python scripts/music.py play <url>` (macOS; it closes the previous track first). On other systems, post the link for the user to open.
 - At a sudden scare or reveal, `python scripts/music.py cut` for instant silence, then `resume` or switch afterwards. Use `stop` between scenes or at the end of the session.
 - Show player-facing handouts and images at the moment the PC would see them (see above).
-- If the user asks for no music, drop this loop entirely.
+- If the user asks for no music, or nobody at this machine is listening (a table run by the table runner, with the players elsewhere), drop this loop entirely.
 
 ## Narration style
 
@@ -260,6 +260,19 @@ When a session runs in a GitHub Issue, that Issue is the table: comments are tur
 - If a player's comment answers an earlier moment (they lost track), don't resolve it: say briefly, out of character, where the scene is now, and hand them the turn again.
 - If a player narrates what is yours to decide (a check's result, an NPC's reaction, what they find), correct it in one short line, in the fiction when you can, and rule it yourself.
 - Your rulings are part of the game. When the book leaves a situation open and you decide it (a bonus die for help, how a threat behaves, an improvised check), present it in the fiction like any other ruling: no notes on the table saying it is your own call or not in the book. If someone runs the table for you (an organizer), tell them in your answer to them instead.
+
+### Setting up a table for the table runner
+
+When the owner asks you to set up a new table to be played with the table runner (`scripts/table.py`, see "Table runner" in the README), do the whole setup in that conversation, then hand over:
+
+1. Settle what is missing from the owner's request, briefly: the adventure, the language, the way to play (who is a person and who an AI, and which model for each AI seat), and the investigators (pregens or new).
+2. Read your references (see "Before you run a table") and prepare the campaign folder as `references/prep_persistence.md` says.
+3. Publish the investigator sheets in the table repository's `table/<scenario-name>-<issue>/sheets/`. As you only know the Issue number once it is open, open the Issue first (the table sheet in its body: game, adventure, language, GM, who plays whom and with which model, links to the sheets, table rules), then publish the sheets and edit the links in.
+4. Post the opening `[KP]` comment, ending with the turn marker.
+5. Write `campaigns/<scenario-name>/table.json` from the closest file in `tables/examples/`: the Issue number, a `title`, every seat with its runner and model. Keep its `instructions` to what is specific to this table (its language, that nobody answers you when no person plays, house rules): the style of play is already in the skills.
+6. Tell the owner the command to start: `python scripts/table.py run campaigns/<scenario-name>/table.json --step`.
+
+The runner then starts a new session of yours for the table; it finds your prep in the campaign folder, so leave everything there.
 
 ### Using the worker (if you're connected to the ai-tabletop worker)
 

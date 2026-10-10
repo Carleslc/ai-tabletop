@@ -267,7 +267,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
 | `seats[].posts` | `cli` (default for players): the agent answers with its comment and the runner posts it. `agent` (default for the GM): the agent posts on the Issue itself (with `gh`, or the worker's `table_reply`), as the GM does to publish handouts with its turn. |
 | `seats[].sheet` | The character sheet's path in the table repository, for the player's first turn. |
 | `seats[].workdir` | Where the agent runs: for the GM, a clone of its private library (it reads the books and rolls with `scripts/roll.py`). |
-| `seats[].instructions`, `instructions.gm`, `instructions.player` | Extra instructions added to every turn of that seat or role (style, language, house rules). |
+| `seats[].instructions`, `instructions.gm`, `instructions.player` | Extra instructions added to every turn of that seat or role: what is specific to this table (language, house rules, that nobody answers the GM). The style of play (formatting, describing handouts, short player comments) is in the skills. |
 | `seats[].images` | `false` to not send that seat the new images. |
 | `seats[].timeout` | Seconds an AI turn may take (default 900 for the GM, 600 for players). |
 | `prompts` | Override the turn messages (`gm_intro`, `gm_turn`, `player_intro`, `player_turn`; see `DEFAULT_PROMPTS` in the script). |
