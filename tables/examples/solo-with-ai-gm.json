@@ -11,7 +11,7 @@
       "provider": "anthropic",
       "model": "claude-sonnet-5-5",
       "reasoning": "medium",
-      "toolsets": "terminal,file,skills,vision",
+      "toolsets": "terminal,file,skills,vision,memory",
       "skills": "coc-kp",
       "workdir": "~/ai-tabletop-keeper",
       "timeout": 2400,

@@ -247,7 +247,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
   "gm_tag": "KP",
   "seats": [
     { "role": "gm", "name": "KP", "runner": "hermes", "profile": "tabletop-gm", "model": "claude-sonnet-5-5",
-      "skills": "coc-kp", "toolsets": "terminal,file,skills,vision", "workdir": "~/ai-tabletop-keeper" },
+      "skills": "coc-kp", "toolsets": "terminal,file,skills,vision,memory", "workdir": "~/ai-tabletop-keeper" },
     { "role": "player", "name": "Henry Ashworth", "runner": "claude", "model": "sonnet",
       "sheet": "table/my-scenario-1/sheets/henry-ashworth.md" },
     { "role": "player", "name": "Ana Rius", "runner": "human" }
@@ -275,7 +275,7 @@ A JSON file per table (examples in [`tables/examples/`](tables/examples/)):
 
 The runners:
 
-- **`hermes`**: [Hermes Agent](https://github.com/NousResearch/hermes-agent). Fields: `profile`, `provider`, `model`, `reasoning`, `toolsets`, `skills` (preloaded on the seat's first turn), `max_turns`. One profile per role keeps the GM's and players' tools, skills and memory apart: e.g. a GM profile with a shell in the private library, and a player profile with only the worker as its tools (an MCP server in its `config.yaml`). Each seat is its own Hermes session, resumed every turn. With just a few MCP tools, turn off Hermes' tool search in the player profile (`tools.tool_search.enabled: off`): otherwise every MCP tool is reached through `tool_call` with its arguments as nested JSON, which smaller local models often break on long text (e.g. writing a note).
+- **`hermes`**: [Hermes Agent](https://github.com/NousResearch/hermes-agent). Fields: `profile`, `provider`, `model`, `reasoning`, `toolsets`, `skills` (preloaded every turn; Hermes injects only each skill's `SKILL.md`, so the GM is told to read its references itself), `max_turns`. Add `memory` to the GM's `toolsets`, with memory on in its profile, if it should keep your feedback for later tables. One profile per role keeps the GM's and players' tools, skills and memory apart: e.g. a GM profile with a shell in the private library, and a player profile with only the worker as its tools (an MCP server in its `config.yaml`). Each seat is its own Hermes session, resumed every turn. With just a few MCP tools, turn off Hermes' tool search in the player profile (`tools.tool_search.enabled: off`): otherwise every MCP tool is reached through `tool_call` with its arguments as nested JSON, which smaller local models often break on long text (e.g. writing a note).
 - **`claude`**: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) in print mode (`claude -p`), resumed every turn. Fields: `model`, and `args` for anything else (`--append-system-prompt-file skills/coc-player/SKILL.md`, `--allowedTools …`, `--mcp-config …`).
 - **`command`**: any command line that reads the turn's message on standard input and prints its answer (Codex `exec`, Gemini CLI, your own script). Field: `command` (a list). It gets no session: give it what it needs to remember (e.g. its own conversation file).
 - **`human`**: a person. With `"input": "github"` (default) they comment on the Issue from the website, and the runner waits for it. With `"input": "terminal"` they play right here: the runner prints what is new and posts what they type.
